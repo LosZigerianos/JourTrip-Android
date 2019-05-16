@@ -1,9 +1,6 @@
 package com.zigerianos.jourtrip.data
 
-import com.zigerianos.jourtrip.data.entities.Data
-import com.zigerianos.jourtrip.data.entities.Location
-import com.zigerianos.jourtrip.data.entities.Token
-import com.zigerianos.jourtrip.data.entities.UserRequest
+import com.zigerianos.jourtrip.data.entities.*
 import io.reactivex.Observable
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -16,6 +13,11 @@ interface ApiService {
     fun postLoginUseCase(
         @Body request: UserRequest
     ): Observable<Token<String>>
+
+    @POST("users/signup")
+    fun postSingupUseCase(
+        @Body request: UserRequest
+    ): Observable<Data<User>>
 
     @GET("locations/{city}")
     fun getLocationsByCity(
