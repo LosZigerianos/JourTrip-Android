@@ -14,7 +14,8 @@ class PrefsManager(context: Context) : ContextWrapper(context) {
     // TODO: Implementar propias del proyecto
     enum class Keys(val value: String) {
         AccessToken("AccessToken"),
-        ApplicationLanguage("ApplicationLanguage")
+        ApplicationLanguage("ApplicationLanguage"),
+        User("User")
     }
 
     fun setString(key: Keys, value: String) {

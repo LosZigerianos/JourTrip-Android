@@ -8,6 +8,7 @@ val fragmentLoginModule = module {
 
     factory<ILoginPresenter> {
         LoginPresenter(
+            get(),
             get()
         )
     }

@@ -1,6 +1,6 @@
 package com.zigerianos.jourtrip.data.entities
 
-data class Place(
+data class Location(
     val name: String,
     val address: String,
     val postalCode: String,

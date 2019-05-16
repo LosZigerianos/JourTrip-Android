@@ -1,30 +1,33 @@
 package com.zigerianos.jourtrip.presentation.scenes.login
 
-import com.zigerianos.jourtrip.data.entities.Place
-import com.zigerianos.jourtrip.domain.usecases.GetPlacesByCityUseCase
+import com.zigerianos.jourtrip.auth.AuthManager
+import com.zigerianos.jourtrip.data.entities.Location
+import com.zigerianos.jourtrip.data.entities.UserRequest
+import com.zigerianos.jourtrip.domain.usecases.GetLocationsByCityUseCase
+import com.zigerianos.jourtrip.domain.usecases.PostLoginUseCase
 import com.zigerianos.jourtrip.presentation.base.BasePresenter
 import timber.log.Timber
 
 class LoginPresenter(
-    private val getPlacesByCityUseCase: GetPlacesByCityUseCase
+    private val authManager: AuthManager,
+    private val postLoginUseCase: PostLoginUseCase
 ): BasePresenter<ILoginPresenter.ILoginView>(), ILoginPresenter {
-
-    private lateinit var mPlaces: List<Place>
 
     override fun update() {
         super.update()
 
-        val params = GetPlacesByCityUseCase.Params(city = "zaragoza")
+        login(email= "invitado@example.com", password = "123123")
+    }
 
-        val disposable = getPlacesByCityUseCase.observable(params)
+    override fun login(email: String, password: String) {
+        val params = PostLoginUseCase.Params(UserRequest(email = "invitado@example.com", password = "123123"))
+
+        val disposable = postLoginUseCase.observable(params)
             .subscribe({
-                mPlaces = it
-                if (mPlaces.isEmpty()) {
-                    //getMvpView()?.stateEmpty()
-                    return@subscribe
-                }
-                Timber.d("Patata" + mPlaces)
+                authManager.addToken(it)
+                Timber.d("Patata => Token: " + it)
 
+                Timber.d("Patata => User: " + authManager.getUser())
                 //getMvpView()?.loadRooms(mRooms)
                 //getMvpView()?.stateData()
             }, {
