@@ -1,0 +1,12 @@
+package com.zigerianos.jourtrip.data.entities
+
+data class Place(
+    val name: String,
+    val address: String,
+    val postalCode: String,
+    val city: String,
+    val state: String,
+    val country: String,
+    val formattedAddress: String
+) {
+}
