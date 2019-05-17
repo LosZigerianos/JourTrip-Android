@@ -20,6 +20,7 @@
     <!-- TextInputLayout -->
     <style name="Widget.App.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/colorPrimary</item>
+        <item name="boxBackgroundColor">@color/colorBackgroundTextInput</item>
     </style>
 
 </resources>

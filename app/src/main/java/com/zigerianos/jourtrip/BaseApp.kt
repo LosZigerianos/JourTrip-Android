@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.multidex.MultiDexApplication
 import com.google.gson.Gson
 import com.zigerianos.jourtrip.di.core.*
+import com.zigerianos.jourtrip.di.ui.fragmentInitialModule
 import com.zigerianos.jourtrip.di.ui.fragmentLoginModule
 import com.zigerianos.jourtrip.di.ui.useCasesModule
 import org.koin.android.ext.android.getKoin
@@ -19,6 +20,7 @@ abstract class BaseApp : MultiDexApplication() {
         dataModule,
         useCasesModule,
 
+        fragmentInitialModule,
         fragmentLoginModule
     )
 

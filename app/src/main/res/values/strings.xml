@@ -14,4 +14,5 @@
     <string name="sent_recovery_password_to_email_message">An email has been sent to your email address, check your Inbox</string>
     <string name="error_request_message">An error happened during the request</string>
     <string name="welcome_back">Welcome back</string>
+
 </resources>
