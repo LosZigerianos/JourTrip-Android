@@ -97,15 +97,15 @@ class LoginFragment : BaseFragment<ILoginPresenter.ILoginView, ILoginPresenter>(
         toast("Navegar a siguiente anterior")
     }
 
-    override fun showInvalidCredentialsErrorMessage() {
-        // TODO: IMPLEMENTAR
-        toast(getString(R.string.invalid_credentials))
+    override fun showSuccessMessage(message: String) {
+        toast(message)
     }
 
-    override fun showSentEmailToRecoveryPasswordMessage() {
+    override fun showErrorMessage(message: String) {
         stateDataLogin()
 
-        val toast = toast(getString(R.string.sent_recovery_password_to_email_message))
+        toast(message)
+        //toast(getString(R.string.sent_recovery_password_to_email_message))
     }
 
     private fun checkLoginFields() : Boolean {

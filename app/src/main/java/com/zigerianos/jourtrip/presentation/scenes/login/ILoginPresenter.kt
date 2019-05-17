@@ -19,7 +19,9 @@ interface ILoginPresenter: IPresenter<ILoginPresenter.ILoginView> {
         fun navigateToMain()
         fun navigateToBack()
 
-        fun showInvalidCredentialsErrorMessage()
-        fun showSentEmailToRecoveryPasswordMessage()
+        //fun showInvalidCredentialsErrorMessage()
+        //fun showSentEmailToRecoveryPasswordMessage()
+        fun showSuccessMessage(message: String)
+        fun showErrorMessage(message: String)
     }
 }

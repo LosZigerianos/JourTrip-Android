@@ -1,13 +1,9 @@
 package com.zigerianos.jourtrip.presentation.scenes.login
 
-import android.util.Log
 import com.zigerianos.jourtrip.auth.AuthManager
-import com.zigerianos.jourtrip.data.entities.Location
 import com.zigerianos.jourtrip.data.entities.UserRequest
-import com.zigerianos.jourtrip.domain.usecases.GetLocationsByCityUseCase
 import com.zigerianos.jourtrip.domain.usecases.PostLoginUseCase
 import com.zigerianos.jourtrip.domain.usecases.PostRecoverPasswordByEmailUseCase
-import com.zigerianos.jourtrip.domain.usecases.PostSignupUseCase
 import com.zigerianos.jourtrip.presentation.base.BasePresenter
 import timber.log.Timber
 
@@ -39,7 +35,7 @@ class LoginPresenter(
                 val user = dataWithMeta.metadata
 
                 if (token.isEmpty()) {
-                    getMvpView()?.showInvalidCredentialsErrorMessage()
+                    getMvpView()?.showErrorMessage(dataWithMeta.message)
                     return@subscribe
                 }
 
@@ -65,13 +61,13 @@ class LoginPresenter(
         val disposable = postRecoverPasswordByEmailUseCase.observable(params)
             .subscribe({ message ->
 
-                if (message.isEmpty()) {
+                /*if (message.isEmpty()) {
                     getMvpView()?.showInvalidCredentialsErrorMessage()
                     return@subscribe
-                }
+                }*/
 
-                getMvpView()?.stateDataLogin()
-                getMvpView()?.showSentEmailToRecoveryPasswordMessage()
+                getMvpView()?.stateDataRecoverPassword()
+                getMvpView()?.showSuccessMessage(message)
 
             }, {
                 Timber.e(it)
