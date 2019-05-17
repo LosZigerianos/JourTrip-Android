@@ -1,5 +1,6 @@
 package com.zigerianos.jourtrip.presentation.scenes.login
 
+import android.util.Log
 import com.zigerianos.jourtrip.auth.AuthManager
 import com.zigerianos.jourtrip.data.entities.Location
 import com.zigerianos.jourtrip.data.entities.UserRequest
@@ -18,28 +19,43 @@ class LoginPresenter(
     override fun update() {
         super.update()
 
-        login(email= "invitado@example.com", password = "123123")
+        getMvpView()?.setupToolbar()
+        getMvpView()?.setupViews()
+        getMvpView()?.stateDataLogin()
 
         //signup(username = "Paco", email = "invitado@hotmail.com", password = "1234")
     }
 
-    override fun login(email: String, password: String) {
+    override fun loginClicked(email: String, password: String) {
+        getMvpView()?.stateLoading()
+
         val params = PostLoginUseCase.Params(UserRequest(email = email, password = password))
 
         val disposable = postLoginUseCase.observable(params)
             .subscribe({ token ->
+
+                if (token.isEmpty()) {
+                    getMvpView()?.showInvalidCredentialsErrorMessage()
+                    return@subscribe
+                }
+
                 authManager.addToken(token)
                 Timber.d("Patata => Token: " + token)
 
                 Timber.d("Patata => User: " + authManager.getUser())
-                //getMvpView()?.loadRooms(mRooms)
-                //getMvpView()?.stateData()
+                getMvpView()?.navigateToMain()
+
             }, {
                 Timber.e(it)
-                //getMvpView()?.stateError()
+                getMvpView()?.stateError()
             })
 
         addDisposable(disposable)
+    }
+
+    override fun recoveryPasswordClicked(recoveryEmail: String) {
+        // TODO: IMPLEMENTAR
+        Log.d("Patata", "ENVIAR SOLICITUD A LA API")
     }
 
     private fun signup(username: String, email: String, password: String) {
