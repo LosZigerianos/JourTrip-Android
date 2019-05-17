@@ -1,10 +1,7 @@
 package com.zigerianos.jourtrip.di.ui
 
 import com.zigerianos.jourtrip.domain.base.transformers.AsyncObservableTransformer
-import com.zigerianos.jourtrip.domain.usecases.GetLocationsByCityAndPlaceUseCase
-import com.zigerianos.jourtrip.domain.usecases.GetLocationsByCityUseCase
-import com.zigerianos.jourtrip.domain.usecases.PostLoginUseCase
-import com.zigerianos.jourtrip.domain.usecases.PostSignupUseCase
+import com.zigerianos.jourtrip.domain.usecases.*
 import org.koin.dsl.module.module
 
 val useCasesModule = module {
@@ -18,6 +15,13 @@ val useCasesModule = module {
 
     factory {
         PostSignupUseCase(
+            AsyncObservableTransformer(),
+            get()
+        )
+    }
+
+    factory {
+        PostRecoverPasswordByEmailUseCase(
             AsyncObservableTransformer(),
             get()
         )

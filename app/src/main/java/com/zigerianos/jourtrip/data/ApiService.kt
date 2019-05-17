@@ -12,12 +12,17 @@ interface ApiService {
     @POST("users/login")
     fun postLoginUseCase(
         @Body request: UserRequest
-    ): Observable<Token<String>>
+    ): Observable<DataWithMeta<String, User>>
 
     @POST("users/signup")
     fun postSingupUseCase(
         @Body request: UserRequest
     ): Observable<Data<User>>
+
+    @POST("users/recoverPassword")
+    fun postRecoverPasswordUseCase(
+        @Body request: UserRequest
+    ): Observable<Data<String>>
 
     @GET("locations/{city}")
     fun getLocationsByCity(

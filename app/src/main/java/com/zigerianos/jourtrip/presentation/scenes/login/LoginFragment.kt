@@ -28,7 +28,7 @@ class LoginFragment : BaseFragment<ILoginPresenter.ILoginView, ILoginPresenter>(
         (activity as AppCompatActivity?)?.setSupportActionBar(toolbar as Toolbar)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        //(activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun setupViews() {
@@ -148,12 +148,7 @@ class LoginFragment : BaseFragment<ILoginPresenter.ILoginView, ILoginPresenter>(
             textInputLayoutSendEmail.isErrorEnabled = true
             textInputLayoutSendEmail.error = getString(R.string.required_field)
             areFilledFields = false
-        } else {
-            textInputLayoutSendEmail.isErrorEnabled = false
-            textInputLayoutSendEmail.error = ""
-        }
-
-        if (editTextSendEmail.text.toString().isNotEmpty() && !editTextSendEmail.text.toString().matches(Regex(RegexValidators.EMAIL))) {
+        } else if (!editTextSendEmail.text.toString().matches(Regex(RegexValidators.EMAIL))) {
             textInputLayoutSendEmail.isErrorEnabled = true
             textInputLayoutSendEmail.error = getString(R.string.required_email)
             areFilledFields = false
