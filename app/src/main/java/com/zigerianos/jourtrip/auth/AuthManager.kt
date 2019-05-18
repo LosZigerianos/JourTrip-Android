@@ -1,6 +1,5 @@
 package com.zigerianos.jourtrip.auth
 
-import android.util.Log
 import com.zigerianos.jourtrip.PrefsManager
 import com.zigerianos.jourtrip.data.entities.User
 

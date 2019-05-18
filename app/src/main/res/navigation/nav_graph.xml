@@ -9,15 +9,23 @@
         android:id="@+id/initialFragment"
         android:name="com.zigerianos.jourtrip.presentation.scenes.initial.InitialFragment"
         android:label="fragment_initial"
-        tools:layout="@layout/fragment_initial" >
+        tools:layout="@layout/fragment_initial">
         <action
-            android:id="@+id/action_goToLoginFragment"
+            android:id="@+id/actionGoToLoginFragment"
             app:destination="@id/loginFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/initialFragment"/>
+            app:popUpTo="@+id/initialFragment" />
+        <action
+            android:id="@+id/actionGoToSignupFragment"
+            app:destination="@id/signupFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/initialFragment" />
     </fragment>
 
     <fragment
@@ -25,5 +33,11 @@
         android:name="com.zigerianos.jourtrip.presentation.scenes.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
+
+    <fragment
+        android:id="@+id/signupFragment"
+        android:name="com.zigerianos.jourtrip.presentation.scenes.signup.SignupFragment"
+        android:label="fragment_signup"
+        tools:layout="@layout/fragment_signup" />
 
 </navigation>

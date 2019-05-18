@@ -76,23 +76,4 @@ class LoginPresenter(
 
         addDisposable(disposable)
     }
-
-    /*private fun signup(username: String, email: String, password: String) {
-        val params = PostSignupUseCase.Params(UserRequest(username = username, email = email, password = password))
-
-        val disposable = postSignupUseCase.observable(params)
-            .subscribe({ user ->
-                authManager.addUser(user)
-                Timber.d("Patata => UserReceived: " + user)
-
-                Timber.d("Patata => UserStored: " + authManager.getUser())
-                //getMvpView()?.loadRooms(mRooms)
-                //getMvpView()?.stateData()
-            }, {
-                Timber.e(it)
-                //getMvpView()?.stateError()
-            })
-
-        addDisposable(disposable)
-    }*/
 }

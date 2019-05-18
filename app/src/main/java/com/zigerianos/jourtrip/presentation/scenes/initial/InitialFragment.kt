@@ -25,7 +25,8 @@ class InitialFragment : BaseFragment<IInitialPresenter.IInitialView, IInitialPre
     }
 
     override fun navigateToSignup() {
-        // TODO: Implementar
+        val action = InitialFragmentDirections.actionGoToSignupFragment()
+        NavHostFragment.findNavController(this).navigate(action)
     }
 
     override fun navigateToLogin() {

@@ -91,12 +91,6 @@ class LoginFragment : BaseFragment<ILoginPresenter.ILoginView, ILoginPresenter>(
         toast("Navegar a vista principal")
     }
 
-    override fun navigateToBack() {
-        // TODO: IMPLEMENTAR
-        //NavHostFragment.findNavController(this).popBackStack()
-        toast("Navegar a siguiente anterior")
-    }
-
     override fun showSuccessMessage(message: String) {
         toast(message)
     }
