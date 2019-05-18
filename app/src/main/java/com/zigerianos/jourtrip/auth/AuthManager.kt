@@ -1,5 +1,6 @@
 package com.zigerianos.jourtrip.auth
 
+import android.util.Log
 import com.zigerianos.jourtrip.PrefsManager
 import com.zigerianos.jourtrip.data.entities.User
 
@@ -27,6 +28,7 @@ data class AuthManager(
 
     fun addToken(token: String) {
         mUser?.accessToken = token
+        saveUser()
     }
 
     fun deleteUser() {

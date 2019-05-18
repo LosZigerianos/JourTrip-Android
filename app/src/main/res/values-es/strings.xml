@@ -15,4 +15,6 @@
     <string name="sent_recovery_password_to_email_message">Se ha enviado un email a su correo electrónico, compruebe su bandeja de entrada</string>
     <string name="error_request_message">Ha ocurrido un error en la solicitud</string>
     <string name="welcome_back">Bienvenido de nuevo</string>
+    <string name="sign_up">Registrarse</string>
+    <string name="i_have_an_account">Ya tengo una cuenta</string>
 </resources>

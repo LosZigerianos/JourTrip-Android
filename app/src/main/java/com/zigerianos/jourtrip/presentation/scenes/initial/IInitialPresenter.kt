@@ -4,13 +4,17 @@ import com.zigerianos.jourtrip.presentation.base.IPresenter
 
 interface IInitialPresenter: IPresenter<IInitialPresenter.IInitialView> {
 
+    fun signupClicked()
+    fun existingAccountClicked()
 
     interface IInitialView: IPresenter.IView {
-        /*fun setupToolbar()
         fun setupViews()
+        /*fun setupToolbar()
         fun stateLoading()
-        fun stateDataLogin()
-        fun stateDataRecoverPassword()
+        fun stateData()
         fun stateError()*/
+
+        fun navigateToSignup()
+        fun navigateToLogin()
     }
 }

@@ -190,7 +190,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_weight="0.5"
-                    android:text="@string/back" />
+                    android:text="@string/back"
+                    app:cornerRadius="14dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonSendRecoveryEmail"
@@ -199,7 +200,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_weight="0.5"
-                    android:text="@string/recover" />
+                    android:text="@string/recover"
+                    app:cornerRadius="14dp" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.constraintlayout.widget.Group
