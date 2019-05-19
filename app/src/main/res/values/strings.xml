@@ -16,5 +16,8 @@
     <string name="welcome_back">Welcome back</string>
     <string name="sign_up">Sign up</string>
     <string name="i_have_an_account">I have an account</string>
+    <string name="full_name">Full name</string>
+    <string name="user_name">User name</string>
+    <string name="success_registered_message">You have successfully registered</string>
 
 </resources>

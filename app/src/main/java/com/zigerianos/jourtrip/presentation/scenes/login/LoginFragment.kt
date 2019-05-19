@@ -109,12 +109,7 @@ class LoginFragment : BaseFragment<ILoginPresenter.ILoginView, ILoginPresenter>(
             textInputLayoutEmail.isErrorEnabled = true
             textInputLayoutEmail.error = getString(R.string.required_field)
             areFilledFields = false
-        } else {
-            textInputLayoutEmail.isErrorEnabled = false
-            textInputLayoutEmail.error = ""
-        }
-
-        if (editTextEmail.text.toString().isNotEmpty() && !editTextEmail.text.toString().matches(Regex(RegexValidators.EMAIL))) {
+        } else if (!editTextEmail.text.toString().matches(Regex(RegexValidators.EMAIL))) {
             textInputLayoutEmail.isErrorEnabled = true
             textInputLayoutEmail.error = getString(R.string.required_email)
             areFilledFields = false

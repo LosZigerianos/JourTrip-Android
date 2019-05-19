@@ -1,7 +1,11 @@
 package com.zigerianos.jourtrip.presentation.scenes.signup
 
+import com.zigerianos.jourtrip.data.entities.UserRequest
 import com.zigerianos.jourtrip.domain.usecases.PostSignupUseCase
 import com.zigerianos.jourtrip.presentation.base.BasePresenter
+import timber.log.Timber
+
+
 
 class SignupPresenter(
     private val postSignupUseCase: PostSignupUseCase
@@ -13,29 +17,30 @@ class SignupPresenter(
         getMvpView()?.setupToolbar()
         getMvpView()?.setupViews()
         getMvpView()?.stateData()
-
-        //signup(username = "Paco", email = "invitado@hotmail.com", password = "1234")
     }
 
+    override fun signupClicked(fullname: String, username: String, email: String, password: String) {
+        getMvpView()?.stateLoading()
 
-
-    /*private fun signup(username: String, email: String, password: String) {
-        val params = PostSignupUseCase.Params(UserRequest(username = username, email = email, password = password))
+        val params = PostSignupUseCase.Params(UserRequest(username = if (username.isNotEmpty()) username else null, email = email, password = password))
 
         val disposable = postSignupUseCase.observable(params)
-            .subscribe({ user ->
-                authManager.addUser(user)
-                Timber.d("Patata => UserReceived: " + user)
+            .subscribe({ response ->
 
-                Timber.d("Patata => UserStored: " + authManager.getUser())
-                //getMvpView()?.loadRooms(mRooms)
-                //getMvpView()?.stateData()
+                if (!response.error.isNullOrEmpty()) {
+                    getMvpView()?.showMessage(response.error)
+                    getMvpView()?.stateData()
+                    return@subscribe
+                }
+
+                getMvpView()?.navigateToBack()
+                getMvpView()?.showSuccessMessage()
             }, {
                 Timber.e(it)
-                //getMvpView()?.stateError()
+                getMvpView()?.stateError()
             })
 
         addDisposable(disposable)
-    }*/
+    }
 
 }

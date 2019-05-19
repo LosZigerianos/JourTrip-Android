@@ -17,4 +17,7 @@
     <string name="welcome_back">Bienvenido de nuevo</string>
     <string name="sign_up">Registrarse</string>
     <string name="i_have_an_account">Ya tengo una cuenta</string>
+    <string name="full_name">Nombre completo</string>
+    <string name="user_name">Nombre de usuario</string>
+    <string name="success_registered_message">Se ha registrado correctamente</string>
 </resources>
