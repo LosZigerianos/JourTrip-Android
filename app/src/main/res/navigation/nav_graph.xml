@@ -26,18 +26,39 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@+id/initialFragment" />
+        <action
+            android:id="@+id/actionGoToHomeFragment"
+            app:destination="@id/navigationHome"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/initialFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.zigerianos.jourtrip.presentation.scenes.login.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/actionGoToHomeFragment"
+            app:destination="@id/navigationHome"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/initialFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/signupFragment"
         android:name="com.zigerianos.jourtrip.presentation.scenes.signup.SignupFragment"
         android:label="fragment_signup"
         tools:layout="@layout/fragment_signup" />
+
+    <fragment
+        android:id="@+id/navigationHome"
+        android:name="com.zigerianos.jourtrip.presentation.scenes.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
 
 </navigation>

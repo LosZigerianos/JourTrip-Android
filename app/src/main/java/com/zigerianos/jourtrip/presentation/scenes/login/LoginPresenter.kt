@@ -19,8 +19,6 @@ class LoginPresenter(
         getMvpView()?.setupToolbar()
         getMvpView()?.setupViews()
         getMvpView()?.stateDataLogin()
-
-        //signup(username = "Paco", email = "invitado@hotmail.com", password = "1234")
     }
 
     override fun loginClicked(email: String, password: String) {
@@ -43,7 +41,7 @@ class LoginPresenter(
                 authManager.addToken(token)
 
                 Timber.d("Patata => User: " + authManager.getUser())
-                getMvpView()?.navigateToMain()
+                getMvpView()?.navigateToHome()
 
             }, {
                 Timber.e(it)

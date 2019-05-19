@@ -9,6 +9,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.zigerianos.jourtrip.R
 import com.zigerianos.jourtrip.data.constants.RegexValidators
 import com.zigerianos.jourtrip.presentation.base.BaseFragment
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.toolbar_elevated.view.*
 import org.jetbrains.anko.support.v4.toast
@@ -33,6 +34,8 @@ class LoginFragment : BaseFragment<ILoginPresenter.ILoginView, ILoginPresenter>(
 
     override fun setupViews() {
         toolbar.toolbarTitle.text = getString(R.string.welcome_back)
+
+        activity?.bottomNavigationView?.visibility = View.GONE
 
         buttonLogin.setOnClickListener {
             if (checkLoginFields()) {
@@ -87,8 +90,8 @@ class LoginFragment : BaseFragment<ILoginPresenter.ILoginView, ILoginPresenter>(
         toast(getString(R.string.error_request_message))
     }
 
-    override fun navigateToMain() {
-        toast("Navegar a vista principal")
+    override fun navigateToHome() {
+        NavHostFragment.findNavController(this).navigate(LoginFragmentDirections.actionGoToHomeFragment())
     }
 
     override fun showSuccessMessage(message: String) {
