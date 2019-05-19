@@ -27,6 +27,7 @@ data class AuthManager(
 
     fun addToken(token: String) {
         mUser?.accessToken = token
+        saveUser()
     }
 
     fun deleteUser() {

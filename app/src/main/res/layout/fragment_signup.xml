@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.zigerianos.jourtrip.presentation.scenes.login.LoginFragment">
+    tools:context="com.zigerianos.jourtrip.presentation.scenes.signup.SignupFragment">
 
     <include
         android:id="@+id/toolbar"
@@ -23,7 +23,7 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <ScrollView
-        android:id="@+id/scrollViewLogin"
+        android:id="@+id/scrollViewSignup"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,19 +35,57 @@
             android:layout_height="wrap_content"
             android:paddingBottom="16dp">
 
-            <ImageView
-                android:id="@+id/imageViewLogo"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutFullname"
+                style="@style/Widget.App.TextInputLayout"
                 android:layout_width="0dp"
-                android:layout_height="190dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:scaleType="centerInside"
+                android:layout_marginRight="16dp"
+                android:hint="@string/full_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@tools:sample/avatars" />
-            <!--app:srcCompat="@drawable/logo_hoteles_poseidon"-->
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextFullname"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="24dp"
+                    android:ems="10"
+                    android:imeOptions="actionNext"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutUsername"
+                style="@style/Widget.App.TextInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:hint="@string/user_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutFullname" >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="24dp"
+                    android:ems="10"
+                    android:imeOptions="actionNext"
+                    android:inputType="textEmailAddress" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutEmail"
@@ -62,7 +100,7 @@
                 android:hint="@string/e_mail"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewLogo">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutUsername" >
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextEmail"
@@ -104,111 +142,18 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/textViewForgottenPassword"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="end"
-                android:text="@string/forgotten_password"
-                android:textAlignment="textEnd"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                android:textColor="@color/colorPrimary"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPassword" />
-
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonLogin"
+                android:id="@+id/buttonSignup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="16dp"
-                android:text="@string/log_in"
+                android:text="@string/sign_up"
                 app:cornerRadius="14dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewForgottenPassword" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/groupLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="textInputLayoutEmail, textInputLayoutPassword, textViewForgottenPassword, buttonLogin" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayoutSendEmail"
-                style="@style/Widget.App.TextInputLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:hint="@string/e_mail"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonLogin">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextSendEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="24dp"
-                    android:ems="10"
-                    android:imeOptions="actionNext"
-                    android:inputType="textEmailAddress" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/buttonsRecoverPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutSendEmail">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonBackToLogin"
-                    style="@style/Widget.App.Button.OutlinedButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="0.5"
-                    android:text="@string/back"
-                    app:cornerRadius="14dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonSendRecoveryEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="0.5"
-                    android:text="@string/recover"
-                    app:cornerRadius="14dp" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/groupRecoverPassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="textInputLayoutSendEmail, buttonsRecoverPassword" />
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPassword" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

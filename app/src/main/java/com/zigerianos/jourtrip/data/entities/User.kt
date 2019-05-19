@@ -6,12 +6,14 @@ data class User(
     @SerializedName("_id")
     var id: String = "",
     var username: String = "",
-    var name: String = "",
+    var fullname: String = "",
     var email: String = "",
     var accessToken: String = "",
+    @SerializedName("creation_date")
     var creationDate: String = "",
-    var updated_at: String = "",
+    @SerializedName("updated_at")
+    var updatedAt: String = "",
     var provider: String = "",
-    var following: List<String> = emptyList(),
-    var followers: List<String> = emptyList()
+    var following: List<String> = emptyList()
+    //var followers: List<String> = emptyList()
 )

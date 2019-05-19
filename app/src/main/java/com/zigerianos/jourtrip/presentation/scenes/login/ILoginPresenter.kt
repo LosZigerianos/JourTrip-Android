@@ -4,10 +4,23 @@ import com.zigerianos.jourtrip.presentation.base.IPresenter
 
 interface ILoginPresenter: IPresenter<ILoginPresenter.ILoginView> {
 
-    fun login(email: String, password: String)
+    fun loginClicked(email: String, password: String)
+
+    fun recoveryPasswordClicked(recoveryEmail: String)
 
     interface ILoginView: IPresenter.IView {
-        //fun setupViews()
-        //fun stateLoading()
+        fun setupToolbar()
+        fun setupViews()
+        fun stateLoading()
+        fun stateDataLogin()
+        fun stateDataRecoverPassword()
+        fun stateError()
+
+        fun navigateToMain()
+
+        //fun showInvalidCredentialsErrorMessage()
+        //fun showSentEmailToRecoveryPasswordMessage()
+        fun showSuccessMessage(message: String)
+        fun showErrorMessage(message: String)
     }
 }

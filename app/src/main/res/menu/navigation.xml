@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/navigationFeed"
+        android:title="Feed"
+        app:showAsAction="always|withText" />
+
+    <item
+        android:id="@+id/navigationSearch"
+        android:title="Search"
+        app:showAsAction="always|withText" />
+
+    <item
+        android:id="@+id/navigationProfile"
+        android:title="Profile"
+        app:showAsAction="always|withText" />
+
+</menu>
