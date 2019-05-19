@@ -30,7 +30,6 @@
             android:id="@+id/actionGoToHomeFragment"
             app:destination="@id/navigationHome"
             app:enterAnim="@anim/nav_default_enter_anim"
-            app:launchSingleTop="true"
             app:popUpTo="@+id/initialFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -44,7 +43,6 @@
             android:id="@+id/actionGoToHomeFragment"
             app:destination="@id/navigationHome"
             app:enterAnim="@anim/nav_default_enter_anim"
-            app:launchSingleTop="true"
             app:popUpTo="@+id/initialFragment"
             app:popUpToInclusive="true" />
     </fragment>
