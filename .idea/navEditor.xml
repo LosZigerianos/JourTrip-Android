@@ -19,12 +19,12 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_goToLoginFragment">
+                            <entry key="actionGoToLoginFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="action_initialFragment_to_signupFragment">
+                            <entry key="actionGoToSignupFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
