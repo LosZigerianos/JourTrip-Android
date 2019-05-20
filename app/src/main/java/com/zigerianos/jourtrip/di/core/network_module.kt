@@ -16,7 +16,7 @@ import java.io.File
 import java.util.concurrent.TimeUnit
 
 val networkModule = module {
-    single { HttpDefaultHeadersInterceptor(System.getProperty("http.agent")) }
+    single { HttpDefaultHeadersInterceptor(System.getProperty("http.agent"), get()) }
 
     single {
         val interceptor = HttpLoggingInterceptor { message -> Timber.tag("HttpRequest").i(message) }
@@ -60,13 +60,7 @@ val networkModule = module {
 
     single {
         Retrofit.Builder()
-            .baseUrl(
-                if (BuildConfig.API_VERSION > 0) {
-                    "${BuildConfig.API_SERVER_URL}/apiv${BuildConfig.API_VERSION}/"
-                } else {
-                    "${BuildConfig.API_SERVER_URL}/"
-                }
-            )
+            .baseUrl("${BuildConfig.API_SERVER_URL}/apiv${BuildConfig.API_VERSION}/")
             .client( get() )
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create( get() ))

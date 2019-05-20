@@ -19,7 +19,7 @@ android {
         multiDexEnabled true
 
         buildConfigField 'int', 'API_VERSION', '1'
-        buildConfigField 'String', 'API_SERVER_URL', '"http://10.0.2.2:3000"'
+        buildConfigField 'String', 'API_SERVER_URL', '"https://api.jourtrip.ml"' //http://10.0.2.2:3000
     }
 
     buildTypes {

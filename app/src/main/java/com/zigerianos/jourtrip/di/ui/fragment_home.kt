@@ -12,7 +12,7 @@ val fragmentHomeModule = module {
 
     factory<IHomePresenter> {
         HomePresenter(
-
+            get()
         )
     }
 }
