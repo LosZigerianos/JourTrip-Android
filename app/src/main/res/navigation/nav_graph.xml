@@ -59,4 +59,16 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
 
+    <fragment
+        android:id="@+id/navigationSearch"
+        android:name="com.zigerianos.jourtrip.presentation.scenes.search.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/navigationProfile"
+        android:name="com.zigerianos.jourtrip.presentation.scenes.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+
 </navigation>
