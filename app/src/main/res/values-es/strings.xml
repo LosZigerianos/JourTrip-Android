@@ -18,4 +18,8 @@
     <string name="full_name">Nombre completo</string>
     <string name="user_name">Nombre de usuario</string>
     <string name="success_registered_message">Se ha registrado correctamente</string>
+    <string name="settings">Configuración</string>
+    <string name="following">Seguidos</string>
+    <string name="followers">Seguidores</string>
+    <string name="posts">Posts</string>
 </resources>
