@@ -2,8 +2,8 @@
 <resources>
     <color name="colorPrimary">#5A6174</color>
     <color name="colorPrimaryDark">#484F61</color>
-    <color name="colorPrimaryLight">#8C909E</color>
-    <color name="colorAccent">#5A6174</color>
+    <color name="colorPrimaryLight">#737989</color>
+    <color name="colorAccent">#484F61</color>
 
     <color name="colorGoogle">#E9453B</color>
 
