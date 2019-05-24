@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,11 +23,15 @@ import kotlinx.android.synthetic.main.toolbar_elevated.view.*
 import org.jetbrains.anko.support.v4.toast
 import org.koin.android.ext.android.inject
 
+
 class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePresenter>(),
     IProfilePresenter.IProfileView {
 
     private val mainPresenter by inject<IProfilePresenter>()
     private val picasso by inject<Picasso>()
+
+    private var LastLoadPage: Int = 1
+    private var totalPages: Int? = null
 
     private var deadlineAdapter: DeadlineAdapter? = null
 
@@ -61,6 +66,9 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
     override fun setupViews() {
         // TODO: VERIFICAR TITULO FINAL
         toolbar.toolbarTitle.text = "Profile"
+        toolbar.toolbarImage.setOnClickListener {
+            scrollViewProfile.fullScroll(ScrollView.FOCUS_UP)
+        }
 
         activity?.bottomNavigationView?.visibility = View.VISIBLE
 
@@ -70,18 +78,18 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
 
     override fun stateLoading() {
         errorLayout.visibility = View.GONE
-        groupProfile.visibility = View.GONE
+        scrollViewProfile.visibility = View.GONE
         progressBar.visibility = View.VISIBLE
     }
 
     override fun stateData() {
         errorLayout.visibility = View.GONE
-        groupProfile.visibility = View.VISIBLE
+        scrollViewProfile.visibility = View.VISIBLE
         progressBar.visibility = View.GONE
     }
 
     override fun stateError() {
-        groupProfile.visibility = View.GONE
+        scrollViewProfile.visibility = View.GONE
         progressBar.visibility = View.GONE
         errorLayout.visibility = View.VISIBLE
     }
@@ -110,33 +118,14 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
             .into(imageViewUser)
 
 
+        scrollViewProfile.setOnBottomReachedListener {
+            toast("setOnBottomReachedListener")
+            loadMore()
+        }
+
+
         // TODO: REEMPLAZAR POR COMENTARIOS
         val locations = listOf(
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
             Location("", "", "", "", "", "", ""),
             Location("", "", "", "", "", "", ""),
             Location("", "", "", "", "", "", ""),
@@ -181,6 +170,15 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
             }
 
         })
+    }
+
+    private fun loadMore() {
+        val locations = listOf(
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", "")
+        )
+
+        deadlineAdapter!!.addItems(locations)
     }
 
     override fun getLayoutResource(): Int = R.layout.fragment_profile
