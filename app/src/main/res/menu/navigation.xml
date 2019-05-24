@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/navigationFeed"
+        android:id="@+id/navigationHome"
         android:title="Feed"
         app:showAsAction="always|withText" />
 
     <item
         android:id="@+id/navigationSearch"
+        android:icon="@drawable/ic_search"
         android:title="Search"
         app:showAsAction="always|withText" />
 

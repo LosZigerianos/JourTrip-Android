@@ -2,7 +2,7 @@ package com.zigerianos.jourtrip.auth
 
 interface IAuthManager {
 
-    fun getCurrentAccessToken(): String?
+    fun getCurrentAccessToken(): String
 
     fun isUserSignedIn(): Boolean
 

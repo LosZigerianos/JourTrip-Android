@@ -24,12 +24,12 @@ interface ApiService {
         @Body request: UserRequest
     ): Observable<Data<String>>
 
-    @GET("locations/{city}")
+    @GET("locations/city/{city}")
     fun getLocationsByCity(
         @Path("city") city: String
     ): Observable<Data<List<Location>>>
 
-    @GET("locations/{city}/{place}")
+    @GET("locations/{city}/place/{place}")
     fun getLocationsByCityAndPlace(
         @Path("city") city: String,
         @Path("place") place: String

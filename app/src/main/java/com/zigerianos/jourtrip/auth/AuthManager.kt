@@ -6,9 +6,10 @@ import com.zigerianos.jourtrip.data.entities.User
 data class AuthManager(
     private val prefsManager: PrefsManager
 ) : IAuthManager {
-    override fun getCurrentAccessToken(): String? = mUser?.accessToken
 
     private var mUser: User? = prefsManager.get(PrefsManager.Keys.User, User::class.java, null)
+
+    override fun getCurrentAccessToken(): String = mUser?.accessToken ?: ""
 
     override fun isUserSignedIn() : Boolean {
         mUser?.let { user ->

@@ -37,5 +37,9 @@ class InitialFragment : BaseFragment<IInitialPresenter.IInitialView, IInitialPre
         NavHostFragment.findNavController(this).navigate(action)
     }
 
+    override fun navigateToHome() {
+        NavHostFragment.findNavController(this).navigate(InitialFragmentDirections.actionGoToHomeFragment())
+    }
+
     override fun getLayoutResource(): Int = R.layout.fragment_initial
 }

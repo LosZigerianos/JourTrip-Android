@@ -20,4 +20,11 @@
     <string name="user_name">User name</string>
     <string name="success_registered_message">You have successfully registered</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="settings">Settings</string>
+    <string name="following">Following</string>
+    <string name="followers">Followers</string>
+    <string name="posts">Posts</string>
+
 </resources>

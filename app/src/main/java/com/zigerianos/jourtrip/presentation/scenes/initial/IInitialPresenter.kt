@@ -16,5 +16,6 @@ interface IInitialPresenter: IPresenter<IInitialPresenter.IInitialView> {
 
         fun navigateToSignup()
         fun navigateToLogin()
+        fun navigateToHome()
     }
 }
