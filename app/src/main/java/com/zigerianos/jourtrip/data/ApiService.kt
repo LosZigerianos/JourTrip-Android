@@ -9,6 +9,7 @@ import retrofit2.http.Path
 
 interface ApiService {
 
+    // LOGIN
     @POST("users/login")
     fun postLoginUseCase(
         @Body request: UserRequest
@@ -24,6 +25,7 @@ interface ApiService {
         @Body request: UserRequest
     ): Observable<Data<String>>
 
+    // LOCATIONS
     @GET("locations/city/{city}")
     fun getLocationsByCity(
         @Path("city") city: String
@@ -34,5 +36,9 @@ interface ApiService {
         @Path("city") city: String,
         @Path("place") place: String
     ): Observable<Data<List<Location>>>
+
+    // USER
+    @GET("users/me")
+    fun getUserMeUseCase(): Observable<Data<User>>
 
 }

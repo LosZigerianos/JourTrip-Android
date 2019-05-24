@@ -22,4 +22,5 @@
     <string name="following">Seguidos</string>
     <string name="followers">Seguidores</string>
     <string name="posts">Posts</string>
+    <string name="error_loading_data">Error al cargar los datos</string>
 </resources>

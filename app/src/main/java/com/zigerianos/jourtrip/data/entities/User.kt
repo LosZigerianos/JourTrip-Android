@@ -8,6 +8,8 @@ data class User(
     var username: String = "",
     var fullname: String = "",
     var email: String = "",
+    @SerializedName("photo")
+    var photo: String? = null,
     var accessToken: String = "",
     @SerializedName("creation_date")
     var creationDate: String = "",

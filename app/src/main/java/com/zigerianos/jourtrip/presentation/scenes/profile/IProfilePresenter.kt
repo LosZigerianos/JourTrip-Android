@@ -1,5 +1,6 @@
 package com.zigerianos.jourtrip.presentation.scenes.profile
 
+import com.zigerianos.jourtrip.data.entities.User
 import com.zigerianos.jourtrip.presentation.base.IPresenter
 
 interface IProfilePresenter: IPresenter<IProfilePresenter.IProfileView> {
@@ -11,5 +12,7 @@ interface IProfilePresenter: IPresenter<IProfilePresenter.IProfileView> {
         fun stateLoading()
         fun stateData()
         fun stateError()
+
+        fun loadUser(user: User)
     }
 }

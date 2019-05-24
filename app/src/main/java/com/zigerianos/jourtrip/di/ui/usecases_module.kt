@@ -41,4 +41,10 @@ val useCasesModule = module {
         )
     }
 
+    factory {
+        GetUserMeUseCase(
+            AsyncObservableTransformer(),
+            get()
+        )
+    }
 }

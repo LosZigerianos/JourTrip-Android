@@ -7,9 +7,15 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.squareup.picasso.Picasso
 
 import com.zigerianos.jourtrip.R
+import com.zigerianos.jourtrip.data.entities.Location
+import com.zigerianos.jourtrip.data.entities.User
 import com.zigerianos.jourtrip.presentation.base.BaseFragment
+import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
+import com.zigerianos.jourtrip.presentation.scenes.home.DeadlineAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.toolbar_elevated.view.*
@@ -20,6 +26,9 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
     IProfilePresenter.IProfileView {
 
     private val mainPresenter by inject<IProfilePresenter>()
+    private val picasso by inject<Picasso>()
+
+    private var deadlineAdapter: DeadlineAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         presenter = mainPresenter
@@ -34,7 +43,7 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId) {
+        when (item?.itemId) {
             R.id.action_settings -> {
                 // TODO: IMPLEMENTAR
                 toast("Navegar a los ajustes del perfil")
@@ -56,18 +65,122 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
         activity?.bottomNavigationView?.visibility = View.VISIBLE
 
         // TODO: IMPLEMENTAR
+        setupRecyclerView()
     }
 
     override fun stateLoading() {
-        // TODO: IMPLEMENTAR
+        errorLayout.visibility = View.GONE
+        groupProfile.visibility = View.GONE
+        progressBar.visibility = View.VISIBLE
     }
 
     override fun stateData() {
-        // TODO: IMPLEMENTAR
+        errorLayout.visibility = View.GONE
+        groupProfile.visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
     }
 
     override fun stateError() {
-        // TODO: IMPLEMENTAR
+        groupProfile.visibility = View.GONE
+        progressBar.visibility = View.GONE
+        errorLayout.visibility = View.VISIBLE
+    }
+
+    override fun loadUser(user: User) {
+
+        if (user.fullname.isNotEmpty())
+            textViewFullname.text = user.fullname
+        else
+            textViewFullname.visibility = View.GONE
+
+        if (user.username.isNotEmpty())
+            textViewUsername.text = user.username
+        else
+            textViewUsername.visibility = View.GONE
+
+        // TODO: RECIBIR DATOS
+        textViewFollowingQuantity.text = "12"
+        textViewFollowersQuantity.text = "45"
+        textViewPostsQuantity.text = "32"
+
+        picasso
+            .load(user.photo)
+            .placeholder(R.drawable.ic_profile_placeholder) // TODO: MANEJAR
+            .error(R.drawable.ic_profile_placeholder) // TODO: MANEJAR
+            .into(imageViewUser)
+
+
+        // TODO: REEMPLAZAR POR COMENTARIOS
+        val locations = listOf(
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", ""),
+            Location("", "", "", "", "", "", "")
+        )
+        deadlineAdapter!!.setItems(locations)
+    }
+
+    private fun setupRecyclerView() {
+        recyclerViewComments.layoutManager = LinearLayoutManager(activity)
+        deadlineAdapter = DeadlineAdapter(activity!!)
+        recyclerViewComments.adapter = deadlineAdapter
+
+        deadlineAdapter!!.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<Location> {
+            override fun onItemClick(item: Location, position: Int, view: View) {
+                //presenter.locationSelected(position)
+                toast("Location selected $position")
+            }
+
+        })
     }
 
     override fun getLayoutResource(): Int = R.layout.fragment_profile
