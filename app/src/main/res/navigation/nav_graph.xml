@@ -69,6 +69,21 @@
         android:id="@+id/navigationProfile"
         android:name="com.zigerianos.jourtrip.presentation.scenes.profile.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/actionGoToUserDataFragment"
+            app:destination="@id/userDataFragment"
+            app:enterAnim="@anim/slide_up_enter"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_down_pop_exit"
+            app:popUpTo="@+id/navigationProfile" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/userDataFragment"
+        android:name="com.zigerianos.jourtrip.presentation.scenes.userdata.UserDataFragment"
+        android:label="fragment_user_data"
+        tools:layout="@layout/fragment_user_data" />
 
 </navigation>

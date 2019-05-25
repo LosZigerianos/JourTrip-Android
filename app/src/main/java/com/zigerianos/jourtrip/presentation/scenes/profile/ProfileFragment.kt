@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 
@@ -50,8 +51,7 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.action_settings -> {
-                // TODO: IMPLEMENTAR
-                toast("Navegar a los ajustes del perfil")
+                presenter.settingsClicked()
             }
         }
 
@@ -156,6 +156,11 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
             Location("", "", "", "", "", "", "")
         )
         deadlineAdapter!!.setItems(locations)
+    }
+
+    override fun navigateToUserData() {
+        val action = ProfileFragmentDirections.actionGoToUserDataFragment()
+        NavHostFragment.findNavController(this).navigate(action)
     }
 
     private fun setupRecyclerView() {

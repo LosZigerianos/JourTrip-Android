@@ -23,4 +23,10 @@
     <string name="followers">Seguidores</string>
     <string name="posts">Posts</string>
     <string name="error_loading_data">Error al cargar los datos</string>
+    <string name="user_data">Datos del usuario</string>
+    <string name="update_data">Actualizar datos</string>
+    <string name="update_password">Actualizar contraseña</string>
+    <string name="current_password">Contraseña actual</string>
+    <string name="new_password">Nueva contraseña</string>
+    <string name="logout">Cerrar sesión</string>
 </resources>

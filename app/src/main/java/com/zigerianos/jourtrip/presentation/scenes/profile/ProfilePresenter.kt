@@ -28,4 +28,7 @@ class ProfilePresenter(
         addDisposable(disposable)
     }
 
+    override fun settingsClicked() {
+        getMvpView()?.navigateToUserData()
+    }
 }

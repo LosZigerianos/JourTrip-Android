@@ -81,6 +81,15 @@
                             <option name="y" value="56" />
                           </Point>
                         </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_navigationProfile_to_userDataFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>
@@ -103,6 +112,18 @@
                           <Point>
                             <option name="x" value="88" />
                             <option name="y" value="355" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="userDataFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="722" />
+                            <option name="y" value="356" />
                           </Point>
                         </option>
                       </LayoutPositions>

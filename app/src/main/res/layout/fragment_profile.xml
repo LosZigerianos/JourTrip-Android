@@ -64,7 +64,6 @@
                     android:id="@+id/imageViewUser"
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
-                    android:background="@android:color/holo_blue_light"
                     android:scaleType="centerCrop" />
             </androidx.cardview.widget.CardView>
 

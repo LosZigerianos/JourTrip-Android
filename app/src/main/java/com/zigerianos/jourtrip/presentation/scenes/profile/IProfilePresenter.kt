@@ -5,6 +5,7 @@ import com.zigerianos.jourtrip.presentation.base.IPresenter
 
 interface IProfilePresenter: IPresenter<IProfilePresenter.IProfileView> {
 
+    fun settingsClicked()
 
     interface IProfileView: IPresenter.IView {
         fun setupToolbar()
@@ -14,5 +15,7 @@ interface IProfilePresenter: IPresenter<IProfilePresenter.IProfileView> {
         fun stateError()
 
         fun loadUser(user: User)
+
+        fun navigateToUserData()
     }
 }
