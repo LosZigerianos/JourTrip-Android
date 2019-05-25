@@ -2,10 +2,7 @@ package com.zigerianos.jourtrip.data
 
 import com.zigerianos.jourtrip.data.entities.*
 import io.reactivex.Observable
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface ApiService {
 
@@ -41,4 +38,13 @@ interface ApiService {
     @GET("users/me")
     fun getUserMeUseCase(): Observable<Data<User>>
 
+    @PUT("users/me/update")
+    fun putUserDataUseCase(
+        @Body request: UserRequest
+    ): Observable<Data<User>>
+
+    @PUT("users/me/change-password")
+    fun putPasswordUseCase(
+        @Body request: PasswordRequest
+    ): Observable<Data<User>>
 }

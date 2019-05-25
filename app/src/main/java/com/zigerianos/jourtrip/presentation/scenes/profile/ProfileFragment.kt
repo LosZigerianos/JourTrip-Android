@@ -66,6 +66,7 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
     override fun setupViews() {
         // TODO: VERIFICAR TITULO FINAL
         toolbar.toolbarTitle.text = "Profile"
+        toolbar.toolbarImage.visibility = View.VISIBLE
         toolbar.toolbarImage.setOnClickListener {
             scrollViewProfile.fullScroll(ScrollView.FOCUS_UP)
         }
@@ -102,7 +103,7 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
             textViewFullname.visibility = View.GONE
 
         if (user.username.isNotEmpty())
-            textViewUsername.text = user.username
+            textViewUsername.text = "@${user.username}"
         else
             textViewUsername.visibility = View.GONE
 
@@ -113,8 +114,8 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
 
         picasso
             .load(user.photo)
-            .placeholder(R.drawable.ic_profile_placeholder) // TODO: MANEJAR
-            .error(R.drawable.ic_profile_placeholder) // TODO: MANEJAR
+            .placeholder(R.drawable.ic_profile_placeholder)
+            .error(R.drawable.ic_profile_placeholder)
             .into(imageViewUser)
 
 

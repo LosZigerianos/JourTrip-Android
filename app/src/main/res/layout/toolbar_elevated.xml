@@ -25,6 +25,7 @@
         android:contentDescription=""
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
+        android:visibility="gone"
         app:srcCompat="@drawable/logo" />
 
 </androidx.appcompat.widget.Toolbar>

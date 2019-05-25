@@ -8,6 +8,9 @@ val fragmentUserDataModule = module {
 
     factory<IUserDataPresenter> {
         UserDataPresenter(
+            get(),
+            get(),
+            get(),
             get()
         )
     }

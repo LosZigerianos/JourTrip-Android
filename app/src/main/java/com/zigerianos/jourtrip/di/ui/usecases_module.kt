@@ -47,4 +47,19 @@ val useCasesModule = module {
             get()
         )
     }
+
+    factory {
+        PutUserDataUseCase(
+            AsyncObservableTransformer(),
+            get()
+        )
+    }
+
+    factory {
+        PutPasswordUseCase(
+            AsyncObservableTransformer(),
+            get()
+        )
+    }
+
 }

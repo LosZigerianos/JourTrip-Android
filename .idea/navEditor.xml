@@ -83,7 +83,7 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_navigationProfile_to_userDataFragment">
+                            <entry key="actionGoToUserDataFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

@@ -16,6 +16,6 @@ data class User(
     @SerializedName("updated_at")
     var updatedAt: String = "",
     var provider: String = "",
-    var following: List<String> = emptyList()
-    //var followers: List<String> = emptyList()
+    var following: List<String> = emptyList(),
+    var followers: List<String> = emptyList()
 )
