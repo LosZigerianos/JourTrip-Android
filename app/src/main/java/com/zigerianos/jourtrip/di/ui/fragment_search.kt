@@ -8,7 +8,7 @@ val fragmentSearchModule = module {
 
     factory<ISearchPresenter> {
         SearchPresenter(
-
+            get()
         )
     }
 }

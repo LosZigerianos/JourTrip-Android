@@ -36,6 +36,12 @@ interface ApiService {
         @Path("place") place: String
     ): Observable<Data<List<Location>>>
 
+    @GET("locations/near")
+    fun getLocationsNear(
+        @Query("latitude") latitude: String,
+        @Query("longitude") longitude: String
+    ): Observable<Data<List<Location>>>
+
     // USER
     @GET("users/me")
     fun getUserMeUseCase(): Observable<Data<User>>

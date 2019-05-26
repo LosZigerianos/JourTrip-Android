@@ -69,4 +69,11 @@ val useCasesModule = module {
         )
     }
 
+    factory {
+        GetLocationsNearUseCase(
+            AsyncObservableTransformer(),
+            get()
+        )
+    }
+
 }

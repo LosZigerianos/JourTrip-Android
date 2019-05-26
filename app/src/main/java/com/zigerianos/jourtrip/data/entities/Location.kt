@@ -7,6 +7,6 @@ data class Location(
     val city: String,
     val state: String,
     val country: String,
-    val formattedAddress: String
-) {
-}
+    val formattedAddress: String,
+    val photos: List<String> = emptyList()
+)
