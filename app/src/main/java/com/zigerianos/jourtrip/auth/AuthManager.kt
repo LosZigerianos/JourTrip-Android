@@ -35,8 +35,8 @@ data class AuthManager(
                 email = user.email,
                 creationDate = user.creationDate,
                 updatedAt = user.updatedAt,
-                following = user.following,
-                followers = user.followers,
+                /*following = user.following,
+                followers = user.followers,*/
                 photo = user.photo
             )
         }

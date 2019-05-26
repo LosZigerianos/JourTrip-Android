@@ -11,6 +11,7 @@ val fragmentUserDataModule = module {
             get(),
             get(),
             get(),
+            get(),
             get()
         )
     }

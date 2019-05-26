@@ -1,20 +1,29 @@
 package com.zigerianos.jourtrip.presentation.scenes.userdata
 
+import android.content.Context
+import android.graphics.Bitmap
 import com.zigerianos.jourtrip.auth.AuthManager
 import com.zigerianos.jourtrip.data.entities.PasswordRequest
 import com.zigerianos.jourtrip.data.entities.UserRequest
 import com.zigerianos.jourtrip.domain.usecases.GetUserMeUseCase
+import com.zigerianos.jourtrip.domain.usecases.PostUserPhotoUseCase
 import com.zigerianos.jourtrip.domain.usecases.PutPasswordUseCase
 import com.zigerianos.jourtrip.domain.usecases.PutUserDataUseCase
 import com.zigerianos.jourtrip.presentation.base.BasePresenter
+import com.zigerianos.jourtrip.utils.ConvertFileFromBitmap
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import timber.log.Timber
+import java.io.File
 
 class UserDataPresenter(
     private val authManager: AuthManager,
     private val getUserMeUseCase: GetUserMeUseCase,
     private val putUserDataUseCase: PutUserDataUseCase,
-    private val putPasswordUseCase: PutPasswordUseCase
-): BasePresenter<IUserDataPresenter.IUserDataView>(), IUserDataPresenter {
+    private val putPasswordUseCase: PutPasswordUseCase,
+    private val postUserPhotoUseCase: PostUserPhotoUseCase
+) : BasePresenter<IUserDataPresenter.IUserDataView>(), IUserDataPresenter {
 
     override fun update() {
         super.update()
@@ -61,6 +70,12 @@ class UserDataPresenter(
         getMvpView()?.navigateToInit()
     }
 
+    override fun uploadImage(context: Context, bitmap: Bitmap) {
+        ConvertFileFromBitmap(context, bitmap) { file ->
+            requestUpdatePhoto(file)
+        }.execute()
+    }
+
     private fun requestUpdateUserData(userRequest: UserRequest) {
         getMvpView()?.stateLoading()
 
@@ -71,6 +86,8 @@ class UserDataPresenter(
 
                 if (!success) {
                     getMvpView()?.showErrorMessage()
+                    getMvpView()?.stateData()
+                    return@subscribe
                 }
 
                 getMvpView()?.stateData()
@@ -94,6 +111,8 @@ class UserDataPresenter(
 
                 if (!success) {
                     getMvpView()?.showErrorMessage()
+                    getMvpView()?.stateData()
+                    return@subscribe
                 }
 
                 getMvpView()?.stateData()
@@ -102,6 +121,37 @@ class UserDataPresenter(
             }, {
                 Timber.e(it)
                 getMvpView()?.showErrorMessage()
+            })
+
+        addDisposable(disposable)
+    }
+
+    private fun requestUpdatePhoto(file: File) {
+        val params = PostUserPhotoUseCase.Params(
+            MultipartBody.Part.createFormData(
+                "image",
+                file.name,
+                RequestBody.create(MediaType.parse("image/*"), file)
+            )
+        )
+
+        val disposable = postUserPhotoUseCase.observable(params)
+            .subscribe({ response ->
+
+                if (!response.success) {
+                    getMvpView()?.showErrorMessage()
+                    getMvpView()?.stateData()
+                    return@subscribe
+                }
+
+                getMvpView()?.loadUser(response.metadata)
+
+                getMvpView()?.stateData()
+                getMvpView()?.showSuccessMessage()
+
+            }, {
+                Timber.e(it)
+                getMvpView()?.stateData()
             })
 
         addDisposable(disposable)

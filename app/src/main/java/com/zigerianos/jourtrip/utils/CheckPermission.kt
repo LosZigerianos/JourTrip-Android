@@ -6,11 +6,14 @@ import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 
 class CheckPermission {
 
     companion object {
-        const val TAG_PERMISSION_CODE = 111
+        const val TAG_PERMISSION_READ_EXTERNAL_STORAGE = 110
+        const val TAG_PERMISSION_CAMERA = 111
+        const val TAG_PERMISSION_LOCATION= 112
 
         const val TAG_MESSAGE_PERMISSION_READ_EXTERNAL_STORAGE = "Storage permission allows us to access gallery data. Please allow in App Settings for additional functionality."
         const val TAG_MESSAGE_PERMISSION_CAMERA = "Camera permission allows us to access camera. Please allow in App Settings for additional functionality."
@@ -25,20 +28,16 @@ class CheckPermission {
             return true
         }
 
-        fun requestPermission(activity: Activity, code: Int, permission: String, message: String) {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
-
-                // todo: retocar
+        fun requestPermission(fragment: Fragment, code: Int, permission: String, message: String) {
+            if (fragment.shouldShowRequestPermissionRationale(permission)) {
                 Toast.makeText(
-                    activity,
+                    fragment.context,
                     message,
                     Toast.LENGTH_LONG
                 ).show()
 
             } else {
-
-                ActivityCompat.requestPermissions(activity, arrayOf(permission), code)
+                fragment.requestPermissions(arrayOf(permission), code)
             }
         }
     }

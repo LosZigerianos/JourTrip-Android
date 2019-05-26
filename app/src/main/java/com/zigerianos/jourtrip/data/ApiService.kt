@@ -2,6 +2,8 @@ package com.zigerianos.jourtrip.data
 
 import com.zigerianos.jourtrip.data.entities.*
 import io.reactivex.Observable
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.*
 
 interface ApiService {
@@ -47,4 +49,10 @@ interface ApiService {
     fun putPasswordUseCase(
         @Body request: PasswordRequest
     ): Observable<Data<User>>
+
+    @Multipart
+    @POST("users/me/photo")
+    fun postUserPhotoUseCase(
+        @Part image: MultipartBody.Part
+    ): Observable<DataWithMeta<String, User>>
 }

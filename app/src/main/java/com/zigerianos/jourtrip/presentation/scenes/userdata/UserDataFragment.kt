@@ -8,13 +8,13 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.NavHostFragment
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
-import com.zigerianos.jourtrip.R
 import com.zigerianos.jourtrip.data.constants.ImageType.CAMERA_TYPE
 import com.zigerianos.jourtrip.data.constants.ImageType.GALLERY_TYPE
 import com.zigerianos.jourtrip.data.constants.RegexValidators
@@ -26,7 +26,8 @@ import kotlinx.android.synthetic.main.fragment_user_data.*
 import kotlinx.android.synthetic.main.toolbar_elevated.view.*
 import org.jetbrains.anko.support.v4.toast
 import org.koin.android.ext.android.inject
-import java.io.IOException
+import com.zigerianos.jourtrip.R
+import android.content.pm.PackageManager
 
 
 class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDataPresenter>(),
@@ -50,32 +51,48 @@ class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDat
             GALLERY_TYPE -> {
                 data?.let { dataResponse ->
                     val contentURI = dataResponse.data
-                    // TODO: ENVIAR FOTO A LA API
-                    try {
-                        val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, contentURI)
-                        //val path = saveImage(bitmap)
-                        Toast.makeText(context, "Image Saved", Toast.LENGTH_SHORT).show()
-                        imageViewUser.setImageBitmap(bitmap)
-
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                        Toast.makeText(context, "Failed!", Toast.LENGTH_SHORT).show()
-                    }
+                    val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, contentURI)
+                    presenter.uploadImage(context!!, bitmap)
                 }
             }
 
             CAMERA_TYPE -> {
                 data?.extras?.let { extrasResponse ->
-
-                    // TODO: ENVIAR FOTO A LA API
-
                     val thumbnail = extrasResponse.get("data") as Bitmap
-                    imageViewUser.setImageBitmap(thumbnail)
-                    //saveImage(thumbnail)
-                    Toast.makeText(context, "Image Saved!", Toast.LENGTH_SHORT).show()
+                    presenter.uploadImage(context!!, thumbnail)
                 }
             }
         }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+
+
+        when (requestCode) {
+            CheckPermission.TAG_PERMISSION_READ_EXTERNAL_STORAGE -> {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    choosePhotoFromGallery()
+                } else {
+                    // permission denied
+                }
+                return
+            }
+
+            CheckPermission.TAG_PERMISSION_CAMERA -> {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    takePhotoFromCamera()
+                } else {
+                    // permission denied
+                }
+                return
+            }
+
+            else -> { }
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun setupToolbar() {
@@ -126,6 +143,8 @@ class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDat
             .load(user.photo)
             .placeholder(R.drawable.ic_profile_placeholder)
             .error(R.drawable.ic_profile_placeholder)
+            .memoryPolicy(MemoryPolicy.NO_CACHE)
+            .networkPolicy(NetworkPolicy.NO_CACHE)
             .into(imageViewUser)
     }
 
@@ -214,22 +233,33 @@ class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDat
 
     private fun showPictureDialog() {
         val pictureDialog = AlertDialog.Builder(context!!)
-        pictureDialog.setTitle("Select Action")
+        pictureDialog.setTitle(getString(R.string.select_action))
 
-        val pictureDialogItems = arrayOf("Select photo from gallery", "Capture photo from camera")
-        pictureDialog.setItems(pictureDialogItems) { dialog, which ->
+        val pictureDialogItems = arrayOf(getString(R.string.select_photo_from_gallery), getString(R.string.capture_photo_from_camera))
+        pictureDialog.setItems(pictureDialogItems) { _, which ->
             when (which) {
                 0 -> {
                     if (CheckPermission.checkPermission(activity!!, permission.READ_EXTERNAL_STORAGE))
                         choosePhotoFromGallery()
                     else
-                        CheckPermission.requestPermission(activity!!, CheckPermission.TAG_PERMISSION_CODE, permission.READ_EXTERNAL_STORAGE, CheckPermission.TAG_MESSAGE_PERMISSION_READ_EXTERNAL_STORAGE)
+                        CheckPermission.requestPermission(
+                            this,
+                            CheckPermission.TAG_PERMISSION_READ_EXTERNAL_STORAGE,
+                            permission.READ_EXTERNAL_STORAGE,
+                            CheckPermission.TAG_MESSAGE_PERMISSION_READ_EXTERNAL_STORAGE
+                        )
                 }
+
                 1 -> {
                     if (CheckPermission.checkPermission(activity!!, permission.CAMERA))
                         takePhotoFromCamera()
                     else
-                        CheckPermission.requestPermission(activity!!, CheckPermission.TAG_PERMISSION_CODE, permission.CAMERA, CheckPermission.TAG_MESSAGE_PERMISSION_CAMERA)
+                        CheckPermission.requestPermission(
+                            this,
+                            CheckPermission.TAG_PERMISSION_CAMERA,
+                            permission.CAMERA,
+                            CheckPermission.TAG_MESSAGE_PERMISSION_CAMERA
+                        )
                 }
             }
         }

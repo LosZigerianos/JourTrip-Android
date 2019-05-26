@@ -4,6 +4,7 @@ import com.zigerianos.jourtrip.auth.AuthManager;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
@@ -18,7 +19,7 @@ public class HttpDefaultHeadersInterceptor implements Interceptor {
     }
 
     @Override
-    public Response intercept(Chain chain) throws IOException {
+    public Response intercept(@NotNull Chain chain) throws IOException {
         Request request = chain.request();
 
         request = request.newBuilder()
@@ -27,6 +28,13 @@ public class HttpDefaultHeadersInterceptor implements Interceptor {
                 .header("x-access-token", mAuthManager.getCurrentAccessToken())
                 .header("User-Agent", mUserAgent)
                 .build();
+
+        /*if (chain.request().url().toString().contains("me/photo") && chain.request().method().contains("POST")) {
+            request = request.newBuilder()
+                    .removeHeader("Content-Type")
+                    .header("Content-Type", "multipart/form-data")
+                    .build();
+        }*/
 
         return chain.proceed(request);
     }

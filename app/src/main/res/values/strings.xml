@@ -35,5 +35,8 @@
     <string name="new_password">New password</string>
     <string name="logout">Logout</string>
     <string name="data_updated_correctly">Data updated correctly</string>
+    <string name="select_action">Select an action</string>
+    <string name="select_photo_from_gallery">Select photo from gallery</string>
+    <string name="capture_photo_from_camera">Capture photo from camera</string>
 
 </resources>

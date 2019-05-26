@@ -30,4 +30,7 @@
     <string name="new_password">Nueva contraseña</string>
     <string name="logout">Cerrar sesión</string>
     <string name="data_updated_correctly">Datos actualizados correctamente</string>
+    <string name="select_action">Seleccione una acción</string>
+    <string name="select_photo_from_gallery">Seleccionar de galería</string>
+    <string name="capture_photo_from_camera">Capturar foto con la cámara</string>
 </resources>

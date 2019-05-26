@@ -62,4 +62,11 @@ val useCasesModule = module {
         )
     }
 
+    factory {
+        PostUserPhotoUseCase(
+            AsyncObservableTransformer(),
+            get()
+        )
+    }
+
 }
