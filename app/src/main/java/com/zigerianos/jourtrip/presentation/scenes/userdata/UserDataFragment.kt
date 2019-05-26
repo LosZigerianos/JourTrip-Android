@@ -1,25 +1,36 @@
 package com.zigerianos.jourtrip.presentation.scenes.userdata
 
 
+import android.Manifest.*
+import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Editable
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.NavHostFragment
 import com.squareup.picasso.Picasso
 import com.zigerianos.jourtrip.R
+import com.zigerianos.jourtrip.data.constants.ImageType.CAMERA_TYPE
+import com.zigerianos.jourtrip.data.constants.ImageType.GALLERY_TYPE
 import com.zigerianos.jourtrip.data.constants.RegexValidators
 import com.zigerianos.jourtrip.data.entities.User
 import com.zigerianos.jourtrip.presentation.base.BaseFragment
+import com.zigerianos.jourtrip.utils.CheckPermission
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_user_data.*
 import kotlinx.android.synthetic.main.toolbar_elevated.view.*
 import org.jetbrains.anko.support.v4.toast
 import org.koin.android.ext.android.inject
+import java.io.IOException
 
 
-class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDataPresenter>(), IUserDataPresenter.IUserDataView  {
+class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDataPresenter>(),
+    IUserDataPresenter.IUserDataView {
 
     private val mainPresenter by inject<IUserDataPresenter>()
 
@@ -30,6 +41,41 @@ class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDat
         super.onCreate(savedInstanceState)
 
         setHasOptionsMenu(true)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            GALLERY_TYPE -> {
+                data?.let { dataResponse ->
+                    val contentURI = dataResponse.data
+                    // TODO: ENVIAR FOTO A LA API
+                    try {
+                        val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, contentURI)
+                        //val path = saveImage(bitmap)
+                        Toast.makeText(context, "Image Saved", Toast.LENGTH_SHORT).show()
+                        imageViewUser.setImageBitmap(bitmap)
+
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                        Toast.makeText(context, "Failed!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+
+            CAMERA_TYPE -> {
+                data?.extras?.let { extrasResponse ->
+
+                    // TODO: ENVIAR FOTO A LA API
+
+                    val thumbnail = extrasResponse.get("data") as Bitmap
+                    imageViewUser.setImageBitmap(thumbnail)
+                    //saveImage(thumbnail)
+                    Toast.makeText(context, "Image Saved!", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     override fun setupToolbar() {
@@ -65,6 +111,10 @@ class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDat
         }
 
         buttonLogout.setOnClickListener { presenter.logoutClicked() }
+
+        imageViewUser.setOnClickListener {
+            showPictureDialog()
+        }
     }
 
     override fun loadUser(user: User) {
@@ -101,7 +151,7 @@ class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDat
         NavHostFragment.findNavController(this).navigate(UserDataFragmentDirections.actionGoToInitialFragment())
     }
 
-    private fun checkPersonalDataFields() : Boolean {
+    private fun checkPersonalDataFields(): Boolean {
         var areFilledFields = true
 
         if (editTextFullname.text.toString().isEmpty()) {
@@ -138,7 +188,7 @@ class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDat
         return areFilledFields
     }
 
-    private fun checkPasswordFields() : Boolean {
+    private fun checkPasswordFields(): Boolean {
         var areFilledFields = true
 
         if (editTextOldPassword.text.toString().isEmpty()) {
@@ -160,6 +210,45 @@ class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDat
         }
 
         return areFilledFields
+    }
+
+    private fun showPictureDialog() {
+        val pictureDialog = AlertDialog.Builder(context!!)
+        pictureDialog.setTitle("Select Action")
+
+        val pictureDialogItems = arrayOf("Select photo from gallery", "Capture photo from camera")
+        pictureDialog.setItems(pictureDialogItems) { dialog, which ->
+            when (which) {
+                0 -> {
+                    if (CheckPermission.checkPermission(activity!!, permission.READ_EXTERNAL_STORAGE))
+                        choosePhotoFromGallery()
+                    else
+                        CheckPermission.requestPermission(activity!!, CheckPermission.TAG_PERMISSION_CODE, permission.READ_EXTERNAL_STORAGE, CheckPermission.TAG_MESSAGE_PERMISSION_READ_EXTERNAL_STORAGE)
+                }
+                1 -> {
+                    if (CheckPermission.checkPermission(activity!!, permission.CAMERA))
+                        takePhotoFromCamera()
+                    else
+                        CheckPermission.requestPermission(activity!!, CheckPermission.TAG_PERMISSION_CODE, permission.CAMERA, CheckPermission.TAG_MESSAGE_PERMISSION_CAMERA)
+                }
+            }
+        }
+
+        pictureDialog.show()
+    }
+
+    private fun choosePhotoFromGallery() {
+        val galleryIntent = Intent(
+            Intent.ACTION_PICK,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        )
+
+        startActivityForResult(galleryIntent, GALLERY_TYPE)
+    }
+
+    private fun takePhotoFromCamera() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(intent, CAMERA_TYPE)
     }
 
     override fun getLayoutResource(): Int = R.layout.fragment_user_data
