@@ -36,10 +36,14 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
     override fun setupViews() {
         // TODO: VERIFICAR TITULO FINAL
         toolbar.toolbarTitle.text = "Home"
+        toolbar.toolbarImage.visibility = View.VISIBLE
+        toolbar.toolbarImage.setOnClickListener {
+            recyclerViewDeadline.smoothScrollToPosition(0)
+        }
 
         activity?.bottomNavigationView?.visibility = View.VISIBLE
 
-        recyclerView()
+        setupRecyclerView()
     }
 
     override fun stateLoading() {
@@ -60,7 +64,7 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
         // TODO: IMPLEMENTAR
     }
 
-    private fun recyclerView() {
+    private fun setupRecyclerView() {
         recyclerViewDeadline.layoutManager = LinearLayoutManager(activity)
         recyclerViewDeadline.adapter = deadlineAdapter
 

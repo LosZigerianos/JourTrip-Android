@@ -3,7 +3,7 @@ package com.zigerianos.jourtrip.domain.usecases
 import com.zigerianos.jourtrip.data.ApiService
 import com.zigerianos.jourtrip.data.entities.Data
 import com.zigerianos.jourtrip.data.entities.User
-import com.zigerianos.jourtrip.data.entities.UserRequest
+import com.zigerianos.jourtrip.data.entities. UserRequest
 import com.zigerianos.jourtrip.domain.base.usecases.UseCaseWithParams
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer

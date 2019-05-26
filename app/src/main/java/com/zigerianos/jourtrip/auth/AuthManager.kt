@@ -26,6 +26,22 @@ data class AuthManager(
         saveUser()
     }
 
+    fun updateUser(user: User) {
+        mUser?.let {
+            mUser = it.copy(
+                id = user.id,
+                fullname = user.fullname,
+                username = user.username,
+                email = user.email,
+                creationDate = user.creationDate,
+                updatedAt = user.updatedAt,
+                /*following = user.following,
+                followers = user.followers,*/
+                photo = user.photo
+            )
+        }
+    }
+
     fun addToken(token: String) {
         mUser?.accessToken = token
         saveUser()

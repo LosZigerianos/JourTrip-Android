@@ -22,4 +22,15 @@
     <string name="following">Seguidos</string>
     <string name="followers">Seguidores</string>
     <string name="posts">Posts</string>
+    <string name="error_loading_data">Error al cargar los datos</string>
+    <string name="user_data">Datos del usuario</string>
+    <string name="update_data">Actualizar datos</string>
+    <string name="update_password">Actualizar contraseña</string>
+    <string name="current_password">Contraseña actual</string>
+    <string name="new_password">Nueva contraseña</string>
+    <string name="logout">Cerrar sesión</string>
+    <string name="data_updated_correctly">Datos actualizados correctamente</string>
+    <string name="select_action">Seleccione una acción</string>
+    <string name="select_photo_from_gallery">Seleccionar de galería</string>
+    <string name="capture_photo_from_camera">Capturar foto con la cámara</string>
 </resources>
