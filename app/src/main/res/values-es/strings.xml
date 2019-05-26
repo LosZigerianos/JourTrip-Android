@@ -33,4 +33,7 @@
     <string name="select_action">Seleccione una acción</string>
     <string name="select_photo_from_gallery">Seleccionar de galería</string>
     <string name="capture_photo_from_camera">Capturar foto con la cámara</string>
+    <string name="search_for_places">Buscar por lugar</string>
+    <string name="nearby">Cercanos</string>
+    <string name="search">Buscar</string>
 </resources>

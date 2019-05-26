@@ -38,5 +38,8 @@
     <string name="select_action">Select an action</string>
     <string name="select_photo_from_gallery">Select photo from gallery</string>
     <string name="capture_photo_from_camera">Capture photo from camera</string>
+    <string name="search_for_places">Search for places</string>
+    <string name="nearby">Nearby</string>
+    <string name="search">Search</string>
 
 </resources>
