@@ -14,10 +14,11 @@ class PostUserPhotoUseCase(
 ) : UseCaseWithParams<PostUserPhotoUseCase.Params, DataWithMeta<String, User>>(transformer) {
 
     override fun createObservable(params: Params): Observable<DataWithMeta<String, User>> {
-        return api.postUserPhotoUseCase(params.photoRequest).map { it }
+        return api.postUserPhotoUseCase(params.userId, params.photoRequest).map { it }
     }
 
     data class Params(
+        val userId: String,
         val photoRequest: MultipartBody.Part
     )
 }

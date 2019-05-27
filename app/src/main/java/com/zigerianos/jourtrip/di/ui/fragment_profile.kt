@@ -7,6 +7,7 @@ import org.koin.dsl.module.module
 val fragmentProfileModule = module {
     factory<IProfilePresenter> {
         ProfilePresenter(
+            get(),
             get()
         )
     }

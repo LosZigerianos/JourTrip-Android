@@ -70,6 +70,13 @@ val useCasesModule = module {
     }
 
     factory {
+        GetUserProfileUseCase(
+            AsyncObservableTransformer(),
+            get()
+        )
+    }
+
+    factory {
         GetLocationsNearUseCase(
             AsyncObservableTransformer(),
             get()

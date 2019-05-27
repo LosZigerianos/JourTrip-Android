@@ -2,7 +2,6 @@ package com.zigerianos.jourtrip.data.entities
 
 
 data class PasswordRequest(
-    val password: String,
-    val newPassword: String,
-    val passwordConfirmation: String
+    val oldPassword: String,
+    val newPassword: String
 )

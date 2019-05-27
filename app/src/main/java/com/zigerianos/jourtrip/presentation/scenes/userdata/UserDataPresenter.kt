@@ -25,13 +25,17 @@ class UserDataPresenter(
     private val postUserPhotoUseCase: PostUserPhotoUseCase
 ) : BasePresenter<IUserDataPresenter.IUserDataView>(), IUserDataPresenter {
 
+    private val userId: String = authManager.getUserId() ?: ""
+
     override fun update() {
         super.update()
 
         getMvpView()?.setupToolbar()
         getMvpView()?.setupViews()
 
-        val disposable = getUserMeUseCase.observable()
+        val params = GetUserMeUseCase.Params(userId)
+
+        val disposable = getUserMeUseCase.observable(params)
             .subscribe({ user ->
                 Timber.d("Patata => User: $user ")
                 getMvpView()?.loadUser(user)
@@ -57,9 +61,8 @@ class UserDataPresenter(
 
     override fun updatePasswordClicked(oldPassword: String, newPassword: String) {
         val passwordRequest = PasswordRequest(
-            password = oldPassword,
-            newPassword = newPassword,
-            passwordConfirmation = newPassword
+            oldPassword = oldPassword,
+            newPassword = newPassword
         )
 
         requestUpdatePassword(passwordRequest)
@@ -79,7 +82,7 @@ class UserDataPresenter(
     private fun requestUpdateUserData(userRequest: UserRequest) {
         getMvpView()?.stateLoading()
 
-        val params = PutUserDataUseCase.Params(userRequest)
+        val params = PutUserDataUseCase.Params(userId, userRequest)
 
         val disposable = putUserDataUseCase.observable(params)
             .subscribe({ success ->
@@ -104,7 +107,7 @@ class UserDataPresenter(
     private fun requestUpdatePassword(passwordRequest: PasswordRequest) {
         getMvpView()?.stateLoading()
 
-        val params = PutPasswordUseCase.Params(passwordRequest)
+        val params = PutPasswordUseCase.Params(userId, passwordRequest)
 
         val disposable = putPasswordUseCase.observable(params)
             .subscribe({ success ->
@@ -128,6 +131,7 @@ class UserDataPresenter(
 
     private fun requestUpdatePhoto(file: File) {
         val params = PostUserPhotoUseCase.Params(
+            userId,
             MultipartBody.Part.createFormData(
                 "image",
                 file.name,

@@ -1,11 +1,13 @@
 package com.zigerianos.jourtrip.presentation.scenes.profile
 
-import com.zigerianos.jourtrip.domain.usecases.GetUserMeUseCase
+import com.zigerianos.jourtrip.auth.AuthManager
+import com.zigerianos.jourtrip.domain.usecases.GetUserProfileUseCase
 import com.zigerianos.jourtrip.presentation.base.BasePresenter
 import timber.log.Timber
 
 class ProfilePresenter(
-    private val getUserMeUseCase: GetUserMeUseCase
+    private val authManager: AuthManager,
+    private val getUserProfileUseCase: GetUserProfileUseCase
 ) :  BasePresenter<IProfilePresenter.IProfileView>(), IProfilePresenter {
 
     override fun update() {
@@ -15,10 +17,12 @@ class ProfilePresenter(
         getMvpView()?.stateLoading()
         getMvpView()?.setupViews()
 
-        val disposable = getUserMeUseCase.observable()
-            .subscribe({ user ->
-                Timber.d("Patata => User: $user ")
-                getMvpView()?.loadUser(user)
+        val params = GetUserProfileUseCase.Params(authManager.getUserId() ?: "")
+
+        val disposable = getUserProfileUseCase.observable(params)
+            .subscribe({ profile ->
+                Timber.d("Patata => Profile: $profile ")
+                getMvpView()?.loadUser(profile)
                 getMvpView()?.stateData()
             }, {
                 Timber.e(it)

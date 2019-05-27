@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso
 
 import com.zigerianos.jourtrip.R
 import com.zigerianos.jourtrip.data.entities.Location
-import com.zigerianos.jourtrip.data.entities.User
+import com.zigerianos.jourtrip.data.entities.UserProfile
 import com.zigerianos.jourtrip.presentation.base.BaseFragment
 import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
 import com.zigerianos.jourtrip.presentation.scenes.home.DeadlineAdapter
@@ -95,25 +95,27 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
         errorLayout.visibility = View.VISIBLE
     }
 
-    override fun loadUser(user: User) {
+    override fun loadUser(profile: UserProfile) {
 
-        if (user.fullname.isNotEmpty())
-            textViewFullname.text = user.fullname
-        else
+        profile.fullname?.let { fullname ->
+            textViewFullname.text = profile.fullname
+        } ?: run {
             textViewFullname.visibility = View.GONE
+        }
 
-        if (user.username.isNotEmpty())
-            textViewUsername.text = "@${user.username}"
-        else
+        profile.username?.let { username ->
+            textViewUsername.text = "@${username}"
+        } ?: run {
             textViewUsername.visibility = View.GONE
+        }
 
-        // TODO: RECIBIR DATOS
-        textViewFollowingQuantity.text = "12"
-        textViewFollowersQuantity.text = "45"
-        textViewPostsQuantity.text = "32"
+
+        textViewFollowingQuantity.text = profile.following?.toString()
+        textViewFollowersQuantity.text = profile.followers?.toString()
+        textViewPostsQuantity.text = profile.comments?.count().toString()
 
         picasso
-            .load(user.photo)
+            .load(profile.photo)
             .placeholder(R.drawable.ic_profile_placeholder)
             .error(R.drawable.ic_profile_placeholder)
             .into(imageViewUser)

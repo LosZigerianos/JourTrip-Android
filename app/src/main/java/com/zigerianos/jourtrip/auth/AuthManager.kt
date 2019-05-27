@@ -12,12 +12,14 @@ data class AuthManager(
     override fun getCurrentAccessToken(): String = mUser?.accessToken ?: ""
 
     override fun isUserSignedIn() : Boolean {
-        mUser?.let { user ->
-            return user.accessToken.isNotEmpty()
+        mUser?.accessToken?.let { accessToken ->
+            return accessToken.isNotEmpty()
         }
 
         return false
     }
+
+    fun getUserId() : String? = mUser?.id
 
     fun getUser() : User? = mUser
 

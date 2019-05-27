@@ -12,8 +12,11 @@ class PutUserDataUseCase(
 ) : UseCaseWithParams<PutUserDataUseCase.Params, Boolean>(transformer) {
 
     override fun createObservable(params: Params): Observable<Boolean> {
-        return api.putUserDataUseCase(params.userRequest).map { it.success }
+        return api.putUserDataUseCase(params.userId, params.userRequest).map { it.success }
     }
 
-    data class Params(val userRequest: UserRequest)
+    data class Params(
+        val userId: String,
+        val userRequest: UserRequest
+    )
 }
