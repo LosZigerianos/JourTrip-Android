@@ -6,7 +6,7 @@ data class Comment(
     @SerializedName("_id")
     val id: String?,
     @SerializedName("user")
-    val userId: String?,
+    val userId: String?, // TODO: Tiene que recibir user
     val location: Location?,
     val description: String?,
     @SerializedName("creationDate")

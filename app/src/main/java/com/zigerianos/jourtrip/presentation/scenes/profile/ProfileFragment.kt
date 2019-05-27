@@ -13,11 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 
 import com.zigerianos.jourtrip.R
+import com.zigerianos.jourtrip.data.entities.Comment
 import com.zigerianos.jourtrip.data.entities.Location
 import com.zigerianos.jourtrip.data.entities.UserProfile
 import com.zigerianos.jourtrip.presentation.base.BaseFragment
 import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
 import com.zigerianos.jourtrip.presentation.scenes.home.DeadlineAdapter
+import com.zigerianos.jourtrip.utils.CommentAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.toolbar_elevated.view.*
@@ -30,11 +32,10 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
 
     private val mainPresenter by inject<IProfilePresenter>()
     private val picasso by inject<Picasso>()
+    private val commentAdapter by inject<CommentAdapter>()
 
     private var LastLoadPage: Int = 1
     private var totalPages: Int? = null
-
-    private var deadlineAdapter: DeadlineAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         presenter = mainPresenter
@@ -123,42 +124,14 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
 
         scrollViewProfile.setOnBottomReachedListener {
             toast("setOnBottomReachedListener")
-            loadMore()
+            // TODO: CARGAR MAS COMENTARIOS
+            //loadMore()
         }
 
+        profile.comments?.let { comments ->
+            commentAdapter.setItems(comments)
+        }
 
-        // TODO: REEMPLAZAR POR COMENTARIOS
-        val locations = listOf(
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", "")
-        )
-        deadlineAdapter!!.setItems(locations)
     }
 
     override fun navigateToUserData() {
@@ -168,26 +141,25 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
 
     private fun setupRecyclerView() {
         recyclerViewComments.layoutManager = LinearLayoutManager(activity)
-        deadlineAdapter = DeadlineAdapter(activity!!)
-        recyclerViewComments.adapter = deadlineAdapter
+        recyclerViewComments.adapter = commentAdapter
 
-        deadlineAdapter!!.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<Location> {
-            override fun onItemClick(item: Location, position: Int, view: View) {
+        commentAdapter.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<Comment> {
+            override fun onItemClick(item: Comment, position: Int, view: View) {
                 //presenter.locationSelected(position)
-                toast("Location selected $position")
+                toast("Comment selected $position")
             }
 
         })
     }
 
-    private fun loadMore() {
+    /*private fun loadMore() {
         val locations = listOf(
             Location("", "", "", "", "", "", ""),
             Location("", "", "", "", "", "", "")
         )
 
         deadlineAdapter!!.addItems(locations)
-    }
+    }*/
 
     override fun getLayoutResource(): Int = R.layout.fragment_profile
 }

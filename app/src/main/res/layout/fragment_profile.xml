@@ -186,8 +186,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="bottom"
-                app:constraint_referenced_ids="textViewFollowing, textViewFollowers, textViewPosts"
-                tools:layout_editor_absoluteY="407dp" />
+                app:constraint_referenced_ids="textViewFollowing, textViewFollowers, textViewPosts" />
 
             <View
                 android:id="@+id/separator"
@@ -219,6 +218,7 @@
                         android:clipToPadding="false"
                         android:nestedScrollingEnabled="true"
                         android:overScrollMode="never"
+                        android:paddingTop="16dp"
                         tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/row_location"
                         tools:orientation="vertical" />
