@@ -218,7 +218,11 @@
                         android:clipToPadding="false"
                         android:nestedScrollingEnabled="true"
                         android:overScrollMode="never"
+                        android:paddingStart="8dp"
+                        android:paddingLeft="8dp"
                         android:paddingTop="16dp"
+                        android:paddingEnd="8dp"
+                        android:paddingRight="8dp"
                         tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/row_location"
                         tools:orientation="vertical" />

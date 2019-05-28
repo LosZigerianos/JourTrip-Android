@@ -8,7 +8,7 @@ import org.koin.dsl.module.module
 
 val fragmentProfileModule = module {
 
-    factory { CommentAdapter( androidContext(), get() ) }
+    factory { CommentAdapter( androidContext(), get(), false ) }
 
     factory<IProfilePresenter> {
         ProfilePresenter(
