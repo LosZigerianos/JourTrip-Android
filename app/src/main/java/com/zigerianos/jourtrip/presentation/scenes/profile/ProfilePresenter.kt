@@ -21,7 +21,6 @@ class ProfilePresenter(
 
         val disposable = getUserProfileUseCase.observable(params)
             .subscribe({ profile ->
-                Timber.d("Patata => Profile: $profile ")
                 getMvpView()?.loadUser(profile)
                 getMvpView()?.stateData()
             }, {

@@ -14,11 +14,9 @@ import com.squareup.picasso.Picasso
 
 import com.zigerianos.jourtrip.R
 import com.zigerianos.jourtrip.data.entities.Comment
-import com.zigerianos.jourtrip.data.entities.Location
 import com.zigerianos.jourtrip.data.entities.UserProfile
 import com.zigerianos.jourtrip.presentation.base.BaseFragment
 import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
-import com.zigerianos.jourtrip.presentation.scenes.home.DeadlineAdapter
 import com.zigerianos.jourtrip.utils.CommentAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -131,7 +129,6 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
         profile.comments?.let { comments ->
             commentAdapter.setItems(comments)
         }
-
     }
 
     override fun navigateToUserData() {

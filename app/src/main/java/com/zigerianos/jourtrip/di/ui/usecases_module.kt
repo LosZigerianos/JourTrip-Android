@@ -35,6 +35,13 @@ val useCasesModule = module {
     }
 
     factory {
+        GetLocationByNameUseCase(
+            AsyncObservableTransformer(),
+            get()
+        )
+    }
+
+    factory {
         GetLocationsByCityAndPlaceUseCase(
             AsyncObservableTransformer(),
             get()

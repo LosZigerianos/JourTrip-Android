@@ -66,8 +66,6 @@ class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDat
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-
-
         when (requestCode) {
             CheckPermission.TAG_PERMISSION_READ_EXTERNAL_STORAGE -> {
                 // If request is cancelled, the result arrays are empty.

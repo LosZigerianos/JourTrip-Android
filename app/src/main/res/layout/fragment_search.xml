@@ -82,10 +82,10 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:focusableInTouchMode="true"
+            android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
-            android:layout_height="wrap_content">
+            android:focusableInTouchMode="true">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutSearching"
@@ -170,6 +170,7 @@
                         android:clipToPadding="false"
                         android:nestedScrollingEnabled="true"
                         android:overScrollMode="never"
+                        android:paddingTop="8dp"
                         tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/row_location"
                         tools:orientation="vertical" />

@@ -29,6 +29,11 @@ interface ApiService {
         @Path("city") city: String
     ): Observable<Data<List<Location>>>
 
+    @GET("locations/place/{place}")
+    fun getLocationsByName(
+        @Path("place") place: String
+    ): Observable<Data<List<Location>>>
+
     @GET("locations/{city}/place/{place}")
     fun getLocationsByCityAndPlace(
         @Path("city") city: String,
