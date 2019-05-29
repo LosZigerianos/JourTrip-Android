@@ -7,9 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zigerianos.jourtrip.R
+import com.zigerianos.jourtrip.data.entities.Comment
 import com.zigerianos.jourtrip.data.entities.Location
+import com.zigerianos.jourtrip.di.ModulesNames
 import com.zigerianos.jourtrip.presentation.base.BaseFragment
 import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
+import com.zigerianos.jourtrip.utils.CommentAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.toolbar_elevated.view.*
@@ -20,8 +23,7 @@ import org.koin.android.ext.android.inject
 class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), IHomePresenter.IHomeView {
 
     private val mainPresenter by inject<IHomePresenter>()
-
-    private val deadlineAdapter by inject<DeadlineAdapter>()
+    private val timelineAdapter by inject<CommentAdapter>(name = ModulesNames.ADAPTER_TIMELINE)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         presenter = mainPresenter
@@ -37,7 +39,7 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
         toolbar.toolbarTitle.text = getString(R.string.home)
         toolbar.toolbarImage.visibility = View.VISIBLE
         toolbar.toolbarImage.setOnClickListener {
-            recyclerViewDeadline.smoothScrollToPosition(0)
+            recyclerViewTimeline.smoothScrollToPosition(0)
         }
 
         activity?.bottomNavigationView?.visibility = View.VISIBLE
@@ -46,31 +48,43 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
     }
 
     override fun stateLoading() {
-        // TODO: IMPLEMENTAR
+        errorLayout.visibility = View.GONE
+        recyclerViewTimeline.visibility = View.GONE
+        progressBar.visibility = View.VISIBLE
     }
 
     override fun stateData() {
-        // TODO: IMPLEMENTAR
-
-        val locations = listOf<Location>(
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", "")
-        )
-        deadlineAdapter.setItems(locations)
+        errorLayout.visibility = View.GONE
+        recyclerViewTimeline.visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
     }
 
     override fun stateError() {
-        // TODO: IMPLEMENTAR
+        recyclerViewTimeline.visibility = View.GONE
+        progressBar.visibility = View.GONE
+        errorLayout.visibility = View.VISIBLE
+    }
+
+    override fun loadComments(comments: List<Comment>) {
+        val location =
+            Location("", "", "", "", "", "", "")
+
+        val dummy = listOf<Comment>(
+            Comment("", "", location, "", ""),
+            Comment("", "", location, "", "")
+        )
+
+        timelineAdapter.setItems(dummy)
     }
 
     private fun setupRecyclerView() {
-        recyclerViewDeadline.layoutManager = LinearLayoutManager(activity)
-        recyclerViewDeadline.adapter = deadlineAdapter
+        recyclerViewTimeline.layoutManager = LinearLayoutManager(activity)
+        recyclerViewTimeline.adapter = timelineAdapter
 
-        deadlineAdapter.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<Location> {
-            override fun onItemClick(item: Location, position: Int, view: View) {
+        timelineAdapter.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<Comment> {
+            override fun onItemClick(item: Comment, position: Int, view: View) {
                 //presenter.locationSelected(position)
-                toast("Location selected")
+                toast("Comment selected $position")
             }
 
         })

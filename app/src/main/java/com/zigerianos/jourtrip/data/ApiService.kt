@@ -80,5 +80,5 @@ interface ApiService {
     @GET("comments/timeline")
     fun getTimeLineUseCase(
 
-    ): Observable<Data<List<Location>>>
+    ): Observable<Data<List<Comment>>>
 }

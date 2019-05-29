@@ -16,4 +16,7 @@ object ModulesNames {
     const val OKHTTP_PICASSO = "okhttp_picasso"
     const val CACHE_DEFAULT = "cache_default"
     const val CACHE_PICASSO = "cache_picasso"
+
+    const val ADAPTER_TIMELINE = "adapter_timeline"
+    const val ADAPTER_PROFILE = "adapter_profile"
 }

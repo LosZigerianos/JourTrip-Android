@@ -1,8 +1,8 @@
 package com.zigerianos.jourtrip.presentation.scenes.home
 
 import com.google.gson.Gson
+import com.zigerianos.jourtrip.data.entities.Comment
 import com.zigerianos.jourtrip.data.entities.ErrorResponse
-import com.zigerianos.jourtrip.data.entities.Location
 import com.zigerianos.jourtrip.domain.ServiceError
 import com.zigerianos.jourtrip.domain.usecases.GetTimeLineUseCase
 import com.zigerianos.jourtrip.presentation.base.BasePresenter
@@ -14,7 +14,7 @@ class HomePresenter(
     private val gson: Gson
 ) : BasePresenter<IHomePresenter.IHomeView>(), IHomePresenter {
 
-    private var mLocationList: List<Location> = emptyList()
+    private var mCommentList: List<Comment> = emptyList()
 
     override fun update() {
         super.update()
@@ -28,15 +28,15 @@ class HomePresenter(
 
     private fun requestTimeLine() {
         val disposable = getTimeLineUseCase.observable()
-            .subscribe({ locationList ->
+            .subscribe({ commentsList ->
 
-                if (locationList.isEmpty()) {
+                if (commentsList.isEmpty()) {
                     //TODO: IMPLEMENTAR LISTA VACIA
                     return@subscribe
                 }
 
-                mLocationList = locationList
-
+                mCommentList = commentsList
+                getMvpView()?.loadComments(mCommentList)
                 getMvpView()?.stateData()
 
             }, {

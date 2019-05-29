@@ -15,6 +15,7 @@ import com.squareup.picasso.Picasso
 import com.zigerianos.jourtrip.R
 import com.zigerianos.jourtrip.data.entities.Comment
 import com.zigerianos.jourtrip.data.entities.UserProfile
+import com.zigerianos.jourtrip.di.ModulesNames
 import com.zigerianos.jourtrip.presentation.base.BaseFragment
 import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
 import com.zigerianos.jourtrip.utils.CommentAdapter
@@ -30,7 +31,7 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
 
     private val mainPresenter by inject<IProfilePresenter>()
     private val picasso by inject<Picasso>()
-    private val commentAdapter by inject<CommentAdapter>()
+    private val commentAdapter by inject<CommentAdapter>(name = ModulesNames.ADAPTER_PROFILE)
 
     private var LastLoadPage: Int = 1
     private var totalPages: Int? = null

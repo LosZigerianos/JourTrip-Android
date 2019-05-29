@@ -1,5 +1,6 @@
 package com.zigerianos.jourtrip.presentation.scenes.home
 
+import com.zigerianos.jourtrip.data.entities.Comment
 import com.zigerianos.jourtrip.presentation.base.IPresenter
 
 interface IHomePresenter : IPresenter<IHomePresenter.IHomeView> {
@@ -12,5 +13,7 @@ interface IHomePresenter : IPresenter<IHomePresenter.IHomeView> {
         fun stateLoading()
         fun stateData()
         fun stateError()
+
+        fun loadComments(comments: List<Comment>)
     }
 }
