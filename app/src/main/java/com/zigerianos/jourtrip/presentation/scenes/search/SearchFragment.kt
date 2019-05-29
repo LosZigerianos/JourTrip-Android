@@ -82,8 +82,7 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
     }
 
     override fun setupViews() {
-        // TODO: VERIFICAR TITULO FINAL
-        toolbar.toolbarTitle.text = "Searching"
+        toolbar.toolbarTitle.text = getString(R.string.search)
         toolbar.toolbarImage.visibility = View.VISIBLE
         toolbar.toolbarImage.setOnClickListener {
             scrollViewSearching.fullScroll(ScrollView.FOCUS_UP)

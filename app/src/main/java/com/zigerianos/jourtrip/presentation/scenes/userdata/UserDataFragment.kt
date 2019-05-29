@@ -101,8 +101,7 @@ class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDat
     }
 
     override fun setupViews() {
-        // TODO: VERIFICAR TITULO FINAL
-        toolbar.toolbarTitle.text = "User data"
+        toolbar.toolbarTitle.text = getString(R.string.user_data)
 
         activity?.bottomNavigationView?.visibility = View.GONE
 

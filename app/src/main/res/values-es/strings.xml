@@ -36,4 +36,6 @@
     <string name="search_for_places">Buscar por lugar</string>
     <string name="nearby">Cercanos</string>
     <string name="search">Buscar</string>
+    <string name="home">Home</string>
+    <string name="profile">Perfil</string>
 </resources>

@@ -41,5 +41,7 @@
     <string name="search_for_places">Search for places</string>
     <string name="nearby">Nearby</string>
     <string name="search">Search</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
 
 </resources>

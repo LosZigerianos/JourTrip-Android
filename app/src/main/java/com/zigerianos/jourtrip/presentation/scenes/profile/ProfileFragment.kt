@@ -63,8 +63,7 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
     }
 
     override fun setupViews() {
-        // TODO: VERIFICAR TITULO FINAL
-        toolbar.toolbarTitle.text = "Profile"
+        toolbar.toolbarTitle.text = getString(R.string.profile)
         toolbar.toolbarImage.visibility = View.VISIBLE
         toolbar.toolbarImage.setOnClickListener {
             scrollViewProfile.fullScroll(ScrollView.FOCUS_UP)
@@ -72,7 +71,6 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
 
         activity?.bottomNavigationView?.visibility = View.VISIBLE
 
-        // TODO: IMPLEMENTAR
         setupRecyclerView()
     }
 
