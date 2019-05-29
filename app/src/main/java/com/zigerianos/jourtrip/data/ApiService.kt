@@ -75,4 +75,10 @@ interface ApiService {
     fun getUserProfileUseCase(
         @Path("userId") userId: String
     ): Observable<Data<UserProfile>>
+
+    // Comments
+    @GET("comments/timeline")
+    fun getTimeLineUseCase(
+
+    ): Observable<Data<List<Location>>>
 }

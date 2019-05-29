@@ -3,6 +3,7 @@ package com.zigerianos.jourtrip.domain
 enum class ServiceError(val error: String) {
     TOKEN_EXPIRED("jwt expired"),
     UNAUTHORIZED("invalid signature"),
+    NOT_FOUND("Not Found"), // No encuentra en Base de datos
     UNKNOWN("");
 
     companion object {

@@ -90,4 +90,11 @@ val useCasesModule = module {
         )
     }
 
+    factory {
+        GetTimeLineUseCase(
+            AsyncObservableTransformer(),
+            get()
+        )
+    }
+
 }
