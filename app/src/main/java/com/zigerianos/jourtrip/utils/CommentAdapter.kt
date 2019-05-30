@@ -16,17 +16,58 @@ class CommentAdapter(
     context: Context,
     private val picasso: Picasso,
     private val isShownUser: Boolean = true
-) : ItemClickAdapter<Comment, CommentAdapter.CommentViewHolder>(context) {
+) : ItemClickAdapter<Comment, BaseAdapter.BaseViewHolder>(context) {
 
-    override fun onCreateViewHolder(recyclerView: ViewGroup, viewType: Int): CommentViewHolder {
-        val view = LayoutInflater.from(recyclerView.context)
-            .inflate(R.layout.row_comment, recyclerView, false)
+    private val TYPE_ITEM = 1
+    private val TYPE_LOADER = 2
+    private var mLoaderVisible = false
 
-        return CommentViewHolder(view)
+    protected fun isLoaderVisible(): Boolean {
+        return mLoaderVisible
     }
 
-    override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
-        holder.bind(getItem(position))
+    fun setLoaderVisible(loaderVisible: Boolean) {
+        if (loaderVisible != mLoaderVisible) {
+            mLoaderVisible = loaderVisible
+            if (mLoaderVisible) {
+                notifyItemInserted(itemCount)
+            } else {
+                notifyItemRemoved(itemCount)
+            }
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (mLoaderVisible && getItems().count() == position) {
+            TYPE_LOADER
+        } else TYPE_ITEM
+    }
+
+    override fun getItemCount(): Int {
+        return super.getItemCount() + if (mLoaderVisible) 1 else 0
+    }
+
+    override fun onCreateViewHolder(recyclerView: ViewGroup, viewType: Int): BaseViewHolder {
+        return when (viewType) {
+            TYPE_ITEM -> {
+                val view = LayoutInflater.from(recyclerView.context)
+                    .inflate(R.layout.row_comment, recyclerView, false)
+
+                return CommentViewHolder(view)
+            }
+            else -> {
+                val view = LayoutInflater.from(recyclerView.context)
+                    .inflate(R.layout.row_loader, recyclerView, false)
+
+                BaseViewHolder(view)
+            }
+        }
+    }
+
+    override fun onBindViewHolder(holder: BaseAdapter.BaseViewHolder, position: Int) {
+        if (getItemViewType(position) == TYPE_ITEM) {
+            (holder as CommentViewHolder).bind(getItem(position))
+        }
     }
 
     inner class CommentViewHolder(view: View) : BaseAdapter.BaseViewHolder(view) {

@@ -12,16 +12,58 @@ import kotlinx.android.synthetic.main.row_location.view.*
 
 class DeadlineAdapter(
     context: Context
-): ItemClickAdapter<Location, DeadlineAdapter.DeadlineViewHolder>(context) {
-    override fun onCreateViewHolder(recyclerView: ViewGroup, viewType: Int): DeadlineViewHolder {
-        val view = LayoutInflater.from(recyclerView.context)
-            .inflate(R.layout.row_location, recyclerView, false)
+): ItemClickAdapter<Location, BaseAdapter.BaseViewHolder>(context) {
 
-        return DeadlineViewHolder(view)
+    private val TYPE_ITEM = 1
+    private val TYPE_LOADER = 2
+    private var mLoaderVisible = false
+
+    protected fun isLoaderVisible(): Boolean {
+        return mLoaderVisible
     }
 
-    override fun onBindViewHolder(holder: DeadlineViewHolder, position: Int) {
-        holder.bind(getItem(position))
+    fun setLoaderVisible(loaderVisible: Boolean) {
+        if (loaderVisible != mLoaderVisible) {
+            mLoaderVisible = loaderVisible
+            if (mLoaderVisible) {
+                notifyItemInserted(itemCount)
+            } else {
+                notifyItemRemoved(itemCount)
+            }
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (mLoaderVisible && getItems().count() == position) {
+            TYPE_LOADER
+        } else TYPE_ITEM
+    }
+
+    override fun getItemCount(): Int {
+        return super.getItemCount() + if (mLoaderVisible) 1 else 0
+    }
+
+    override fun onCreateViewHolder(recyclerView: ViewGroup, viewType: Int): BaseViewHolder {
+        return when (viewType) {
+            TYPE_ITEM -> {
+                val view = LayoutInflater.from(recyclerView.context)
+                    .inflate(R.layout.row_location, recyclerView, false)
+
+                DeadlineViewHolder(view)
+            }
+            else -> {
+                val view = LayoutInflater.from(recyclerView.context)
+                    .inflate(R.layout.row_loader, recyclerView, false)
+
+                BaseViewHolder(view)
+            }
+        }
+    }
+
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+        if (getItemViewType(position) == TYPE_ITEM) {
+            (holder as DeadlineViewHolder).bind(getItem(position))
+        }
     }
 
 

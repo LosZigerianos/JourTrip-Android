@@ -5,7 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import java.util.ArrayList
 
-abstract class BaseAdapter<T, U : BaseAdapter.BaseViewHolder>(val context: Context) : RecyclerView.Adapter<U>() {
+open abstract class BaseAdapter<T, U : BaseAdapter.BaseViewHolder>(val context: Context) : RecyclerView.Adapter<U>() {
 
     private var items: MutableList<T> = ArrayList()
 
@@ -55,5 +55,5 @@ abstract class BaseAdapter<T, U : BaseAdapter.BaseViewHolder>(val context: Conte
         return items[position]
     }
 
-    abstract class BaseViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView)
+    open class BaseViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView)
 }

@@ -14,6 +14,7 @@ import com.zigerianos.jourtrip.di.ModulesNames
 import com.zigerianos.jourtrip.presentation.base.BaseFragment
 import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
 import com.zigerianos.jourtrip.utils.CommentAdapter
+import com.zigerianos.jourtrip.utils.EndlessScrollListener
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.toolbar_elevated.view.*
@@ -25,6 +26,8 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
 
     private val mainPresenter by inject<IHomePresenter>()
     private val timelineAdapter by inject<CommentAdapter>(name = ModulesNames.ADAPTER_TIMELINE)
+
+    private var mEndlessScrollListener = EndlessScrollListener {toast("Hola hola")}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         presenter = mainPresenter
@@ -83,6 +86,11 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
     private fun setupRecyclerView() {
         recyclerViewTimeline.layoutManager = LinearLayoutManager(activity)
         recyclerViewTimeline.adapter = timelineAdapter
+
+        mEndlessScrollListener.shouldListenForMorePages(true)
+        recyclerViewTimeline.addOnScrollListener(mEndlessScrollListener)
+
+        timelineAdapter.setLoaderVisible(true)
 
         timelineAdapter.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<Comment> {
             override fun onItemClick(item: Comment, position: Int, view: View) {
