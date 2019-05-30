@@ -14,6 +14,7 @@ val fragmentProfileModule = module {
     factory<IProfilePresenter> {
         ProfilePresenter(
             get(),
+            get(),
             get()
         )
     }

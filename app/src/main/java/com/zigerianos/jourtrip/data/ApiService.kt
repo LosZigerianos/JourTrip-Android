@@ -26,24 +26,32 @@ interface ApiService {
     // LOCATIONS
     @GET("locations/city/{city}")
     fun getLocationsByCity(
-        @Path("city") city: String
+        @Path("city") city: String,
+        @Query("skip") skip: String?,
+        @Query("limit") limit: String?
     ): Observable<Data<List<Location>>>
 
     @GET("locations/place/{place}")
     fun getLocationsByName(
-        @Path("place") place: String
+        @Path("place") place: String,
+        @Query("skip") skip: String?,
+        @Query("limit") limit: String?
     ): Observable<Data<List<Location>>>
 
     @GET("locations/{city}/place/{place}")
     fun getLocationsByCityAndPlace(
         @Path("city") city: String,
-        @Path("place") place: String
+        @Path("place") place: String,
+        @Query("skip") skip: String?,
+        @Query("limit") limit: String?
     ): Observable<Data<List<Location>>>
 
     @GET("locations/near")
     fun getLocationsNear(
         @Query("latitude") latitude: String,
-        @Query("longitude") longitude: String
+        @Query("longitude") longitude: String,
+        @Query("skip") skip: String?,
+        @Query("limit") limit: String?
     ): Observable<Data<List<Location>>>
 
     // USER
@@ -73,12 +81,23 @@ interface ApiService {
 
     @GET("users/profile/{userId}")
     fun getUserProfileUseCase(
-        @Path("userId") userId: String
+        @Path("userId") userId: String,
+        @Query("skip") skip: String?,
+        @Query("limit") limit: String?
     ): Observable<Data<UserProfile>>
 
     // Comments
     @GET("comments/timeline")
     fun getTimeLineUseCase(
+        @Query("skip") skip: String?,
+        @Query("limit") limit: String?
+    ): Observable<Data<List<Comment>>>
 
+    // Comments
+    @GET("comments/user/{userId}")
+    fun getCommentsByUserUseCase(
+        @Path("userId") userId: String,
+        @Query("skip") skip: String?,
+        @Query("limit") limit: String?
     ): Observable<Data<List<Comment>>>
 }

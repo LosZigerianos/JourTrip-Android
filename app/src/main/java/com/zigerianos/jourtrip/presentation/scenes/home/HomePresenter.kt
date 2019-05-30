@@ -27,7 +27,7 @@ class HomePresenter(
     }
 
     private fun requestTimeLine() {
-        val disposable = getTimeLineUseCase.observable()
+        val disposable = getTimeLineUseCase.observable(GetTimeLineUseCase.Params())
             .subscribe({ commentsList ->
 
                 if (commentsList.isEmpty()) {

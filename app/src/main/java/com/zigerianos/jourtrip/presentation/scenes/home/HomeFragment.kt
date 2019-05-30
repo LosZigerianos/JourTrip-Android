@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.zigerianos.jourtrip.R
 import com.zigerianos.jourtrip.data.entities.Comment
 import com.zigerianos.jourtrip.data.entities.Location
+import com.zigerianos.jourtrip.data.entities.User
 import com.zigerianos.jourtrip.di.ModulesNames
 import com.zigerianos.jourtrip.presentation.base.BaseFragment
 import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
@@ -69,12 +70,14 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
         val location =
             Location("", "", "", "", "", "", "")
 
+        val user = User("", "", "", "", "", "", "", "", "")
+
         val dummy = listOf<Comment>(
-            Comment("", "", location, "", ""),
-            Comment("", "", location, "", "")
+            Comment("", user, location, "", ""),
+            Comment("", user, location, "", "")
         )
 
-        timelineAdapter.setItems(dummy)
+        timelineAdapter.setItems(comments)
     }
 
     private fun setupRecyclerView() {

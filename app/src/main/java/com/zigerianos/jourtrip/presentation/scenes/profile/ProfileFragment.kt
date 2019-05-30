@@ -107,9 +107,9 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
             textViewUsername.visibility = View.GONE
         }
 
-
         textViewFollowingQuantity.text = profile.following?.toString()
         textViewFollowersQuantity.text = profile.followers?.toString()
+        // todo: que venga como propiedad el paginado un entero
         textViewPostsQuantity.text = profile.comments?.count().toString()
 
         picasso

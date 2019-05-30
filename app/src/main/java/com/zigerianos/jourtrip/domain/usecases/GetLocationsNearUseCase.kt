@@ -12,11 +12,19 @@ class GetLocationsNearUseCase(
 ) : UseCaseWithParams<GetLocationsNearUseCase.Params, List<Location>>(transformer) {
 
     override fun createObservable(params: Params): Observable<List<Location>> {
-        return api.getLocationsNear(params.latitude, params.longitude).map { it.data }
+        return api
+            .getLocationsNear(
+                params.latitude,
+                params.longitude,
+                params.skip.toString(),
+                params.limit.toString()
+            ).map { it.data }
     }
 
     data class Params(
         val latitude: String,
-        val longitude: String
+        val longitude: String,
+        val skip: Int? = null,
+        val limit: Int? = null
     )
 }

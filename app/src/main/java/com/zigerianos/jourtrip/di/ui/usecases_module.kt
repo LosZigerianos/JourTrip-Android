@@ -97,4 +97,10 @@ val useCasesModule = module {
         )
     }
 
+    factory {
+        GetCommentsByUserUseCase(
+            AsyncObservableTransformer(),
+            get()
+        )
+    }
 }

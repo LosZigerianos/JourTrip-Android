@@ -12,8 +12,17 @@ class GetLocationByNameUseCase(
 ) : UseCaseWithParams<GetLocationByNameUseCase.Params, List<Location>>(transformer) {
 
     override fun createObservable(params: Params): Observable<List<Location>> {
-        return api.getLocationsByName(params.place).map { it.data }
+        return api
+            .getLocationsByName(
+                params.place,
+                params.skip.toString(),
+                params.limit.toString()
+            ).map { it.data }
     }
 
-    data class Params(val place: String)
+    data class Params(
+        val place: String,
+        val skip: Int? = null,
+        val limit: Int? = null
+    )
 }

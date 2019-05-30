@@ -40,7 +40,7 @@ class LoginFragment : BaseFragment<ILoginPresenter.ILoginView, ILoginPresenter>(
         buttonLogin.setOnClickListener {
             if (checkLoginFields()) {
                 presenter.loginClicked(
-                    editTextEmail.text.toString(),
+                    editTextEmail.text.toString().toLowerCase(),
                     editTextPassword.text.toString()
                 )
             }
@@ -56,7 +56,7 @@ class LoginFragment : BaseFragment<ILoginPresenter.ILoginView, ILoginPresenter>(
 
         buttonSendRecoveryEmail.setOnClickListener {
             if (checkRecoverPasswordFields()) {
-                presenter.recoveryPasswordClicked(editTextSendEmail.text.toString())
+                presenter.recoveryPasswordClicked(editTextSendEmail.text.toString().toLowerCase())
             }
         }
     }
