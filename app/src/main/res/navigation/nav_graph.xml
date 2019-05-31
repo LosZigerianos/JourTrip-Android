@@ -57,7 +57,7 @@
         android:id="@+id/navigationHome"
         android:name="com.zigerianos.jourtrip.presentation.scenes.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/actionGoToLocationDetailFragment"
             app:destination="@id/locationDetailFragment"
@@ -65,14 +65,23 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/navigationHome"/>
+            app:popUpTo="@+id/navigationHome" />
     </fragment>
 
     <fragment
         android:id="@+id/navigationSearch"
         android:name="com.zigerianos.jourtrip.presentation.scenes.search.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/actionGoToLocationDetailFragment"
+            app:destination="@id/locationDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/navigationSearch" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigationProfile"
@@ -93,7 +102,7 @@
         android:id="@+id/userDataFragment"
         android:name="com.zigerianos.jourtrip.presentation.scenes.userdata.UserDataFragment"
         android:label="fragment_user_data"
-        tools:layout="@layout/fragment_user_data" >
+        tools:layout="@layout/fragment_user_data">
         <action
             android:id="@+id/actionGoToInitialFragment"
             app:destination="@id/initialFragment"
@@ -109,7 +118,7 @@
         android:id="@+id/locationDetailFragment"
         android:name="com.zigerianos.jourtrip.presentation.scenes.locationdetail.LocationDetailFragment"
         android:label="fragment_location_detail"
-        tools:layout="@layout/fragment_location_detail" >
+        tools:layout="@layout/fragment_location_detail">
         <argument
             android:name="location"
             app:argType="com.zigerianos.jourtrip.data.entities.Location" />

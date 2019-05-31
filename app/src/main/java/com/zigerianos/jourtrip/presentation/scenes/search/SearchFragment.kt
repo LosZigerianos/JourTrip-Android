@@ -16,6 +16,7 @@ import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -148,14 +149,18 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
         nearbyAdapter.setItems(locations)
     }
 
+    override fun navigateToLocationDetail(location: Location) {
+        val action = SearchFragmentDirections.actionGoToLocationDetailFragment(location)
+        NavHostFragment.findNavController(this).navigate(action)
+    }
+
     private fun setupRecyclerView() {
         recyclerViewSearching.layoutManager = GridLayoutManager(activity, 2)
         recyclerViewSearching.adapter = nearbyAdapter
 
         nearbyAdapter.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<Location> {
             override fun onItemClick(item: Location, position: Int, view: View) {
-                //presenter.locationSelected(position)
-                toast("Location selected $position")
+                presenter.locationClicked(item)
             }
         })
     }

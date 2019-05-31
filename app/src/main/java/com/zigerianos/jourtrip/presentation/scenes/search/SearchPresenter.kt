@@ -1,5 +1,6 @@
 package com.zigerianos.jourtrip.presentation.scenes.search
 
+import com.zigerianos.jourtrip.data.entities.Location
 import com.zigerianos.jourtrip.domain.usecases.GetLocationByNameUseCase
 import com.zigerianos.jourtrip.domain.usecases.GetLocationsNearUseCase
 import com.zigerianos.jourtrip.presentation.base.BasePresenter
@@ -26,6 +27,10 @@ class SearchPresenter(
         //getMvpView()?.stateLoading()
 
         requestLocationByName(name)
+    }
+
+    override fun locationClicked(location: Location) {
+        getMvpView()?.navigateToLocationDetail(location)
     }
 
     private fun requestLocationByCoordinates(latitude: String, longitude: String) {

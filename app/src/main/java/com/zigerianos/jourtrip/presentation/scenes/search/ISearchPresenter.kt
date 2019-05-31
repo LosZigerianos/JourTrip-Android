@@ -8,6 +8,8 @@ interface ISearchPresenter: IPresenter<ISearchPresenter.ISearchView> {
     fun localizedUser(latitude: String, longitude: String)
     fun searchLocationByNameClicked(name: String)
 
+    fun locationClicked(location: Location)
+
     interface ISearchView: IPresenter.IView {
         fun setupToolbar()
         fun setupViews()
@@ -17,7 +19,6 @@ interface ISearchPresenter: IPresenter<ISearchPresenter.ISearchView> {
 
         fun loadLocations(locations: List<Location>)
 
-        // TODO
-        //fun navigateToLocation()
+        fun navigateToLocationDetail(location: Location)
     }
 }

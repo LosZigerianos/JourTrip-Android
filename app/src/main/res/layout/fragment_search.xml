@@ -4,6 +4,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context="com.zigerianos.jourtrip.presentation.scenes.search.SearchFragment">
 
     <include
@@ -87,18 +88,29 @@
             android:focusable="true"
             android:focusableInTouchMode="true">
 
+            <ImageView
+                android:id="@+id/imageViewSearching"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
+                android:tint="@android:color/darker_gray"
+                app:layout_constraintBottom_toBottomOf="@+id/textInputLayoutSearching"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/ic_search" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutSearching"
-                style="@style/Widget.App.TextInputLayout"
+                style="@style/Widget.App.TextInputLayout.FilledBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:focusableInTouchMode="true"
                 android:hint="@string/search_for_places"
+                app:boxBackgroundColor="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageViewSearching"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -131,24 +143,15 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/nearby"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+                android:textColor="@android:color/black"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/buttonSearching" />
-
-            <View
-                android:id="@+id/separator"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="16dp"
-                android:background="@android:color/darker_gray"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewNearby" />
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
@@ -156,7 +159,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/separator">
+                app:layout_constraintTop_toBottomOf="@+id/textViewNearby">
 
                 <LinearLayout
                     android:layout_width="match_parent"
