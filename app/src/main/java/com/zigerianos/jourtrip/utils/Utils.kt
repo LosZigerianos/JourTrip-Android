@@ -8,4 +8,9 @@ object Utils {
         val rnd = Random()
         return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
     }
+
+    fun getRandomDarkColor(): Int {
+        val rnd = Random()
+        return Color.argb(255, rnd.nextInt(200), rnd.nextInt(200), rnd.nextInt(200))
+    }
 }

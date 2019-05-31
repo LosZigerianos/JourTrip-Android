@@ -1,11 +1,12 @@
 package com.zigerianos.jourtrip.presentation.scenes.home
 
 import com.zigerianos.jourtrip.data.entities.Comment
+import com.zigerianos.jourtrip.data.entities.Location
 import com.zigerianos.jourtrip.presentation.base.IPresenter
 
 interface IHomePresenter : IPresenter<IHomePresenter.IHomeView> {
 
-
+    fun locationClicked(location: Location)
 
     interface IHomeView: IPresenter.IView {
         fun setupToolbar()
@@ -15,5 +16,7 @@ interface IHomePresenter : IPresenter<IHomePresenter.IHomeView> {
         fun stateError()
 
         fun loadComments(comments: List<Comment>)
+
+        fun navigateToLocationDetail(location: Location)
     }
 }

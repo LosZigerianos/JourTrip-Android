@@ -100,4 +100,16 @@ interface ApiService {
         @Query("skip") skip: String?,
         @Query("limit") limit: String?
     ): Observable<Data<List<Comment>>>
+
+    @GET("comments/location/{locationId}")
+    fun getCommentsByLocationUseCase(
+        @Path("locationId") userId: String,
+        @Query("skip") skip: String?,
+        @Query("limit") limit: String?
+    ): Observable<Data<List<Comment>>>
+
+    @POST("comments/add")
+    fun postAddCommentToLocationUseCase(
+        @Body request: CommentRequest
+    ): Observable<Data<CommentResponse>>
 }

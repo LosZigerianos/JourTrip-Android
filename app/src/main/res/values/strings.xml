@@ -43,5 +43,8 @@
     <string name="search">Search</string>
     <string name="home">Home</string>
     <string name="profile">Profile</string>
+    <string name="comment">Comment</string>
+    <string name="cancel">Cancel</string>
+    <string name="your_comment">Your comment</string>
 
 </resources>

@@ -1,6 +1,13 @@
 package com.zigerianos.jourtrip.data.entities
 
+import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Location(
+    @SerializedName("_id")
+    val id: String?,
     val name: String?,
     val address: String?,
     val postalCode: String?,
@@ -11,4 +18,4 @@ data class Location(
     val photos: List<String>? = null,
     val tags: List<String>? = null,
     val cc: String? = null
-)
+) : Parcelable

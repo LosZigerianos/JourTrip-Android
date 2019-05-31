@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zigerianos.jourtrip.R
 import com.zigerianos.jourtrip.data.entities.Comment
@@ -14,11 +15,9 @@ import com.zigerianos.jourtrip.di.ModulesNames
 import com.zigerianos.jourtrip.presentation.base.BaseFragment
 import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
 import com.zigerianos.jourtrip.utils.CommentAdapter
-import com.zigerianos.jourtrip.utils.EndlessScrollListener
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.toolbar_elevated.view.*
-import org.jetbrains.anko.support.v4.toast
 import org.koin.android.ext.android.inject
 
 
@@ -71,7 +70,7 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
 
     override fun loadComments(comments: List<Comment>) {
         val location =
-            Location("", "", "", "", "", "", "")
+            Location("", "", "", "", "", "", "", "")
 
         val user = User("", "", "", "", "", "", "", "", "")
 
@@ -86,6 +85,11 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
         timelineAdapter.setItems(comments)
     }
 
+    override fun navigateToLocationDetail(location: Location) {
+        val action = HomeFragmentDirections.actionGoToLocationDetailFragment(location)
+        NavHostFragment.findNavController(this).navigate(action)
+    }
+
     private fun setupRecyclerView() {
         recyclerViewTimeline.layoutManager = LinearLayoutManager(activity)
         recyclerViewTimeline.adapter = timelineAdapter
@@ -96,10 +100,10 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
 
         timelineAdapter.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<Comment> {
             override fun onItemClick(item: Comment, position: Int, view: View) {
-                //presenter.locationSelected(position)
-                toast("Comment selected $position")
+                item.location?.let { location ->
+                    presenter.locationClicked(location)
+                }
             }
-
         })
     }
 

@@ -103,4 +103,18 @@ val useCasesModule = module {
             get()
         )
     }
+
+    factory {
+        GetCommentsByLocationUseCase(
+            AsyncObservableTransformer(),
+            get()
+        )
+    }
+
+    factory {
+        PostAddCommentToLocationUseCase(
+            AsyncObservableTransformer(),
+            get()
+        )
+    }
 }

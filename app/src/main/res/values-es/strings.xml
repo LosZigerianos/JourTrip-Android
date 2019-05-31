@@ -38,4 +38,7 @@
     <string name="search">Buscar</string>
     <string name="home">Home</string>
     <string name="profile">Perfil</string>
+    <string name="comment">Comentar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="your_comment">Tu comentario</string>
 </resources>

@@ -27,11 +27,10 @@ class TagAdapter(context: Context): ItemClickAdapter<String, TagAdapter.TagViewH
 
     inner class TagViewHolder(view: View) : BaseAdapter.BaseViewHolder(view) {
         fun bind(tag: String) {
-
-            val rnd = Random()
-            itemView.background.setTint(Utils.getRandomColor())
-
-            itemView.textViewTag.text = tag
+            with(itemView) {
+                background.setTint(Utils.getRandomDarkColor())
+                textViewTag.text = tag
+            }
         }
     }
 }

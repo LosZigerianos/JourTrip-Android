@@ -3,6 +3,7 @@ package com.zigerianos.jourtrip.presentation.scenes.home
 import com.google.gson.Gson
 import com.zigerianos.jourtrip.data.entities.Comment
 import com.zigerianos.jourtrip.data.entities.ErrorResponse
+import com.zigerianos.jourtrip.data.entities.Location
 import com.zigerianos.jourtrip.domain.ServiceError
 import com.zigerianos.jourtrip.domain.usecases.GetTimeLineUseCase
 import com.zigerianos.jourtrip.presentation.base.BasePresenter
@@ -24,6 +25,10 @@ class HomePresenter(
         getMvpView()?.setupViews()
 
         requestTimeLine()
+    }
+
+    override fun locationClicked(location: Location) {
+        getMvpView()?.navigateToLocationDetail(location)
     }
 
     private fun requestTimeLine() {
