@@ -27,7 +27,7 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
     private val mainPresenter by inject<IHomePresenter>()
     private val timelineAdapter by inject<CommentAdapter>(name = ModulesNames.ADAPTER_TIMELINE)
 
-    private var mEndlessScrollListener = EndlessScrollListener {toast("Hola hola")}
+    //private var mEndlessScrollListener = EndlessScrollListener {toast("Hola hola")}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         presenter = mainPresenter
@@ -77,6 +77,9 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
 
         val dummy = listOf<Comment>(
             Comment("", user, location, "", ""),
+            Comment("", user, location, "", ""),
+            Comment("", user, location, "", ""),
+            Comment("", user, location, "", ""),
             Comment("", user, location, "", "")
         )
 
@@ -87,10 +90,9 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
         recyclerViewTimeline.layoutManager = LinearLayoutManager(activity)
         recyclerViewTimeline.adapter = timelineAdapter
 
-        mEndlessScrollListener.shouldListenForMorePages(true)
-        recyclerViewTimeline.addOnScrollListener(mEndlessScrollListener)
-
-        timelineAdapter.setLoaderVisible(true)
+        //mEndlessScrollListener.shouldListenForMorePages(true)
+        //recyclerViewTimeline.addOnScrollListener(mEndlessScrollListener)
+        //timelineAdapter.setLoaderVisible(true)
 
         timelineAdapter.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<Comment> {
             override fun onItemClick(item: Comment, position: Int, view: View) {

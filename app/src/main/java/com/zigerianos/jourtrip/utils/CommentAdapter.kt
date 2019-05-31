@@ -81,7 +81,7 @@ class CommentAdapter(
             with(itemView) {
                 picasso
                     .load(comment.location?.photos?.first())
-                    .into(itemView.imageViewLocation)
+                    .into(imageViewLocation)
 
                 comment.location?.let { location ->
                     textViewTitle.text = location.name
@@ -96,7 +96,8 @@ class CommentAdapter(
 
                 comment.location?.tags?.let { tags ->
                     if (tags.count() > 0) {
-                        recyclerViewTags.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                        recyclerViewTags.layoutManager =
+                            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
                         val tagAdapter = TagAdapter(context)
                         tagAdapter.setItems(tags)
@@ -110,15 +111,11 @@ class CommentAdapter(
                     recyclerViewTags.visibility = View.GONE
                 }
 
-                // TODO: CAMBIAR
-                /*
                 if (isShownUser) {
                     comment.user?.let { user ->
-                        picasso
-                            .load(user.photo)
-                            .into(imageViewUser)
+                        picasso.load(comment.user.photo).into(imageViewUser)
 
-                        textViewUserName.text = user.username
+                        textViewUserName.text = "@${user.username}"
 
                         cardViewUserImage.visibility = View.VISIBLE
                         imageViewUser.visibility = View.VISIBLE
@@ -128,17 +125,6 @@ class CommentAdapter(
                         imageViewUser.visibility = View.GONE
                         textViewUserName.visibility = View.GONE
                     }
-                } else {
-                    cardViewUserImage.visibility = View.GONE
-                    imageViewUser.visibility = View.GONE
-                    textViewUserName.visibility = View.GONE
-                }
-                */
-
-                if (isShownUser) {
-                    cardViewUserImage.visibility = View.VISIBLE
-                    imageViewUser.visibility = View.VISIBLE
-                    textViewUserName.visibility = View.VISIBLE
                 } else {
                     cardViewUserImage.visibility = View.GONE
                     imageViewUser.visibility = View.GONE
