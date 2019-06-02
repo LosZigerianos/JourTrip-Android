@@ -100,12 +100,15 @@ class LoginFragment : BaseFragment<ILoginPresenter.ILoginView, ILoginPresenter>(
 
     override fun showErrorMessage(message: String) {
         stateDataLogin()
-
         toast(message)
-        //toast(getString(R.string.sent_recovery_password_to_email_message))
     }
 
-    private fun checkLoginFields() : Boolean {
+    override fun showCredentialsErrorMessage() {
+        stateDataLogin()
+        toast(getString(R.string.incorrect_user_password))
+    }
+
+    private fun checkLoginFields(): Boolean {
         var areFilledFields = true
 
         if (editTextEmail.text.toString().isEmpty()) {
@@ -133,7 +136,7 @@ class LoginFragment : BaseFragment<ILoginPresenter.ILoginView, ILoginPresenter>(
         return areFilledFields
     }
 
-    private fun checkRecoverPasswordFields() : Boolean {
+    private fun checkRecoverPasswordFields(): Boolean {
         var areFilledFields = true
 
         if (editTextSendEmail.text.toString().isEmpty()) {

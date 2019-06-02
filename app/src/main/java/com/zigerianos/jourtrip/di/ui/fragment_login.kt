@@ -10,6 +10,7 @@ val fragmentLoginModule = module {
         LoginPresenter(
             get(),
             get(),
+            get(),
             get()
         )
     }

@@ -90,6 +90,10 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
         NavHostFragment.findNavController(this).navigate(action)
     }
 
+    override fun navigateToInit() {
+        NavHostFragment.findNavController(this).navigate(HomeFragmentDirections.actionGoToInitialFragment())
+    }
+
     private fun setupRecyclerView() {
         recyclerViewTimeline.layoutManager = LinearLayoutManager(activity)
         recyclerViewTimeline.adapter = timelineAdapter

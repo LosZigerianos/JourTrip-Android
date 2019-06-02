@@ -66,6 +66,15 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@+id/navigationHome" />
+        <action
+            android:id="@+id/actionGoToInitialFragment"
+            app:destination="@id/initialFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/slide_down_pop_exit"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/navigationHome"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment

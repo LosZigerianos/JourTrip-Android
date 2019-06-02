@@ -4,20 +4,21 @@ package com.zigerianos.jourtrip.presentation.scenes.locationdetail
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
-import android.widget.EditText
 import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.LayoutMode
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
-import com.afollestad.materialdialogs.customview.getCustomView
 import com.afollestad.materialdialogs.input.input
 import com.squareup.picasso.Picasso
 import com.zigerianos.jourtrip.R
 import com.zigerianos.jourtrip.data.entities.Comment
 import com.zigerianos.jourtrip.data.entities.Location
 import com.zigerianos.jourtrip.presentation.base.BaseFragment
+import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
+import com.zigerianos.jourtrip.utils.UserAdapter
 import kotlinx.android.synthetic.main.fragment_location_detail.*
 import kotlinx.android.synthetic.main.toolbar_elevated.view.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -32,6 +33,7 @@ class LocationDetailFragment :
 
     private val mainPresenter by inject<ILocationDetailPresenter>()
     private val picasso by inject<Picasso>()
+    private val userCommentAdapter by inject<UserAdapter>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         presenter = mainPresenter
@@ -79,7 +81,7 @@ class LocationDetailFragment :
 
         //activity?.bottomNavigationView?.visibility = View.GONE
 
-        //setupRecyclerView()
+        setupRecyclerView()
     }
 
     override fun stateLoading() {
@@ -101,8 +103,7 @@ class LocationDetailFragment :
     }
 
     override fun loadComments(comments: List<Comment>) {
-        // TODO
-        toast("Cargar todos los comentarios")
+        userCommentAdapter.setItems(comments)
     }
 
     override fun loadMoreComments(comments: List<Comment>) {
@@ -112,6 +113,23 @@ class LocationDetailFragment :
 
     override fun showErrorMessage() {
         toast(R.string.error_request_message)
+    }
+
+    private fun setupRecyclerView() {
+        recyclerViewComments.layoutManager = LinearLayoutManager(activity)
+        recyclerViewComments.adapter = userCommentAdapter
+
+        //mEndlessScrollListener.shouldListenForMorePages(true)
+        //recyclerViewComments.addOnScrollListener(mEndlessScrollListener)
+        //timelineAdapter.setLoaderVisible(true)
+
+        userCommentAdapter.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<Comment> {
+            override fun onItemClick(item: Comment, position: Int, view: View) {
+                item.user?.let { user ->
+                    //presenter.userClicked(user)
+                }
+            }
+        })
     }
 
     override fun getLayoutResource(): Int = R.layout.fragment_location_detail

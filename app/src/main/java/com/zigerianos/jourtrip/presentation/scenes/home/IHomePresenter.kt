@@ -18,5 +18,6 @@ interface IHomePresenter : IPresenter<IHomePresenter.IHomeView> {
         fun loadComments(comments: List<Comment>)
 
         fun navigateToLocationDetail(location: Location)
+        fun navigateToInit()
     }
 }
