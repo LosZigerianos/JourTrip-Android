@@ -8,6 +8,11 @@ import retrofit2.http.*
 interface ApiService {
 
     // LOGIN
+    @GET("token/validate")
+    fun getTokenValidationUseCase(
+        @Query("token") skip: String?
+    ): Observable<TokenResponse>
+
     @POST("users/login")
     fun postLoginUseCase(
         @Body request: UserRequest
@@ -101,8 +106,10 @@ interface ApiService {
     ): Observable<Data<List<User>>>
 
     // Comments
-    @GET("comments/timeline")
+    //@GET("comments/timeline")
+    @GET("comments/userId/{userId}/timeline")
     fun getTimeLineUseCase(
+        @Path("userId") userId: String,
         @Query("skip") skip: String?,
         @Query("limit") limit: String?
     ): Observable<Data<List<Comment>>>

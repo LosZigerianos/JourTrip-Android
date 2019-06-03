@@ -8,6 +8,7 @@ val fragmentInitialModule = module {
 
     factory<IInitialPresenter> {
         InitialPresenter(
+            get(),
             get()
         )
     }

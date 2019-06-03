@@ -7,6 +7,13 @@ import org.koin.dsl.module.module
 val useCasesModule = module {
 
     factory {
+        GetTokenValidationUseCase(
+            AsyncObservableTransformer(),
+            get()
+        )
+    }
+
+    factory {
         PostLoginUseCase(
             AsyncObservableTransformer(),
             get()

@@ -9,13 +9,14 @@ import io.reactivex.ObservableTransformer
 class GetTimeLineUseCase(
     transformer: ObservableTransformer<List<Comment>, List<Comment>>,
     private val api: ApiService
-)  : UseCaseWithParams<GetTimeLineUseCase.Params, List<Comment>>(transformer) {
+) : UseCaseWithParams<GetTimeLineUseCase.Params, List<Comment>>(transformer) {
 
     override fun createObservable(params: Params): Observable<List<Comment>> {
-        return api.getTimeLineUseCase(params.skip.toString(), params.limit.toString()).map { it.data }
+        return api.getTimeLineUseCase(params.userId, params.skip.toString(), params.limit.toString()).map { it.data }
     }
 
     data class Params(
+        val userId: String,
         val skip: Int? = null,
         val limit: Int? = null
     )

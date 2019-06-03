@@ -34,42 +34,45 @@ class HomePresenter(
     }
 
     private fun requestTimeLine() {
-        val disposable = getTimeLineUseCase.observable(GetTimeLineUseCase.Params())
-            .subscribe({ commentsList ->
+        authManager.getUserId()?.let { userId ->
+            val disposable = getTimeLineUseCase.observable(GetTimeLineUseCase.Params(userId))
+                .subscribe({ commentsList ->
 
-                if (commentsList.isEmpty()) {
-                    //TODO: IMPLEMENTAR LISTA VACIA
-                    return@subscribe
-                }
+                    if (commentsList.isEmpty()) {
+                        //TODO: IMPLEMENTAR LISTA VACIA
+                        getMvpView()?.stateData()
+                        return@subscribe
+                    }
 
-                mCommentList = commentsList
-                getMvpView()?.loadComments(mCommentList)
-                getMvpView()?.stateData()
+                    mCommentList = commentsList
+                    getMvpView()?.loadComments(mCommentList)
+                    getMvpView()?.stateData()
 
-            }, {
-                Timber.e(it)
+                }, {
+                    Timber.e(it)
 
-                val error = it as HttpException
-                error.response().errorBody()?.let { errorResponse ->
-                    val serviceError = gson.fromJson(errorResponse.string().toString(), ErrorResponse::class.java)
+                    val error = it as HttpException
+                    error.response().errorBody()?.let { errorResponse ->
+                        val serviceError = gson.fromJson(errorResponse.string().toString(), ErrorResponse::class.java)
 
-                    when(ServiceError.getServiceError(serviceError.error)) {
-                        ServiceError.TOKEN_EXPIRED, ServiceError.UNAUTHORIZED, ServiceError.CREDENTIALS_INVALID -> {
-                            Timber.e("ServiceError: TOKEN_EXPIRED or UNAUTHORIZED")
-                            authManager.deleteUser()
-                            getMvpView()?.navigateToInit()
-                            return@subscribe
-                        }
-                        ServiceError.NOT_FOUND, ServiceError.UNKNOWN -> {
-                            Timber.e("ServiceError: NOT_FOUND or UNKNOWN")
-                            getMvpView()?.stateError()
-                            return@subscribe
+                        when (ServiceError.getServiceError(serviceError.error)) {
+                            ServiceError.TOKEN_EXPIRED, ServiceError.UNAUTHORIZED, ServiceError.CREDENTIALS_INVALID -> {
+                                Timber.e("ServiceError: TOKEN_EXPIRED or UNAUTHORIZED")
+                                authManager.deleteUser()
+                                getMvpView()?.navigateToInit()
+                                return@subscribe
+                            }
+                            ServiceError.NOT_FOUND, ServiceError.UNKNOWN -> {
+                                Timber.e("ServiceError: NOT_FOUND or UNKNOWN")
+                                getMvpView()?.stateError()
+                                return@subscribe
+                            }
                         }
                     }
-                }
-            })
+                })
 
-        addDisposable(disposable)
+            addDisposable(disposable)
+        }
     }
 
     /*fun fetchDeadline(city: String) {

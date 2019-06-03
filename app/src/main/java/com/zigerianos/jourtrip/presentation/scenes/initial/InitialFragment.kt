@@ -17,11 +17,11 @@ class InitialFragment : BaseFragment<IInitialPresenter.IInitialView, IInitialPre
     override fun onCreate(savedInstanceState: Bundle?) {
         presenter = mainPresenter
         super.onCreate(savedInstanceState)
+
+        activity?.bottomNavigationView?.visibility = View.GONE
     }
 
     override fun setupViews() {
-        activity?.bottomNavigationView?.visibility = View.GONE
-
         buttonSignup.setOnClickListener { presenter.signupClicked() }
 
         buttonExistingAccount.setOnClickListener { presenter.existingAccountClicked() }

@@ -126,6 +126,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="actionGoToLocationDetailFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="actionGoToUserDataFragment">
                               <value>
                                 <LayoutPositions />
