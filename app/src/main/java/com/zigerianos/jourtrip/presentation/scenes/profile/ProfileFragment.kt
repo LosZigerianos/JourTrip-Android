@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso
 
 import com.zigerianos.jourtrip.R
 import com.zigerianos.jourtrip.data.entities.Comment
+import com.zigerianos.jourtrip.data.entities.Location
 import com.zigerianos.jourtrip.data.entities.UserProfile
 import com.zigerianos.jourtrip.di.ModulesNames
 import com.zigerianos.jourtrip.presentation.base.BaseFragment
@@ -148,14 +149,20 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
         NavHostFragment.findNavController(this).navigate(action)
     }
 
+    override fun navigateToLocationDetail(location: Location) {
+        val action = ProfileFragmentDirections.actionGoToLocationDetailFragment(location)
+        NavHostFragment.findNavController(this).navigate(action)
+    }
+
     private fun setupRecyclerView() {
         recyclerViewComments.layoutManager = LinearLayoutManager(activity)
         recyclerViewComments.adapter = commentAdapter
 
         commentAdapter.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<Comment> {
             override fun onItemClick(item: Comment, position: Int, view: View) {
-                //presenter.locationSelected(position)
-                toast("Comment selected $position")
+                item.location?.let { location ->
+                    presenter.locationClicked(location)
+                }
             }
 
         })
