@@ -73,6 +73,14 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
         activity?.bottomNavigationView?.visibility = View.VISIBLE
 
         setupRecyclerView()
+
+        textViewFollowersQuantity.setOnClickListener {
+            presenter.followersClicked()
+        }
+
+        textViewFollowingQuantity.setOnClickListener {
+            presenter.followingClicked()
+        }
     }
 
     override fun stateLoading() {
@@ -132,6 +140,11 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
 
     override fun navigateToUserData() {
         val action = ProfileFragmentDirections.actionGoToUserDataFragment()
+        NavHostFragment.findNavController(this).navigate(action)
+    }
+
+    override fun navigateToContacts(myFollowings: Boolean, myFollowers: Boolean) {
+        val action = ProfileFragmentDirections.actionGoToContactsFragment(myFollowings, myFollowers)
         NavHostFragment.findNavController(this).navigate(action)
     }
 

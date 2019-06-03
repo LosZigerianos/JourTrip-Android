@@ -117,4 +117,18 @@ val useCasesModule = module {
             get()
         )
     }
+
+    factory {
+        GetFollowersByUserUseCase(
+            AsyncObservableTransformer(),
+            get()
+        )
+    }
+
+    factory {
+        GetFollowingByUserUseCase(
+            AsyncObservableTransformer(),
+            get()
+        )
+    }
 }

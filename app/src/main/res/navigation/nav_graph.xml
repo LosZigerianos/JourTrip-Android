@@ -105,6 +105,14 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/slide_down_pop_exit"
             app:popUpTo="@+id/navigationProfile" />
+        <action
+            android:id="@+id/actionGoToContactsFragment"
+            app:destination="@id/contactsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/navigationProfile" />
     </fragment>
 
     <fragment
@@ -131,6 +139,21 @@
         <argument
             android:name="location"
             app:argType="com.zigerianos.jourtrip.data.entities.Location" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/contactsFragment"
+        android:name="com.zigerianos.jourtrip.presentation.scenes.contacts.ContactsFragment"
+        android:label="fragment_contacts"
+        tools:layout="@layout/fragment_contacts">
+        <argument
+            android:name="following"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="followers"
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
 
 </navigation>

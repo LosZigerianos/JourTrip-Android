@@ -8,6 +8,18 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
+                  <entry key="contactsFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="715" />
+                            <option name="y" value="-266" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="initialFragment">
                     <value>
                       <LayoutPositions>
@@ -83,6 +95,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="actionGoToInitialFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="actionGoToLocationDetailFragment">
                               <value>
                                 <LayoutPositions />
@@ -104,6 +121,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="actionGoToContactsFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="actionGoToUserDataFragment">
                               <value>
                                 <LayoutPositions />

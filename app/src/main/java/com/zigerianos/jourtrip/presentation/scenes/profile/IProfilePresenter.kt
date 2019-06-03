@@ -7,6 +7,9 @@ interface IProfilePresenter: IPresenter<IProfilePresenter.IProfileView> {
 
     fun settingsClicked()
 
+    fun followingClicked()
+    fun followersClicked()
+
     interface IProfileView: IPresenter.IView {
         fun setupToolbar()
         fun setupViews()
@@ -17,5 +20,6 @@ interface IProfilePresenter: IPresenter<IProfilePresenter.IProfileView> {
         fun loadUser(profile: UserProfile)
 
         fun navigateToUserData()
+        fun navigateToContacts(myFollowings: Boolean = false, myFollowers: Boolean = false)
     }
 }

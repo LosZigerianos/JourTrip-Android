@@ -36,4 +36,12 @@ class ProfilePresenter(
     override fun settingsClicked() {
         getMvpView()?.navigateToUserData()
     }
+
+    override fun followingClicked() {
+        getMvpView()?.navigateToContacts(myFollowings = true)
+    }
+
+    override fun followersClicked() {
+        getMvpView()?.navigateToContacts(myFollowers = true)
+    }
 }

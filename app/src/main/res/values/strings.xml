@@ -47,5 +47,6 @@
     <string name="cancel">Cancel</string>
     <string name="your_comment">Your comment</string>
     <string name="incorrect_user_password">Incorrect user or password</string>
+    <string name="contacts">Contacts</string>
 
 </resources>

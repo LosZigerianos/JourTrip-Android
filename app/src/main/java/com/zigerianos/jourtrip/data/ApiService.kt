@@ -86,6 +86,20 @@ interface ApiService {
         @Query("limit") limit: String?
     ): Observable<Data<UserProfile>>
 
+    @GET("users/userId/{userId}/followers")
+    fun getFollowersByUserUseCase(
+        @Path("userId") userId: String,
+        @Query("skip") skip: String?,
+        @Query("limit") limit: String?
+    ): Observable<Data<List<User>>>
+
+    @GET("users/userId/{userId}/following")
+    fun getFollowingByUserUseCase(
+        @Path("userId") userId: String,
+        @Query("skip") skip: String?,
+        @Query("limit") limit: String?
+    ): Observable<Data<List<User>>>
+
     // Comments
     @GET("comments/timeline")
     fun getTimeLineUseCase(
