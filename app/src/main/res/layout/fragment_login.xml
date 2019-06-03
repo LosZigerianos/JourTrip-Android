@@ -99,7 +99,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="24dp"
                     android:ems="10"
-                    android:imeOptions="actionNext"
+                    android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:text="123123" />
 
