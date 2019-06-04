@@ -159,7 +159,7 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
     }
 
     override fun navigateToContacts(userId: String, myFollowings: Boolean, myFollowers: Boolean) {
-        val action = ProfileFragmentDirections.actionGoToContactsFragment(userId, myFollowings, myFollowers)
+         val action = ProfileFragmentDirections.actionGoToContactsFragment(userId, myFollowings, myFollowers)
         NavHostFragment.findNavController(this).navigate(action)
     }
 

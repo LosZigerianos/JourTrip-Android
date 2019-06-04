@@ -21,9 +21,16 @@ class InitialFragment : BaseFragment<IInitialPresenter.IInitialView, IInitialPre
         activity?.bottomNavigationView?.visibility = View.GONE
     }
 
-    override fun setupViews() {
-        buttonSignup.setOnClickListener { presenter.signupClicked() }
+    override fun stateLoading() {
+        groupInitial.visibility = View.GONE
+        progressBar.visibility = View.VISIBLE
+    }
 
+    override fun setupViews() {
+        groupInitial.visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
+
+        buttonSignup.setOnClickListener { presenter.signupClicked() }
         buttonExistingAccount.setOnClickListener { presenter.existingAccountClicked() }
     }
 

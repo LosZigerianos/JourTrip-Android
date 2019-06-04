@@ -13,6 +13,8 @@ class InitialPresenter(
     override fun update() {
         super.update()
 
+        getMvpView()?.stateLoading()
+
         val params = GetTokenValidationUseCase.Params(authManager.getUser()?.accessToken)
 
         val disposable = getTokenValidationUseCase.observable(params)

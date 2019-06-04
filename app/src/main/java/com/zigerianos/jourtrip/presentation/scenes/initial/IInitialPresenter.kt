@@ -8,11 +8,8 @@ interface IInitialPresenter: IPresenter<IInitialPresenter.IInitialView> {
     fun existingAccountClicked()
 
     interface IInitialView: IPresenter.IView {
-        fun setupViews()
-        /*fun setupToolbar()
         fun stateLoading()
-        fun stateData()
-        fun stateError()*/
+        fun setupViews()
 
         fun navigateToSignup()
         fun navigateToLogin()
