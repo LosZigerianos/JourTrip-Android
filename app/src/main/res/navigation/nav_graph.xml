@@ -152,6 +152,14 @@
         <argument
             android:name="location"
             app:argType="com.zigerianos.jourtrip.data.entities.Location" />
+        <action
+            android:id="@+id/actionGoToNavigationProfile"
+            app:destination="@id/profileUserFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/locationDetailFragment" />
     </fragment>
 
     <fragment
@@ -174,12 +182,48 @@
             app:argType="boolean" />
         <action
             android:id="@+id/actionGoToNavigationProfile"
-            app:destination="@id/navigationProfile"
+            app:destination="@id/profileUserFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@+id/contactsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileUserFragment"
+        android:name="com.zigerianos.jourtrip.presentation.scenes.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile">
+        <argument
+            android:name="userId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <!-- Here is not used -->
+        <action
+            android:id="@+id/actionGoToUserDataFragment"
+            app:destination="@id/userDataFragment"
+            app:enterAnim="@anim/slide_up_enter"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_down_pop_exit"
+            app:popUpTo="@+id/navigationProfile" />
+        <action
+            android:id="@+id/actionGoToLocationDetailFragment"
+            app:destination="@id/locationDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/navigationProfile" />
+        <action
+            android:id="@+id/actionGoToContactsFragment"
+            app:destination="@id/contactsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/navigationProfile" />
     </fragment>
 
 </navigation>

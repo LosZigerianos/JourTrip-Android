@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.LayoutMode
 import com.afollestad.materialdialogs.MaterialDialog
@@ -16,6 +17,7 @@ import com.squareup.picasso.Picasso
 import com.zigerianos.jourtrip.R
 import com.zigerianos.jourtrip.data.entities.Comment
 import com.zigerianos.jourtrip.data.entities.Location
+import com.zigerianos.jourtrip.data.entities.User
 import com.zigerianos.jourtrip.presentation.base.BaseFragment
 import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
 import com.zigerianos.jourtrip.utils.UserAdapter
@@ -115,6 +117,13 @@ class LocationDetailFragment :
         toast(R.string.error_request_message)
     }
 
+    override fun navigateToUserProfile(user: User) {
+        user.id?.let { userId ->
+            val action = LocationDetailFragmentDirections.actionGoToNavigationProfile(userId = userId)
+            NavHostFragment.findNavController(this).navigate(action)
+        }
+    }
+
     private fun setupRecyclerView() {
         recyclerViewComments.layoutManager = LinearLayoutManager(activity)
         recyclerViewComments.adapter = userCommentAdapter
@@ -126,7 +135,7 @@ class LocationDetailFragment :
         userCommentAdapter.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<Comment> {
             override fun onItemClick(item: Comment, position: Int, view: View) {
                 item.user?.let { user ->
-                    //presenter.userClicked(user)
+                    presenter.userClicked(user)
                 }
             }
         })

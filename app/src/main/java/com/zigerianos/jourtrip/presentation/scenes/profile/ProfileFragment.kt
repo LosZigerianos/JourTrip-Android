@@ -55,7 +55,10 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_profile, menu)
+        if (presenter.getIsPersonal()) {
+            inflater.inflate(R.menu.menu_profile, menu)
+        }
+
         super.onCreateOptionsMenu(menu, inflater)
     }
 

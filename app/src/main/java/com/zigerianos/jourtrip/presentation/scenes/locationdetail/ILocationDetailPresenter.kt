@@ -2,6 +2,7 @@ package com.zigerianos.jourtrip.presentation.scenes.locationdetail
 
 import com.zigerianos.jourtrip.data.entities.Comment
 import com.zigerianos.jourtrip.data.entities.Location
+import com.zigerianos.jourtrip.data.entities.User
 import com.zigerianos.jourtrip.presentation.base.IPresenter
 
 interface ILocationDetailPresenter: IPresenter<ILocationDetailPresenter.ILocationDetailView> {
@@ -15,6 +16,8 @@ interface ILocationDetailPresenter: IPresenter<ILocationDetailPresenter.ILocatio
 
     fun addCommentToLocation(comment: String)
 
+    fun userClicked(user: User)
+
     interface ILocationDetailView: IPresenter.IView {
         fun setupToolbar()
         fun stateLoading()
@@ -26,5 +29,7 @@ interface ILocationDetailPresenter: IPresenter<ILocationDetailPresenter.ILocatio
         fun loadMoreComments(comments: List<Comment>)
 
         fun showErrorMessage()
+
+        fun navigateToUserProfile(user: User)
     }
 }

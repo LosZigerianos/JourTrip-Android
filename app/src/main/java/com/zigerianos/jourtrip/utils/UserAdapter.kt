@@ -70,8 +70,14 @@ class UserAdapter(
 
     inner class UserViewHolder(view: View) : BaseAdapter.BaseViewHolder(view) {
         init {
-            itemView.container.setOnClickListener {
-                listener?.onItemClick(getItem(adapterPosition), adapterPosition, itemView)
+            with(itemView) {
+                container.setOnClickListener {
+                    listener?.onItemClick(getItem(adapterPosition), adapterPosition, this)
+                }
+
+                imageViewUser.setOnClickListener {
+                    listener?.onItemClick(getItem(adapterPosition), adapterPosition, this.imageViewUser)
+                }
             }
         }
 

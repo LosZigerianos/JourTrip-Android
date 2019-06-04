@@ -2,6 +2,7 @@ package com.zigerianos.jourtrip.presentation.scenes.locationdetail
 
 import com.zigerianos.jourtrip.data.entities.CommentRequest
 import com.zigerianos.jourtrip.data.entities.Location
+import com.zigerianos.jourtrip.data.entities.User
 import com.zigerianos.jourtrip.domain.usecases.GetCommentsByLocationUseCase
 import com.zigerianos.jourtrip.domain.usecases.PostAddCommentToLocationUseCase
 import com.zigerianos.jourtrip.presentation.base.BasePresenter
@@ -35,6 +36,10 @@ class LocationDetailPresenter(
     override fun getAddress(): String = mLocation.address ?: ""
 
     override fun getCity(): String = mLocation.city ?: ""
+
+    override fun userClicked(user: User) {
+        getMvpView()?.navigateToUserProfile(user)
+    }
 
     private fun requestLocationData() {
         mLocation.id?.let {  locationId ->
