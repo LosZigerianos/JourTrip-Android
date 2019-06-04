@@ -29,13 +29,6 @@ public class HttpDefaultHeadersInterceptor implements Interceptor {
                 .header("User-Agent", mUserAgent)
                 .build();
 
-        /*if (chain.request().url().toString().contains("me/photo") && chain.request().method().contains("POST")) {
-            request = request.newBuilder()
-                    .removeHeader("Content-Type")
-                    .header("Content-Type", "multipart/form-data")
-                    .build();
-        }*/
-
         return chain.proceed(request);
     }
 }

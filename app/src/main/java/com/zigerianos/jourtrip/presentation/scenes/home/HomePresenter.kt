@@ -51,8 +51,8 @@ class HomePresenter(
                 }, {
                     Timber.e(it)
 
-                    val error = it as HttpException
-                    error.response().errorBody()?.let { errorResponse ->
+                    val error = it as? HttpException
+                    error?.response()?.errorBody()?.let { errorResponse ->
                         val serviceError = gson.fromJson(errorResponse.string().toString(), ErrorResponse::class.java)
 
                         when (ServiceError.getServiceError(serviceError.error)) {
@@ -68,59 +68,14 @@ class HomePresenter(
                                 return@subscribe
                             }
                         }
+                    } ?: run {
+                        getMvpView()?.stateError()
+                        return@subscribe
                     }
                 })
 
             addDisposable(disposable)
         }
     }
-
-    /*fun fetchDeadline(city: String) {
-        getMvpView()?.stateLoading()
-
-        val params = GetLocationsByCityUseCase.Params(city)
-
-        val disposable = getLocationsByCityUseCase.observable(params)
-            .subscribe({ locationList ->
-
-                if (locationList.isEmpty()) {
-                    //TODO: IMPLEMENTAR LISTA VACIA
-                    return@subscribe
-                }
-
-                mLocationList = locationList
-
-                getMvpView()?.stateData()
-
-            }, {
-                Timber.e(it)
-
-                val error = it as HttpException
-                error.response().errorBody()?.let { errorResponse ->
-                    val serviceError = gson.fromJson(errorResponse.string().toString(), ErrorResponse::class.java)
-
-                    when(ServiceError.getServiceError(serviceError.error)) {
-                        ServiceError.TOKEN_EXPIRED -> {
-                            Timber.e("ServiceError: TOKEN_EXPIRED")
-                            // TODO
-                            // presenter.navigateToLogin()
-                        }
-                        ServiceError.UNAUTHORIZED -> {
-                            Timber.e("ServiceError: UNAUTHORIZED")
-                            // TODO
-                            // presenter.navigateToLogin()
-                        }
-                        ServiceError.UNKNOWN -> {
-                            Timber.e("ServiceError: UNKNOWN")
-                            // TODO
-                        }
-                    }
-                }
-
-                getMvpView()?.stateError()
-            })
-
-        addDisposable(disposable)
-    }*/
 
 }

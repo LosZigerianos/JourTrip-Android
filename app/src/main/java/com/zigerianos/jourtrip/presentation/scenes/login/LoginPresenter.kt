@@ -52,8 +52,8 @@ class LoginPresenter(
             }, {
                 Timber.e(it)
 
-                val error = it as HttpException
-                error.response().errorBody()?.let { errorResponse ->
+                val error = it as? HttpException
+                error?.response()?.errorBody()?.let { errorResponse ->
                     val serviceError = gson.fromJson(errorResponse.string().toString(), ErrorResponse::class.java)
 
                     when (ServiceError.getServiceError(serviceError.error)) {
@@ -68,6 +68,9 @@ class LoginPresenter(
                             return@subscribe
                         }
                     }
+                } ?: run {
+                    getMvpView()?.stateError()
+                    return@subscribe
                 }
 
             })
