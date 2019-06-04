@@ -13,6 +13,9 @@ class ProfilePresenter(
     private val getCommentsByUserUseCase: GetCommentsByUserUseCase
 ) : BasePresenter<IProfilePresenter.IProfileView>(), IProfilePresenter {
 
+    private var mUserId: String = ""
+    private var mIsPersonal: Boolean = false
+
     override fun update() {
         super.update()
 
@@ -20,7 +23,50 @@ class ProfilePresenter(
         getMvpView()?.stateLoading()
         getMvpView()?.setupViews()
 
-        val params = GetUserProfileUseCase.Params(userId = authManager.getUserId() ?: "", skip = 3)
+
+        requesteProfile(mUserId)
+    }
+
+    override fun setUserId(value: String?) {
+        value?.let { userId ->
+            mUserId = userId
+
+            authManager.getUserId()?.let { personalUserId ->
+                if (personalUserId == userId) {
+                    mIsPersonal = true
+                }
+            }
+
+            return
+        }
+
+        authManager.getUserId()?.let {
+            mUserId = it
+            mIsPersonal = true
+            return
+        }
+    }
+
+    override fun getIsPersonal(): Boolean = mIsPersonal
+
+    override fun settingsClicked() {
+        getMvpView()?.navigateToUserData()
+    }
+
+    override fun followingClicked() {
+        getMvpView()?.navigateToContacts(userId = mUserId, myFollowings = true)
+    }
+
+    override fun followersClicked() {
+        getMvpView()?.navigateToContacts(userId = mUserId, myFollowers = true)
+    }
+
+    override fun locationClicked(location: Location) {
+        getMvpView()?.navigateToLocationDetail(location)
+    }
+
+    private fun requesteProfile(userId: String) {
+        val params = GetUserProfileUseCase.Params(userId = userId)
 
         val disposable = getUserProfileUseCase.observable(params)
             .subscribe({ profile ->
@@ -32,21 +78,5 @@ class ProfilePresenter(
             })
 
         addDisposable(disposable)
-    }
-
-    override fun settingsClicked() {
-        getMvpView()?.navigateToUserData()
-    }
-
-    override fun followingClicked() {
-        getMvpView()?.navigateToContacts(myFollowings = true)
-    }
-
-    override fun followersClicked() {
-        getMvpView()?.navigateToContacts(myFollowers = true)
-    }
-
-    override fun locationClicked(location: Location) {
-        getMvpView()?.navigateToLocationDetail(location)
     }
 }

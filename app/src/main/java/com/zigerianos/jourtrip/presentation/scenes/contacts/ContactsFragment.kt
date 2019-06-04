@@ -18,12 +18,18 @@ import kotlinx.android.synthetic.main.fragment_contacts.errorLayout
 import kotlinx.android.synthetic.main.fragment_contacts.progressBar
 import kotlinx.android.synthetic.main.fragment_contacts.toolbar
 import kotlinx.android.synthetic.main.toolbar_elevated.view.*
-import org.jetbrains.anko.support.v4.toast
 import org.koin.android.ext.android.inject
 
 class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPresenter>(),
     IContactsPresenter.IContacts {
 
+    private val argUserId: String? by lazy {
+        arguments?.let {
+            ContactsFragmentArgs.fromBundle(it).userId
+        } ?: run {
+            null
+        }
+    }
     private val argFollowing: Boolean by lazy { ContactsFragmentArgs.fromBundle(arguments!!).following }
     private val argFollowers: Boolean by lazy { ContactsFragmentArgs.fromBundle(arguments!!).followers }
 
@@ -36,6 +42,7 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
         presenter = mainPresenter
         super.onCreate(savedInstanceState)
 
+        presenter.setUserId(argUserId)
         presenter.setFollowing(argFollowing)
         presenter.setFollowers(argFollowers)
     }
@@ -86,10 +93,11 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
     }
 
     override fun navigateToUserProfile(user: User) {
-        toast("Implementar navegar a perfil de usuario")
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        user.id?.let { userId ->
+            val action = ContactsFragmentDirections.actionGoToNavigationProfile(userId = userId)
+            NavHostFragment.findNavController(this).navigate(action)
+        }
     }
-
 
     private fun setupRecyclerView() {
         recyclerViewContacts.layoutManager = LinearLayoutManager(activity)

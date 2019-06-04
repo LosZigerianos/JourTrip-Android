@@ -4,15 +4,17 @@ import com.zigerianos.jourtrip.data.entities.Location
 import com.zigerianos.jourtrip.data.entities.UserProfile
 import com.zigerianos.jourtrip.presentation.base.IPresenter
 
-interface IProfilePresenter: IPresenter<IProfilePresenter.IProfileView> {
+interface IProfilePresenter : IPresenter<IProfilePresenter.IProfileView> {
+
+    fun setUserId(value: String?)
+    fun getIsPersonal(): Boolean
 
     fun settingsClicked()
-
     fun followingClicked()
     fun followersClicked()
     fun locationClicked(location: Location)
 
-    interface IProfileView: IPresenter.IView {
+    interface IProfileView : IPresenter.IView {
         fun setupToolbar()
         fun setupViews()
         fun stateLoading()
@@ -22,7 +24,7 @@ interface IProfilePresenter: IPresenter<IProfilePresenter.IProfileView> {
         fun loadUser(profile: UserProfile)
 
         fun navigateToUserData()
-        fun navigateToContacts(myFollowings: Boolean = false, myFollowers: Boolean = false)
+        fun navigateToContacts(userId: String, myFollowings: Boolean = false, myFollowers: Boolean = false)
         fun navigateToLocationDetail(location: Location)
     }
 }

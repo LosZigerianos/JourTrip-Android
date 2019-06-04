@@ -13,6 +13,7 @@ class ContactsPresenter(
     private val getFollowersByUserUseCase: GetFollowersByUserUseCase
 ) : BasePresenter<IContactsPresenter.IContacts>(), IContactsPresenter {
 
+    private var mUserId: String = ""
     private var mFollowing = false
     private var mFollowers = false
 
@@ -30,6 +31,18 @@ class ContactsPresenter(
         }
     }
 
+    override fun setUserId(value: String?) {
+        value?.let { userId ->
+            mUserId = userId
+            return
+        }
+
+        authManager.getUserId()?.let {
+            mUserId = it
+            return
+        }
+    }
+
     override fun setFollowing(value: Boolean) {
         mFollowing = value
     }
@@ -43,55 +56,51 @@ class ContactsPresenter(
     }
 
     private fun requestFollowers() {
-        authManager.getUserId()?.let { userId ->
-            val params = GetFollowersByUserUseCase.Params(userId)
+        val params = GetFollowersByUserUseCase.Params(mUserId)
 
-            val disposable = getFollowersByUserUseCase.observable(params)
-                .subscribe({ contacts ->
+        val disposable = getFollowersByUserUseCase.observable(params)
+            .subscribe({ contacts ->
 
-                    if (contacts.isEmpty()) {
-                        //TODO: IMPLEMENTAR LISTA VACIA
-                        getMvpView()?.stateData()
-                        return@subscribe
-                    }
-
-                    getMvpView()?.loadUsers(contacts)
+                if (contacts.isEmpty()) {
+                    //TODO: IMPLEMENTAR LISTA VACIA
                     getMvpView()?.stateData()
-
-                }, {
-                    Timber.e(it)
-                    getMvpView()?.stateError()
                     return@subscribe
-                })
+                }
 
-            addDisposable(disposable)
-        }
+                getMvpView()?.loadUsers(contacts)
+                getMvpView()?.stateData()
+
+            }, {
+                Timber.e(it)
+                getMvpView()?.stateError()
+                return@subscribe
+            })
+
+        addDisposable(disposable)
     }
 
     private fun requestFollowing() {
-        authManager.getUserId()?.let { userId ->
-            val params = GetFollowingByUserUseCase.Params(userId)
+        val params = GetFollowingByUserUseCase.Params(mUserId)
 
-            val disposable = getFollowingByUserUseCase.observable(params)
-                .subscribe({ contacts ->
+        val disposable = getFollowingByUserUseCase.observable(params)
+            .subscribe({ contacts ->
 
-                    if (contacts.isEmpty()) {
-                        //TODO: IMPLEMENTAR LISTA VACIA
-                        getMvpView()?.stateData()
-                        return@subscribe
-                    }
-
-                    getMvpView()?.loadUsers(contacts)
+                if (contacts.isEmpty()) {
+                    //TODO: IMPLEMENTAR LISTA VACIA
                     getMvpView()?.stateData()
-
-                }, {
-                    Timber.e(it)
-                    getMvpView()?.stateError()
                     return@subscribe
-                })
+                }
 
-            addDisposable(disposable)
-        }
+                getMvpView()?.loadUsers(contacts)
+                getMvpView()?.stateData()
+
+            }, {
+                Timber.e(it)
+                getMvpView()?.stateError()
+                return@subscribe
+            })
+
+        addDisposable(disposable)
     }
 
 }

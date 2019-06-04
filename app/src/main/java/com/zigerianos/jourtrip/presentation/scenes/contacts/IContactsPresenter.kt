@@ -5,6 +5,7 @@ import com.zigerianos.jourtrip.presentation.base.IPresenter
 
 interface IContactsPresenter : IPresenter<IContactsPresenter.IContacts> {
 
+    fun setUserId(value: String?)
     fun setFollowing(value: Boolean)
     fun setFollowers(value: Boolean)
 

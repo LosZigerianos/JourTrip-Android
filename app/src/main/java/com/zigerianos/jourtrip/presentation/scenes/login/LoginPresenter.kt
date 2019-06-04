@@ -1,7 +1,6 @@
 package com.zigerianos.jourtrip.presentation.scenes.login
 
 import com.google.gson.Gson
-import com.zigerianos.jourtrip.R
 import com.zigerianos.jourtrip.auth.AuthManager
 import com.zigerianos.jourtrip.data.entities.ErrorResponse
 import com.zigerianos.jourtrip.data.entities.UserRequest

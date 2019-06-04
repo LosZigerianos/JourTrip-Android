@@ -97,6 +97,11 @@
         android:name="com.zigerianos.jourtrip.presentation.scenes.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile">
+        <argument
+            android:name="userId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
         <action
             android:id="@+id/actionGoToUserDataFragment"
             app:destination="@id/userDataFragment"
@@ -155,6 +160,11 @@
         android:label="fragment_contacts"
         tools:layout="@layout/fragment_contacts">
         <argument
+            android:name="userId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
             android:name="following"
             android:defaultValue="false"
             app:argType="boolean" />
@@ -162,6 +172,14 @@
             android:name="followers"
             android:defaultValue="false"
             app:argType="boolean" />
+        <action
+            android:id="@+id/actionGoToNavigationProfile"
+            app:destination="@id/navigationProfile"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/contactsFragment" />
     </fragment>
 
 </navigation>

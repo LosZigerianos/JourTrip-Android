@@ -30,6 +30,14 @@ import org.koin.android.ext.android.inject
 class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePresenter>(),
     IProfilePresenter.IProfileView {
 
+    private val argUserId: String? by lazy {
+        arguments?.let {
+            ProfileFragmentArgs.fromBundle(it).userId
+        } ?: run {
+            null
+        }
+    }
+
     private val mainPresenter by inject<IProfilePresenter>()
     private val picasso by inject<Picasso>()
     private val commentAdapter by inject<CommentAdapter>(name = ModulesNames.ADAPTER_PROFILE)
@@ -42,6 +50,8 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
         super.onCreate(savedInstanceState)
 
         setHasOptionsMenu(true)
+
+        presenter.setUserId(argUserId)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
@@ -62,6 +72,10 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
     override fun setupToolbar() {
         (activity as AppCompatActivity?)?.setSupportActionBar(toolbar as Toolbar)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        if (!presenter.getIsPersonal()) {
+            (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
     }
 
     override fun setupViews() {
@@ -144,8 +158,8 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
         NavHostFragment.findNavController(this).navigate(action)
     }
 
-    override fun navigateToContacts(myFollowings: Boolean, myFollowers: Boolean) {
-        val action = ProfileFragmentDirections.actionGoToContactsFragment(myFollowings, myFollowers)
+    override fun navigateToContacts(userId: String, myFollowings: Boolean, myFollowers: Boolean) {
+        val action = ProfileFragmentDirections.actionGoToContactsFragment(userId, myFollowings, myFollowers)
         NavHostFragment.findNavController(this).navigate(action)
     }
 
