@@ -33,7 +33,7 @@ class LocationDetailPresenter(
 
     override fun getName(): String = mLocation.name ?: ""
 
-    override fun getAddress(): String = mLocation.address ?: ""
+    override fun getAddress(): String = mLocation.formattedAddress ?: ""
 
     override fun getCity(): String = mLocation.city ?: ""
 
@@ -42,7 +42,7 @@ class LocationDetailPresenter(
     }
 
     private fun requestLocationData() {
-        mLocation.id?.let {  locationId ->
+        mLocation.id?.let { locationId ->
             val params = GetCommentsByLocationUseCase.Params(locationId)
 
             val disposable = getCommentsByLocationUseCase.observable(params)
