@@ -20,6 +20,6 @@ interface IContactsPresenter : IPresenter<IContactsPresenter.IContacts> {
 
         fun loadUsers(users: List<User>)
 
-        fun navigateToUserProfile(user: User)
+        fun navigateToUserProfile(main: Boolean, user: User)
     }
 }

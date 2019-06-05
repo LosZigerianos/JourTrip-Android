@@ -52,7 +52,12 @@ class ContactsPresenter(
     }
 
     override fun userClicked(user: User) {
-        getMvpView()?.navigateToUserProfile(user)
+        authManager.getUserId()?.let { userId ->
+            if (userId == user.id)
+                getMvpView()?.navigateToUserProfile(true, user)
+            else
+                getMvpView()?.navigateToUserProfile(false, user)
+        }
     }
 
     private fun requestFollowers() {

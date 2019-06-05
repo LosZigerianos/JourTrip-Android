@@ -141,7 +141,7 @@ class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDat
             .placeholder(R.drawable.ic_profile_placeholder)
             .error(R.drawable.ic_profile_placeholder)
             .memoryPolicy(MemoryPolicy.NO_CACHE)
-            //.networkPolicy(NetworkPolicy.NO_CACHE)
+            .networkPolicy(NetworkPolicy.NO_CACHE)
             .into(imageViewUser)
     }
 

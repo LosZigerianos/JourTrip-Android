@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zigerianos.jourtrip.R
@@ -92,9 +94,13 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
         contactAdapter.setItems(users)
     }
 
-    override fun navigateToUserProfile(user: User) {
+    override fun navigateToUserProfile(main: Boolean, user: User) {
         user.id?.let { userId ->
-            val action = ContactsFragmentDirections.actionGoToNavigationProfile(userId = userId)
+            val action = if (main)
+                ContactsFragmentDirections.actionGoToNavigationMainProfile(userId = userId)
+            else
+                ContactsFragmentDirections.actionGoToNavigationProfile(userId = userId)
+
             NavHostFragment.findNavController(this).navigate(action)
         }
     }
