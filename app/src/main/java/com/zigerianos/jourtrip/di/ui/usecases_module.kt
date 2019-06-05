@@ -138,4 +138,18 @@ val useCasesModule = module {
             get()
         )
     }
+
+    factory {
+        PostAddFollowingUseCase(
+            AsyncObservableTransformer(),
+            get()
+        )
+    }
+
+    factory {
+        DeleteFollowingUseCase(
+            AsyncObservableTransformer(),
+            get()
+        )
+    }
 }

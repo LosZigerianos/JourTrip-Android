@@ -55,6 +55,15 @@ class ProfilePresenter(
 
     override fun followUserClicked() {
         // TODO: IMPLEMENTAR SEGUIR USUARIO
+        if (!mIsPersonal) {
+            getMvpView()?.stateLoading()
+
+            // follow
+            //requestFollowUser()
+
+            // unfollow
+            //requestUnfollowUser()
+        }
     }
 
     override fun followingClicked() {

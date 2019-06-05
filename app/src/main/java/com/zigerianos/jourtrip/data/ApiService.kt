@@ -105,6 +105,18 @@ interface ApiService {
         @Query("limit") limit: String?
     ): Observable<Data<List<User>>>
 
+    @POST("users/userId/{userId}/following/add")
+    fun postAddFollowingUseCase(
+        @Path("userId") userId: String,
+        @Body request: FollowingRequest
+    ): Observable<DataWithMeta<User, User>>
+
+    @DELETE("users/userId/{userId}/following/add")
+    fun deleteFollowingUseCase(
+        @Path("userId") userId: String,
+        @Body request: FollowingRequest
+    ): Observable<DataWithMeta<User, User>>
+
     // Comments
     //@GET("comments/timeline")
     @GET("comments/userId/{userId}/timeline")
