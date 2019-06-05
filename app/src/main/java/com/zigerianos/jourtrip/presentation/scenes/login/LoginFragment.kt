@@ -115,7 +115,7 @@ class LoginFragment : BaseFragment<ILoginPresenter.ILoginView, ILoginPresenter>(
             textInputLayoutEmail.isErrorEnabled = true
             textInputLayoutEmail.error = getString(R.string.required_field)
             areFilledFields = false
-        } else if (!editTextEmail.text.toString().matches(Regex(RegexValidators.EMAIL))) {
+        } else if (!editTextEmail.text.toString().toLowerCase().matches(Regex(RegexValidators.EMAIL))) {
             textInputLayoutEmail.isErrorEnabled = true
             textInputLayoutEmail.error = getString(R.string.required_email)
             areFilledFields = false
@@ -143,7 +143,7 @@ class LoginFragment : BaseFragment<ILoginPresenter.ILoginView, ILoginPresenter>(
             textInputLayoutSendEmail.isErrorEnabled = true
             textInputLayoutSendEmail.error = getString(R.string.required_field)
             areFilledFields = false
-        } else if (!editTextSendEmail.text.toString().matches(Regex(RegexValidators.EMAIL))) {
+        } else if (!editTextSendEmail.text.toString().toLowerCase().matches(Regex(RegexValidators.EMAIL))) {
             textInputLayoutSendEmail.isErrorEnabled = true
             textInputLayoutSendEmail.error = getString(R.string.required_email)
             areFilledFields = false
