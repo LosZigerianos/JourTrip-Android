@@ -48,5 +48,11 @@
     <string name="your_comment">Your comment</string>
     <string name="incorrect_user_password">Incorrect user or password</string>
     <string name="contacts">Contacts</string>
+    <string name="error_request">Error in the request</string>
+    <string name="follow_user_title">Follow user</string>
+    <string name="unfollow_user_title">Unfollow user</string>
+    <string name="unfollow_user_message">Do you want to not follow this user?</string>
+    <string name="unfollow">Unfollow</string>
+    <string name="follow">Follow</string>
 
 </resources>

@@ -1,20 +1,26 @@
 package com.zigerianos.jourtrip.presentation.scenes.profile
 
 import com.zigerianos.jourtrip.auth.AuthManager
+import com.zigerianos.jourtrip.data.entities.FollowingRequest
 import com.zigerianos.jourtrip.data.entities.Location
+import com.zigerianos.jourtrip.domain.usecases.DeleteFollowingUseCase
 import com.zigerianos.jourtrip.domain.usecases.GetCommentsByUserUseCase
 import com.zigerianos.jourtrip.domain.usecases.GetUserProfileUseCase
+import com.zigerianos.jourtrip.domain.usecases.PostAddFollowingUseCase
 import com.zigerianos.jourtrip.presentation.base.BasePresenter
 import timber.log.Timber
 
 class ProfilePresenter(
     private val authManager: AuthManager,
     private val getUserProfileUseCase: GetUserProfileUseCase,
-    private val getCommentsByUserUseCase: GetCommentsByUserUseCase
+    private val getCommentsByUserUseCase: GetCommentsByUserUseCase,
+    private val postAddFollowingUseCase: PostAddFollowingUseCase,
+    private val deleteFollowingUseCase: DeleteFollowingUseCase
 ) : BasePresenter<IProfilePresenter.IProfileView>(), IProfilePresenter {
 
     private var mUserId: String = ""
     private var mIsPersonal: Boolean = false
+    private var mFollowingUser: Boolean = false
 
     override fun update() {
         super.update()
@@ -22,7 +28,6 @@ class ProfilePresenter(
         getMvpView()?.setupToolbar()
         getMvpView()?.stateLoading()
         getMvpView()?.setupViews()
-
 
         requesteProfile(mUserId)
     }
@@ -47,7 +52,9 @@ class ProfilePresenter(
         }
     }
 
-    override fun getIsPersonal(): Boolean = mIsPersonal
+    override fun isPersonal(): Boolean = mIsPersonal
+
+    override fun isFollowingUser(): Boolean = mFollowingUser
 
     override fun settingsClicked() {
         getMvpView()?.navigateToUserData()
@@ -58,11 +65,13 @@ class ProfilePresenter(
         if (!mIsPersonal) {
             getMvpView()?.stateLoading()
 
-            // follow
-            //requestFollowUser()
-
-            // unfollow
-            //requestUnfollowUser()
+            if (mFollowingUser) {
+                // unfollow
+                requestUnfollowUser()
+            } else {
+                // follow
+                requestFollowUser()
+            }
         }
     }
 
@@ -91,5 +100,51 @@ class ProfilePresenter(
             })
 
         addDisposable(disposable)
+    }
+
+    private fun requestFollowUser() {
+        authManager.getUserId()?.let { personalId ->
+            val params = PostAddFollowingUseCase.Params(personalId, FollowingRequest(mUserId))
+
+            val disposable = postAddFollowingUseCase.observable(params)
+                .subscribe({ response ->
+
+                    if (!response.success) {
+                        getMvpView()?.showErrorMessage()
+                        return@subscribe
+                    }
+
+                    mFollowingUser = !mFollowingUser
+                    getMvpView()?.stateData()
+                }, {
+                    Timber.e(it)
+                    getMvpView()?.showErrorMessage()
+                })
+
+            addDisposable(disposable)
+        }
+    }
+
+    private fun requestUnfollowUser() {
+        authManager.getUserId()?.let { personalId ->
+            val params = DeleteFollowingUseCase.Params(personalId, FollowingRequest(mUserId))
+
+            val disposable = deleteFollowingUseCase.observable(params)
+                .subscribe({ response ->
+
+                    if (!response.success) {
+                        getMvpView()?.showErrorMessage()
+                        return@subscribe
+                    }
+
+                    mFollowingUser = !mFollowingUser
+                    getMvpView()?.stateData()
+                }, {
+                    Timber.e(it)
+                    getMvpView()?.showErrorMessage()
+                })
+
+            addDisposable(disposable)
+        }
     }
 }

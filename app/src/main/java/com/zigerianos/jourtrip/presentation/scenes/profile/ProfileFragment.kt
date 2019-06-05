@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.afollestad.materialdialogs.MaterialDialog
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 
 import com.zigerianos.jourtrip.R
@@ -55,7 +57,7 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
-        if (presenter.getIsPersonal()) {
+        if (presenter.isPersonal()) {
             inflater.inflate(R.menu.menu_profile, menu)
         }
 
@@ -76,7 +78,7 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
         (activity as AppCompatActivity?)?.setSupportActionBar(toolbar as Toolbar)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        if (!presenter.getIsPersonal()) {
+        if (!presenter.isPersonal()) {
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
     }
@@ -90,11 +92,22 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
 
         activity?.bottomNavigationView?.visibility = View.VISIBLE
 
-        if (presenter.getIsPersonal()) {
+        if (presenter.isPersonal()) {
             buttonFollow.visibility = View.GONE
         } else {
             buttonFollow.setOnClickListener {
-                presenter.followUserClicked()
+                if (presenter.isFollowingUser()) {
+                    MaterialDialog(context!!).show {
+                        title(R.string.unfollow_user_title)
+                        message(R.string.unfollow_user_message)
+                        positiveButton(R.string.unfollow) { _ ->
+                            presenter.followUserClicked()
+                        }
+                        negativeButton(R.string.cancel)
+                    }
+                } else {
+                    presenter.followUserClicked()
+                }
             }
         }
 
@@ -133,6 +146,9 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
             textViewUsername.visibility = View.GONE
         }
 
+        buttonFollow.text =
+            if (presenter.isFollowingUser()) getString(R.string.unfollow) else getString(R.string.follow)
+
         textViewFollowingQuantity.text = profile.following?.toString()
         textViewFollowersQuantity.text = profile.followers?.toString()
         textViewPostsQuantity.text = profile.commentsCount.toString()
@@ -159,7 +175,6 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
             }
         }
 
-
         scrollViewProfile.setOnBottomReachedListener {
             toast("setOnBottomReachedListener")
             // TODO: CARGAR MAS COMENTARIOS
@@ -169,6 +184,17 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
         profile.comments?.let { comments ->
             commentAdapter.setItems(comments)
         }
+    }
+
+    override fun showErrorMessage() {
+        view?.let { viewFrag ->
+            Snackbar.make(viewFrag, getString(R.string.error_request), Snackbar.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun followUserChanged() {
+        buttonFollow.text =
+            if (presenter.isFollowingUser()) getString(R.string.unfollow) else getString(R.string.follow)
     }
 
     override fun navigateToUserData() {

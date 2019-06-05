@@ -43,4 +43,10 @@
     <string name="your_comment">Tu comentario</string>
     <string name="incorrect_user_password">Usuario o contraseña incorrectos</string>
     <string name="contacts">Contactos</string>
+    <string name="error_request">Error en la solicitud</string>
+    <string name="follow_user_title">Seguir usuario</string>
+    <string name="unfollow_user_title">Dejar de seguir a usuario</string>
+    <string name="unfollow_user_message">¿Quieres dejar de seguir a este usuario?</string>
+    <string name="unfollow">Dejar de seguir</string>
+    <string name="follow">Seguir</string>
 </resources>

@@ -7,7 +7,8 @@ import com.zigerianos.jourtrip.presentation.base.IPresenter
 interface IProfilePresenter : IPresenter<IProfilePresenter.IProfileView> {
 
     fun setUserId(value: String?)
-    fun getIsPersonal(): Boolean
+    fun isPersonal(): Boolean
+    fun isFollowingUser(): Boolean
 
     fun settingsClicked()
     fun followUserClicked()
@@ -23,6 +24,10 @@ interface IProfilePresenter : IPresenter<IProfilePresenter.IProfileView> {
         fun stateError()
 
         fun loadUser(profile: UserProfile)
+
+        fun showErrorMessage()
+
+        fun followUserChanged()
 
         fun navigateToUserData()
         fun navigateToContacts(userId: String, myFollowings: Boolean = false, myFollowers: Boolean = false)
