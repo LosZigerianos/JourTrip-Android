@@ -90,6 +90,14 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
 
         activity?.bottomNavigationView?.visibility = View.VISIBLE
 
+        if (presenter.getIsPersonal()) {
+            buttonFollow.visibility = View.GONE
+        } else {
+            buttonFollow.setOnClickListener {
+                presenter.followUserClicked()
+            }
+        }
+
         setupRecyclerView()
     }
 

@@ -53,6 +53,10 @@ class ProfilePresenter(
         getMvpView()?.navigateToUserData()
     }
 
+    override fun followUserClicked() {
+        // TODO: IMPLEMENTAR SEGUIR USUARIO
+    }
+
     override fun followingClicked() {
         getMvpView()?.navigateToContacts(userId = mUserId, myFollowings = true)
     }
