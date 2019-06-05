@@ -84,7 +84,11 @@ class UserAdapter(
         fun bind(comment: Comment) {
             with(itemView) {
                 comment.user?.let { user ->
-                    picasso.load(comment.user.photo).into(imageViewUser)
+                    picasso
+                        .load(comment.user.photo)
+                        .placeholder(R.drawable.ic_profile_placeholder)
+                        .error(R.drawable.ic_profile_placeholder)
+                        .into(imageViewUser)
 
                     textViewUserName.text = "@${user.username}"
 

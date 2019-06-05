@@ -10,6 +10,7 @@ interface IProfilePresenter : IPresenter<IProfilePresenter.IProfileView> {
     fun getIsPersonal(): Boolean
 
     fun settingsClicked()
+    fun followUserClicked()
     fun followingClicked()
     fun followersClicked()
     fun locationClicked(location: Location)
