@@ -13,5 +13,7 @@ data class UserProfile(
     val creationDate: String?,
     @SerializedName("updated_at")
     val updatedAt: String?,
-    val comments: List<Comment>?
+    val comments: List<Comment>?,
+    @SerializedName("commentsCount")
+    val commentsCount: Int?
 )

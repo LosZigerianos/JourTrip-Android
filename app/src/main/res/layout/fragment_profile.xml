@@ -95,6 +95,19 @@
                 app:layout_constraintTop_toBottomOf="@+id/textViewFullname"
                 tools:text="texto_prueba" />
 
+            <Button
+                android:id="@+id/buttonFollow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:cornerRadius="14dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewUsername"
+                tools:text="XXXXXXX" />
+
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline1"
                 android:layout_width="wrap_content"
@@ -114,7 +127,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="XXX"
                 android:textAlignment="center"
@@ -122,7 +135,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/guideline2"
                 app:layout_constraintStart_toStartOf="@+id/guideline1"
-                app:layout_constraintTop_toBottomOf="@+id/textViewUsername" />
+                app:layout_constraintTop_toBottomOf="@+id/buttonFollow" />
 
             <TextView
                 android:id="@+id/textViewFollowingQuantity"

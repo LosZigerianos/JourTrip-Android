@@ -91,14 +91,6 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
         activity?.bottomNavigationView?.visibility = View.VISIBLE
 
         setupRecyclerView()
-
-        textViewFollowersQuantity.setOnClickListener {
-            presenter.followersClicked()
-        }
-
-        textViewFollowingQuantity.setOnClickListener {
-            presenter.followingClicked()
-        }
     }
 
     override fun stateLoading() {
@@ -135,14 +127,29 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
 
         textViewFollowingQuantity.text = profile.following?.toString()
         textViewFollowersQuantity.text = profile.followers?.toString()
-        // todo: que venga como propiedad el paginado un entero
-        textViewPostsQuantity.text = profile.comments?.count().toString()
+        textViewPostsQuantity.text = profile.commentsCount.toString()
 
         picasso
             .load(profile.photo)
             .placeholder(R.drawable.ic_profile_placeholder)
             .error(R.drawable.ic_profile_placeholder)
             .into(imageViewUser)
+
+        profile.following?.let { followingQuantity ->
+            if (followingQuantity > 0) {
+                textViewFollowingQuantity.setOnClickListener {
+                    presenter.followingClicked()
+                }
+            }
+        }
+
+        profile.followers?.let { followersQuantity ->
+            if (followersQuantity > 0) {
+                textViewFollowersQuantity.setOnClickListener {
+                    presenter.followersClicked()
+                }
+            }
+        }
 
 
         scrollViewProfile.setOnBottomReachedListener {
@@ -162,7 +169,7 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
     }
 
     override fun navigateToContacts(userId: String, myFollowings: Boolean, myFollowers: Boolean) {
-         val action = ProfileFragmentDirections.actionGoToContactsFragment(userId, myFollowings, myFollowers)
+        val action = ProfileFragmentDirections.actionGoToContactsFragment(userId, myFollowings, myFollowers)
         NavHostFragment.findNavController(this).navigate(action)
     }
 
