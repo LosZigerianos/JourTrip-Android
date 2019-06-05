@@ -225,7 +225,7 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/navigationProfile" />
+            app:popUpTo="@+id/profileUserFragment" />
         <action
             android:id="@+id/actionGoToContactsFragment"
             app:destination="@id/contactsFragment"
@@ -233,7 +233,7 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/navigationProfile" />
+            app:popUpTo="@+id/profileUserFragment" />
     </fragment>
 
 </navigation>
