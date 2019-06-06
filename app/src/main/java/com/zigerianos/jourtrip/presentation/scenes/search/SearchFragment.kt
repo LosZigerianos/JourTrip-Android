@@ -1,21 +1,15 @@
 package com.zigerianos.jourtrip.presentation.scenes.search
 
 import android.Manifest
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
+import android.app.Activity
 import android.content.pm.PackageManager
-import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -32,6 +26,8 @@ import org.koin.android.ext.android.inject
 import com.zigerianos.jourtrip.data.entities.Location
 import com.zigerianos.jourtrip.utils.CheckPermission
 import com.zigerianos.jourtrip.utils.NearbyAdapter
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
+import net.yslibrary.android.keyboardvisibilityevent.Unregistrar
 
 
 class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresenter>(),
@@ -44,6 +40,11 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var mLocationManager: LocationManager
 
+    private lateinit var mUnregistrar: Unregistrar
+    private val imm by lazy {
+        activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         presenter = mainPresenter
         super.onCreate(savedInstanceState)
@@ -51,6 +52,14 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
         activity?.let {
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(it)
         }
+    }
+
+    override fun onDestroyView() {
+        mUnregistrar.unregister()
+
+        super.onDestroyView()
+
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     override fun onResume() {
@@ -72,7 +81,8 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
                 return
             }
 
-            else -> { }
+            else -> {
+            }
         }
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -94,7 +104,6 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
 
         textInputLayoutSearching.editText?.setOnFocusChangeListener { view, boolean ->
             if (!boolean && isVisible) {
-                val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(container.windowToken, 0)
                 activity?.bottomNavigationView?.visibility = View.VISIBLE
             } else {
@@ -111,19 +120,14 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
 
         }
 
-        /*view?.isFocusableInTouchMode = true
-        view?.requestFocus()
-        view?.setOnKeyListener(object : View.OnKeyListener {
-            override fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    toast("HA PULSADO ATRAS")
-                    return true
-                }
-                return false
+        mUnregistrar = KeyboardVisibilityEvent.registerEventListener(activity!!) { isOpen ->
+            //activity?.bottomNavigationView?.visibility = if (isOpen) View.GONE else View.VISIBLE
+            if (!isOpen) {
+                activity?.bottomNavigationView?.visibility = View.VISIBLE
+                editTextSearch.clearFocus()
             }
-        })*/
+        }
 
-        // TODO: IMPLEMENTAR
         setupRecyclerView()
     }
 
