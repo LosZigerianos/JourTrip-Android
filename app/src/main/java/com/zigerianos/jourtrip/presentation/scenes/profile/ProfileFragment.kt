@@ -10,7 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.afollestad.materialdialogs.LayoutMode
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.bottomsheets.BottomSheet
+import com.afollestad.materialdialogs.list.listItems
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 
@@ -27,6 +30,7 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.toolbar_elevated.view.*
 import org.jetbrains.anko.support.v4.toast
 import org.koin.android.ext.android.inject
+import timber.log.Timber
 
 
 class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePresenter>(),
@@ -197,6 +201,11 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
             if (presenter.isFollowingUser()) getString(R.string.unfollow) else getString(R.string.follow)
     }
 
+    override fun removeComment(comment: Comment) {
+        val index = commentAdapter.getItems().indexOfFirst { it.id == comment.id}
+        commentAdapter.removeItem(index)
+    }
+
     override fun navigateToUserData() {
         val action = ProfileFragmentDirections.actionGoToUserDataFragment()
         NavHostFragment.findNavController(this).navigate(action)
@@ -218,8 +227,32 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
 
         commentAdapter.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<Comment> {
             override fun onItemClick(item: Comment, position: Int, view: View) {
-                item.location?.let { location ->
-                    presenter.locationClicked(location)
+                if (presenter.isPersonal()) {
+                    MaterialDialog(context!!, BottomSheet(LayoutMode.WRAP_CONTENT)).show {
+                        cornerRadius(16f)
+
+                        listItems(
+                            items = listOf(
+                                getString(R.string.watch),
+                                getString(R.string.remove)
+                            )
+                        ) { _, index, text ->
+                            when (index) {
+                                0 -> {
+                                    item.location?.let { location ->
+                                        presenter.locationClicked(location)
+                                    }
+                                }
+                                1 -> {
+                                    presenter.removeClicked(item)
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    item.location?.let { location ->
+                        presenter.locationClicked(location)
+                    }
                 }
             }
 

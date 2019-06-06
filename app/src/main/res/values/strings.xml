@@ -54,5 +54,7 @@
     <string name="unfollow_user_message">Do you want to not follow this user?</string>
     <string name="unfollow">Unfollow</string>
     <string name="follow">Follow</string>
+    <string name="watch">Watch</string>
+    <string name="remove">Remove</string>
 
 </resources>

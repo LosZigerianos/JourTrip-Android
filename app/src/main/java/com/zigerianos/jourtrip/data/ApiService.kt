@@ -146,4 +146,11 @@ interface ApiService {
     fun postAddCommentToLocationUseCase(
         @Body request: CommentRequest
     ): Observable<Data<CommentResponse>>
+
+    @DELETE("comments/{commentId}/delete")
+    fun deleteCommentUseCase(
+        @Path("commentId") commentId: String
+    ): Observable<Data<CommentResponse>>
+
+
 }

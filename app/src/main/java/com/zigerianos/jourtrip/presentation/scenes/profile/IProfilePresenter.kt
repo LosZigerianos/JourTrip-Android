@@ -1,5 +1,6 @@
 package com.zigerianos.jourtrip.presentation.scenes.profile
 
+import com.zigerianos.jourtrip.data.entities.Comment
 import com.zigerianos.jourtrip.data.entities.Location
 import com.zigerianos.jourtrip.data.entities.UserProfile
 import com.zigerianos.jourtrip.presentation.base.IPresenter
@@ -15,6 +16,7 @@ interface IProfilePresenter : IPresenter<IProfilePresenter.IProfileView> {
     fun followingClicked()
     fun followersClicked()
     fun locationClicked(location: Location)
+    fun removeClicked(comment: Comment)
 
     interface IProfileView : IPresenter.IView {
         fun setupToolbar()
@@ -28,6 +30,8 @@ interface IProfilePresenter : IPresenter<IProfilePresenter.IProfileView> {
         fun showErrorMessage()
 
         fun followUserChanged()
+
+        fun removeComment(comment: Comment)
 
         fun navigateToUserData()
         fun navigateToContacts(userId: String, myFollowings: Boolean = false, myFollowers: Boolean = false)

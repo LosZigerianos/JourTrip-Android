@@ -49,4 +49,6 @@
     <string name="unfollow_user_message">¿Quieres dejar de seguir a este usuario?</string>
     <string name="unfollow">Dejar de seguir</string>
     <string name="follow">Seguir</string>
+    <string name="watch">Ver</string>
+    <string name="remove">Eliminar</string>
 </resources>

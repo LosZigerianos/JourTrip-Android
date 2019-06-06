@@ -1,12 +1,10 @@
 package com.zigerianos.jourtrip.presentation.scenes.profile
 
 import com.zigerianos.jourtrip.auth.AuthManager
+import com.zigerianos.jourtrip.data.entities.Comment
 import com.zigerianos.jourtrip.data.entities.FollowingRequest
 import com.zigerianos.jourtrip.data.entities.Location
-import com.zigerianos.jourtrip.domain.usecases.DeleteFollowingUseCase
-import com.zigerianos.jourtrip.domain.usecases.GetCommentsByUserUseCase
-import com.zigerianos.jourtrip.domain.usecases.GetUserProfileUseCase
-import com.zigerianos.jourtrip.domain.usecases.PostAddFollowingUseCase
+import com.zigerianos.jourtrip.domain.usecases.*
 import com.zigerianos.jourtrip.presentation.base.BasePresenter
 import timber.log.Timber
 
@@ -14,6 +12,7 @@ class ProfilePresenter(
     private val authManager: AuthManager,
     private val getUserProfileUseCase: GetUserProfileUseCase,
     private val getCommentsByUserUseCase: GetCommentsByUserUseCase,
+    private val deleteCommentUseCase: DeleteCommentUseCase,
     private val postAddFollowingUseCase: PostAddFollowingUseCase,
     private val deleteFollowingUseCase: DeleteFollowingUseCase
 ) : BasePresenter<IProfilePresenter.IProfileView>(), IProfilePresenter {
@@ -85,6 +84,31 @@ class ProfilePresenter(
 
     override fun locationClicked(location: Location) {
         getMvpView()?.navigateToLocationDetail(location)
+    }
+
+    override fun removeClicked(comment: Comment) {
+        comment.id?.let { commentId ->
+            getMvpView()?.stateLoading()
+
+            val params = DeleteCommentUseCase.Params(commentId)
+
+            val disposable = deleteCommentUseCase.observable(params)
+                .subscribe({ response ->
+                    if (!response.success) {
+                        getMvpView()?.stateData()
+                        getMvpView()?.showErrorMessage()
+                        return@subscribe
+                    }
+
+                    getMvpView()?.stateData()
+                    getMvpView()?.removeComment(comment)
+                }, {
+                    Timber.e(it)
+                    getMvpView()?.stateError()
+                })
+
+            addDisposable(disposable)
+        }
     }
 
     private fun requesteProfile(userId: String) {

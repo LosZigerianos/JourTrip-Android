@@ -126,6 +126,13 @@ val useCasesModule = module {
     }
 
     factory {
+        DeleteCommentUseCase(
+            AsyncObservableTransformer(),
+            get()
+        )
+    }
+
+    factory {
         GetFollowersByUserUseCase(
             AsyncObservableTransformer(),
             get()
