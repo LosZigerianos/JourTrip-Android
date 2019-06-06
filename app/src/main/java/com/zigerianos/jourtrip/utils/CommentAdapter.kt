@@ -11,6 +11,9 @@ import com.zigerianos.jourtrip.data.entities.Comment
 import com.zigerianos.jourtrip.presentation.base.BaseAdapter
 import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
 import kotlinx.android.synthetic.main.row_comment.view.*
+import org.joda.time.format.DateTimeFormat
+import org.ocpsoft.prettytime.PrettyTime
+
 
 class CommentAdapter(
     context: Context,
@@ -132,6 +135,10 @@ class CommentAdapter(
                 }
 
                 textViewComment.text = comment.description
+
+                val dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                val creationDate = dateTimeFormatter.parseDateTime(comment.creationDate)
+                textViewDate.text = PrettyTime().format(creationDate.toDate())
             }
         }
     }

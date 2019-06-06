@@ -12,7 +12,7 @@ import android.graphics.Color
 import java.util.*
 
 
-class TagAdapter(context: Context): ItemClickAdapter<String, TagAdapter.TagViewHolder>(context) {
+class TagAdapter(context: Context) : ItemClickAdapter<String, TagAdapter.TagViewHolder>(context) {
 
     override fun onCreateViewHolder(recyclerView: ViewGroup, viewType: Int): TagViewHolder {
         val itemView = LayoutInflater.from(recyclerView.context)
@@ -28,7 +28,7 @@ class TagAdapter(context: Context): ItemClickAdapter<String, TagAdapter.TagViewH
     inner class TagViewHolder(view: View) : BaseAdapter.BaseViewHolder(view) {
         fun bind(tag: String) {
             with(itemView) {
-                background.setTint(Utils.getRandomDarkColor())
+                background.setTint(Utils.getBasicColor())
                 textViewTag.text = tag
             }
         }

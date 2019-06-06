@@ -56,7 +56,8 @@ interface ApiService {
         @Query("latitude") latitude: String,
         @Query("longitude") longitude: String,
         @Query("skip") skip: String?,
-        @Query("limit") limit: String?
+        @Query("limit") limit: String?,
+        @Query("search") search: String?
     ): Observable<Data<List<Location>>>
 
     // USER

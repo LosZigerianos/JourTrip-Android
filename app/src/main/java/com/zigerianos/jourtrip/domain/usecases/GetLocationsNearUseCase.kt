@@ -17,7 +17,8 @@ class GetLocationsNearUseCase(
                 params.latitude,
                 params.longitude,
                 params.skip.toString(),
-                params.limit.toString()
+                params.limit.toString(),
+                params.search
             ).map { it.data }
     }
 
@@ -25,6 +26,7 @@ class GetLocationsNearUseCase(
         val latitude: String,
         val longitude: String,
         val skip: Int? = null,
-        val limit: Int? = null
+        val limit: Int? = null,
+        val search: String? = null
     )
 }
