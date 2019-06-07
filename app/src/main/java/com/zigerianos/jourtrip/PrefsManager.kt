@@ -11,7 +11,6 @@ class PrefsManager(context: Context) : ContextWrapper(context) {
     private val sharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
     private val sharedPreferencesEditor by lazy { sharedPreferences.edit() }
 
-    // TODO: Implementar propias del proyecto
     enum class Keys(val value: String) {
         AccessToken("AccessToken"),
         ApplicationLanguage("ApplicationLanguage"),

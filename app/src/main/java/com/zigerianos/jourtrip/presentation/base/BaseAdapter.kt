@@ -23,7 +23,6 @@ open abstract class BaseAdapter<T, U : BaseAdapter.BaseViewHolder>(val context: 
         if (items.size > 0) {
             this.items.addAll(items)
 
-            // TODO: REPASAR
             //notifyItemRangeInserted(itemCount - items.size - 1, itemCount - 1)
             notifyItemRangeInserted(itemCount - items.size, itemCount)
         }
