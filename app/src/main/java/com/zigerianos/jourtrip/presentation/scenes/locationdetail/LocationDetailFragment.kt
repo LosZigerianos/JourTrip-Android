@@ -20,6 +20,7 @@ import com.zigerianos.jourtrip.data.entities.Location
 import com.zigerianos.jourtrip.data.entities.User
 import com.zigerianos.jourtrip.presentation.base.BaseFragment
 import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
+import com.zigerianos.jourtrip.utils.EndlessScrollListener
 import com.zigerianos.jourtrip.utils.UserAdapter
 import kotlinx.android.synthetic.main.fragment_location_detail.*
 import kotlinx.android.synthetic.main.toolbar_elevated.view.*
@@ -37,6 +38,8 @@ class LocationDetailFragment :
     private val mainPresenter by inject<ILocationDetailPresenter>()
     private val picasso by inject<Picasso>()
     private val userCommentAdapter by inject<UserAdapter>()
+
+    private var mEndlessScrollListener = EndlessScrollListener { presenter.loadMoreData() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         presenter = mainPresenter
@@ -106,13 +109,16 @@ class LocationDetailFragment :
         errorLayout.visibility = View.VISIBLE
     }
 
-    override fun loadComments(comments: List<Comment>) {
-        userCommentAdapter.setItems(comments)
-    }
+    override fun loadComments(comments: List<Comment>, forMorePages: Boolean) {
+        if (comments.isEmpty()) {
+            userCommentAdapter.setLoaderVisible(false)
+            mEndlessScrollListener.shouldListenForMorePages(false)
+            return
+        }
 
-    override fun loadMoreComments(comments: List<Comment>) {
-        // TODO
-        toast("Cargar más los comentarios")
+        userCommentAdapter.setLoaderVisible(forMorePages)
+        mEndlessScrollListener.shouldListenForMorePages(forMorePages)
+        userCommentAdapter.addItems(comments)
     }
 
     override fun showErrorMessage() {
@@ -130,9 +136,9 @@ class LocationDetailFragment :
         recyclerViewComments.layoutManager = LinearLayoutManager(activity)
         recyclerViewComments.adapter = userCommentAdapter
 
-        //mEndlessScrollListener.shouldListenForMorePages(true)
-        //recyclerViewComments.addOnScrollListener(mEndlessScrollListener)
-        //timelineAdapter.setLoaderVisible(true)
+        mEndlessScrollListener.shouldListenForMorePages(true)
+        recyclerViewComments.addOnScrollListener(mEndlessScrollListener)
+        userCommentAdapter.setLoaderVisible(true)
 
         userCommentAdapter.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<Comment> {
             override fun onItemClick(item: Comment, position: Int, view: View) {

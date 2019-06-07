@@ -1,5 +1,6 @@
 package com.zigerianos.jourtrip.presentation.scenes.locationdetail
 
+import com.zigerianos.jourtrip.data.entities.Comment
 import com.zigerianos.jourtrip.data.entities.CommentRequest
 import com.zigerianos.jourtrip.data.entities.Location
 import com.zigerianos.jourtrip.data.entities.User
@@ -12,6 +13,10 @@ class LocationDetailPresenter(
     private val getCommentsByLocationUseCase: GetCommentsByLocationUseCase,
     private val postAddCommentToLocationUseCase: PostAddCommentToLocationUseCase
 ) : BasePresenter<ILocationDetailPresenter.ILocationDetailView>(), ILocationDetailPresenter {
+
+    private var mCommentList: MutableList<Comment> = mutableListOf()
+    private var mTotalCount: Int = 0
+    private val PAGINATION_REQUEST: Int = 5
 
     private lateinit var mLocation: Location
 
@@ -47,13 +52,28 @@ class LocationDetailPresenter(
         getMvpView()?.navigateToUserProfile(user)
     }
 
+    override fun loadMoreData() {
+        requestLocationData()
+    }
+
     private fun requestLocationData() {
         mLocation.id?.let { locationId ->
-            val params = GetCommentsByLocationUseCase.Params(locationId)
+            val params =
+                GetCommentsByLocationUseCase.Params(locationId, skip = mCommentList.count(), limit = PAGINATION_REQUEST)
 
             val disposable = getCommentsByLocationUseCase.observable(params)
-                .subscribe({ comments ->
-                    getMvpView()?.loadComments(comments)
+                .subscribe({ response ->
+
+                    if (response.data.isEmpty()) {
+                        getMvpView()?.loadComments(emptyList())
+                        getMvpView()?.stateData()
+                        return@subscribe
+                    }
+
+                    mTotalCount = response.count
+
+                    mCommentList.addAll(response.data.toMutableList())
+                    getMvpView()?.loadComments(response.data, forMorePages = mCommentList.count() < mTotalCount)
                     getMvpView()?.stateData()
                 }, {
                     Timber.e(it)
@@ -72,7 +92,7 @@ class LocationDetailPresenter(
             val params = PostAddCommentToLocationUseCase.Params(commentRequest)
 
             val disposable = postAddCommentToLocationUseCase.observable(params)
-                .subscribe({ response ->
+                .subscribe({
                     requestLocationData()
                 }, {
                     Timber.e(it)
