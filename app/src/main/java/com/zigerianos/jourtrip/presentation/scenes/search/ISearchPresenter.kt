@@ -9,6 +9,7 @@ interface ISearchPresenter : IPresenter<ISearchPresenter.ISearchView> {
     fun searchLocationByNameClicked(name: String)
 
     fun locationClicked(location: Location)
+    fun loadMoreData()
 
     interface ISearchView : IPresenter.IView {
         fun setupToolbar()
@@ -17,7 +18,7 @@ interface ISearchPresenter : IPresenter<ISearchPresenter.ISearchView> {
         fun stateData()
         fun stateError()
 
-        fun loadLocations(locations: List<Location>)
+        fun loadLocations(locations: List<Location>, forMorePages: Boolean = false)
 
         fun navigateToLocationDetail(location: Location)
     }

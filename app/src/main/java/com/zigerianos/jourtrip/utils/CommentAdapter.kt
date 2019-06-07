@@ -67,7 +67,7 @@ class CommentAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: BaseAdapter.BaseViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         if (getItemViewType(position) == TYPE_ITEM) {
             (holder as CommentViewHolder).bind(getItem(position))
         }

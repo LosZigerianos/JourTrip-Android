@@ -25,6 +25,7 @@ import org.jetbrains.anko.support.v4.toast
 import org.koin.android.ext.android.inject
 import com.zigerianos.jourtrip.data.entities.Location
 import com.zigerianos.jourtrip.utils.CheckPermission
+import com.zigerianos.jourtrip.utils.EndlessScrollListener
 import com.zigerianos.jourtrip.utils.NearbyAdapter
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import net.yslibrary.android.keyboardvisibilityevent.Unregistrar
@@ -34,11 +35,12 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
     ISearchPresenter.ISearchView {
 
     private val mainPresenter by inject<ISearchPresenter>()
-
     private val nearbyAdapter by inject<NearbyAdapter>()
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var mLocationManager: LocationManager
+
+    private var mEndlessScrollListener = EndlessScrollListener { presenter.loadMoreData() }
 
     private lateinit var mUnregistrar: Unregistrar
     private val imm by lazy {
@@ -59,6 +61,7 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
 
         super.onDestroyView()
 
+        activity?.bottomNavigationView?.visibility = View.VISIBLE
         imm.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
@@ -97,9 +100,8 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
         toolbar.toolbarImage.visibility = View.VISIBLE
         toolbar.toolbarImage.setOnClickListener {
             scrollViewSearching.fullScroll(ScrollView.FOCUS_UP)
+            activity?.bottomNavigationView?.visibility = View.VISIBLE
         }
-
-        activity?.bottomNavigationView?.visibility = View.VISIBLE
 
         textInputLayoutSearching.editText?.setOnFocusChangeListener { view, boolean ->
             if (!boolean && isVisible) {
@@ -128,6 +130,16 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
         }
 
         setupRecyclerView()
+
+        scrollViewSearching.setOnScrolledDownListener {
+            activity?.bottomNavigationView?.visibility = View.VISIBLE
+            editTextSearch.clearFocus()
+        }
+
+        scrollViewSearching.setOnScrolledUpListener {
+            activity?.bottomNavigationView?.visibility = View.VISIBLE
+            editTextSearch.clearFocus()
+        }
     }
 
     override fun stateLoading() {
@@ -148,8 +160,16 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
         //errorLayout.visibility = View.VISIBLE
     }
 
-    override fun loadLocations(locations: List<Location>) {
-        nearbyAdapter.setItems(locations)
+    override fun loadLocations(locations: List<Location>, forMorePages: Boolean) {
+        if (locations.isEmpty()) {
+            nearbyAdapter.setLoaderVisible(false)
+            mEndlessScrollListener.shouldListenForMorePages(false)
+            return
+        }
+
+        nearbyAdapter.setLoaderVisible(forMorePages)
+        mEndlessScrollListener.shouldListenForMorePages(forMorePages)
+        nearbyAdapter.addItems(locations)
     }
 
     override fun navigateToLocationDetail(location: Location) {
@@ -158,11 +178,27 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
     }
 
     private fun setupRecyclerView() {
-        recyclerViewSearching.layoutManager = GridLayoutManager(activity, 2)
+        //recyclerViewSearching.layoutManager = GridLayoutManager(activity, 2)
+        val gridLayoutManager = GridLayoutManager(activity, 2)
+        gridLayoutManager.spanSizeLookup = (object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return when (nearbyAdapter.getItemViewType(position)) {
+                    nearbyAdapter.TYPE_ITEM -> 1
+                    nearbyAdapter.TYPE_LOADER -> 2
+                    else -> 0
+                }
+            }
+        })
+        recyclerViewSearching.layoutManager = gridLayoutManager
         recyclerViewSearching.adapter = nearbyAdapter
+
+        //mEndlessScrollListener.shouldListenForMorePages(true)
+        recyclerViewSearching.addOnScrollListener(mEndlessScrollListener)
+        //nearbyAdapter.setLoaderVisible(false)
 
         nearbyAdapter.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<Location> {
             override fun onItemClick(item: Location, position: Int, view: View) {
+                activity?.bottomNavigationView?.visibility = View.VISIBLE
                 presenter.locationClicked(item)
             }
         })

@@ -11,6 +11,16 @@ class SearchPresenter(
     private val getLocationByNameUseCase: GetLocationByNameUseCase
 ) :  BasePresenter<ISearchPresenter.ISearchView>(), ISearchPresenter {
 
+    private var mLocationList: MutableList<Location> = mutableListOf()
+    private var mTotalCount: Int = 0
+    private val PAGINATION_REQUEST: Int = 10
+
+    private var mLastLatitude = ""
+    private var mLastLongitude = ""
+
+    private var mSearchClicked = false
+    private var mLastLocation = ""
+
     override fun update() {
         super.update()
 
@@ -20,30 +30,52 @@ class SearchPresenter(
     }
 
     override fun localizedUser(latitude: String, longitude: String) {
-        requestLocationByCoordinates(latitude, longitude)
+        mLastLatitude = latitude
+        mLastLongitude = longitude
+
+        requestLocationByCoordinates()
     }
 
     override fun searchLocationByNameClicked(name: String) {
         //getMvpView()?.stateLoading()
 
-        requestLocationByName(name)
+        if (name.isNotEmpty()) {
+            mLocationList.clear()
+            mSearchClicked = true
+            mLastLocation = name
+
+            requestLocationByName()
+        }
     }
 
     override fun locationClicked(location: Location) {
         getMvpView()?.navigateToLocationDetail(location)
     }
 
-    private fun requestLocationByCoordinates(latitude: String, longitude: String) {
-        val params = GetLocationsNearUseCase.Params(latitude, longitude)
+    override fun loadMoreData() {
+        if (mSearchClicked) {
+            requestLocationByName()
+        } else {
+            requestLocationByCoordinates()
+        }
+    }
+
+    private fun requestLocationByCoordinates() {
+        val params = GetLocationsNearUseCase.Params(mLastLatitude, mLastLongitude, skip = mLocationList.count(), limit = PAGINATION_REQUEST)
 
         val disposable = getLocationsNearUseCase.observable(params)
-            .subscribe({ locations ->
+            .subscribe({ response ->
+                if (response.data.isEmpty()) {
+                    getMvpView()?.loadLocations(emptyList())
+                    getMvpView()?.stateData()
+                    return@subscribe
+                }
 
-                Timber.d("Patata locations: $locations")
+                mTotalCount = response.count
 
-                getMvpView()?.loadLocations(locations)
+                mLocationList.addAll(response.data.toMutableList())
+                getMvpView()?.loadLocations(response.data, forMorePages = mLocationList.count() < mTotalCount)
                 getMvpView()?.stateData()
-
             }, {
                 Timber.e(it)
                 getMvpView()?.stateError()
@@ -52,17 +84,22 @@ class SearchPresenter(
         addDisposable(disposable)
     }
 
-    private fun requestLocationByName(name: String) {
-        val params = GetLocationByNameUseCase.Params(name)
+    private fun requestLocationByName() {
+        val params = GetLocationByNameUseCase.Params(mLastLocation, skip = mLocationList.count(), limit = PAGINATION_REQUEST)
 
         val disposable = getLocationByNameUseCase.observable(params)
-            .subscribe({ locations ->
+            .subscribe({ response ->
+                if (response.data.isEmpty()) {
+                    getMvpView()?.loadLocations(emptyList())
+                    getMvpView()?.stateData()
+                    return@subscribe
+                }
 
-                Timber.d("Patata locations: $locations")
+                mTotalCount = response.count
 
-                getMvpView()?.loadLocations(locations)
+                mLocationList.addAll(response.data.toMutableList())
+                getMvpView()?.loadLocations(response.data, forMorePages = mLocationList.count() < mTotalCount)
                 getMvpView()?.stateData()
-
             }, {
                 Timber.e(it)
                 getMvpView()?.stateError()

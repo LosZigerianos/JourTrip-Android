@@ -62,7 +62,6 @@ class HomePresenter(
                     mCommentList.addAll(response.data.toMutableList())
                     getMvpView()?.loadComments(response.data, forMorePages = mCommentList.count() < mTotalCount)
                     getMvpView()?.stateData()
-
                 }, {
                     Timber.e(it)
 

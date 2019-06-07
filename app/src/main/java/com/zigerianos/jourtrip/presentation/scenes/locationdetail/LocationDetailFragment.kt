@@ -24,7 +24,6 @@ import com.zigerianos.jourtrip.utils.EndlessScrollListener
 import com.zigerianos.jourtrip.utils.UserAdapter
 import kotlinx.android.synthetic.main.fragment_location_detail.*
 import kotlinx.android.synthetic.main.toolbar_elevated.view.*
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_error_loading.view.*
 import org.jetbrains.anko.support.v4.toast
 import org.koin.android.ext.android.inject
