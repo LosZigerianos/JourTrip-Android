@@ -33,6 +33,12 @@ open abstract class BaseAdapter<T, U : BaseAdapter.BaseViewHolder>(val context: 
         notifyItemRemoved(position)
     }
 
+    fun removeAllItems() {
+        val range = itemCount
+        this.items.clear()
+        notifyItemRangeRemoved(0, range)
+    }
+
     fun updateItem(position: Int, item: T) {
         this.items.removeAt(position)
         this.items.add(position, item)

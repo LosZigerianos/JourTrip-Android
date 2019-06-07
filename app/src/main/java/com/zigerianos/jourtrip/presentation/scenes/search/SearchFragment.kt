@@ -3,7 +3,6 @@ package com.zigerianos.jourtrip.presentation.scenes.search
 import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
-import android.location.LocationManager
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -112,10 +111,10 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
             textInputLayoutSearching.clearFocus()
 
             if (editTextSearch.text.toString().isNotEmpty()) {
+                nearbyAdapter.removeAllItems()
                 nearbyAdapter.setLoaderVisible(true)
                 presenter.searchLocationByNameClicked(editTextSearch.text.toString())
             }
-
         }
 
         mUnregistrar = KeyboardVisibilityEvent.registerEventListener(activity!!) { isOpen ->
