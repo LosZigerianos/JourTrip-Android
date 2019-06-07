@@ -122,9 +122,9 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
         recyclerViewContacts.layoutManager = LinearLayoutManager(activity)
         recyclerViewContacts.adapter = contactAdapter
 
-        //mEndlessScrollListener.shouldListenForMorePages(true)
-        //recyclerViewContacts.addOnScrollListener(mEndlessScrollListener)
-        //contactAdapter.setLoaderVisible(true)
+        mEndlessScrollListener.shouldListenForMorePages(true)
+        recyclerViewContacts.addOnScrollListener(mEndlessScrollListener)
+        contactAdapter.setLoaderVisible(true)
 
         contactAdapter.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<User> {
             override fun onItemClick(item: User, position: Int, view: View) {

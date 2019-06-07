@@ -48,10 +48,8 @@ class HomePresenter(
     private fun requestTimeLine() {
         authManager.getUserId()?.let { userId ->
             val disposable = getTimeLineUseCase.observable(
-                GetTimeLineUseCase.Params(userId, skip = mCommentList.count(), limit = PAGINATION_REQUEST)
-            )
+                GetTimeLineUseCase.Params(userId, skip = mCommentList.count(), limit = PAGINATION_REQUEST))
                 .subscribe({ response ->
-
 
                     if (response.data.isEmpty()) {
                         getMvpView()?.loadComments(emptyList())
