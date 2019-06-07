@@ -111,6 +111,12 @@ class ProfilePresenter(
         }
     }
 
+    override fun reloadDataClicked() {
+        getMvpView()?.stateLoading()
+
+        requesteProfile(mUserId)
+    }
+
     private fun requesteProfile(userId: String) {
         val params = GetUserProfileUseCase.Params(userId = userId)
 

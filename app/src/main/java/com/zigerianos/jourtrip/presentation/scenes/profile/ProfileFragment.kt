@@ -26,11 +26,11 @@ import com.zigerianos.jourtrip.presentation.base.BaseFragment
 import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
 import com.zigerianos.jourtrip.utils.CommentAdapter
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_error_loading.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.toolbar_elevated.view.*
 import org.jetbrains.anko.support.v4.toast
 import org.koin.android.ext.android.inject
-import timber.log.Timber
 
 
 class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePresenter>(),
@@ -116,6 +116,7 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
         }
 
         setupRecyclerView()
+        setupError()
     }
 
     override fun stateLoading() {
@@ -202,7 +203,7 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
     }
 
     override fun removeComment(comment: Comment) {
-        val index = commentAdapter.getItems().indexOfFirst { it.id == comment.id}
+        val index = commentAdapter.getItems().indexOfFirst { it.id == comment.id }
         commentAdapter.removeItem(index)
     }
 
@@ -257,6 +258,10 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
             }
 
         })
+    }
+
+    private fun setupError() {
+        errorLayout.buttonReload.setOnClickListener { presenter.reloadDataClicked() }
     }
 
     /*private fun loadMore() {

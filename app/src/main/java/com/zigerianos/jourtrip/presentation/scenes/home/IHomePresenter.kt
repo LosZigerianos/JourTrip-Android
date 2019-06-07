@@ -7,6 +7,7 @@ import com.zigerianos.jourtrip.presentation.base.IPresenter
 interface IHomePresenter : IPresenter<IHomePresenter.IHomeView> {
 
     fun locationClicked(location: Location)
+    fun reloadDataClicked()
 
     interface IHomeView: IPresenter.IView {
         fun setupToolbar()

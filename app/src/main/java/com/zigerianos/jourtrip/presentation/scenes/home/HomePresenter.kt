@@ -33,13 +33,19 @@ class HomePresenter(
         getMvpView()?.navigateToLocationDetail(location)
     }
 
+    override fun reloadDataClicked() {
+        getMvpView()?.stateLoading()
+
+        requestTimeLine()
+    }
+
     private fun requestTimeLine() {
         authManager.getUserId()?.let { userId ->
             val disposable = getTimeLineUseCase.observable(GetTimeLineUseCase.Params(userId))
                 .subscribe({ commentsList ->
 
                     if (commentsList.isEmpty()) {
-                        //TODO: IMPLEMENTAR LISTA VACIA
+                        //TODO: ¿Show something?
                         getMvpView()?.stateData()
                         return@subscribe
                     }

@@ -17,6 +17,7 @@ interface IProfilePresenter : IPresenter<IProfilePresenter.IProfileView> {
     fun followersClicked()
     fun locationClicked(location: Location)
     fun removeClicked(comment: Comment)
+    fun reloadDataClicked()
 
     interface IProfileView : IPresenter.IView {
         fun setupToolbar()

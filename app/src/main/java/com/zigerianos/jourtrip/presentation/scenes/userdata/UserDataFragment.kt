@@ -28,6 +28,7 @@ import org.jetbrains.anko.support.v4.toast
 import org.koin.android.ext.android.inject
 import com.zigerianos.jourtrip.R
 import android.content.pm.PackageManager
+import kotlinx.android.synthetic.main.fragment_error_loading.view.*
 
 
 class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDataPresenter>(),
@@ -87,7 +88,8 @@ class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDat
                 return
             }
 
-            else -> { }
+            else -> {
+            }
         }
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -129,6 +131,8 @@ class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDat
         imageViewUser.setOnClickListener {
             showPictureDialog()
         }
+
+        setupError()
     }
 
     override fun loadUser(user: User) {
@@ -146,13 +150,21 @@ class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDat
     }
 
     override fun stateLoading() {
+        errorLayout.visibility = View.GONE
         groupUserData.visibility = View.GONE
         progressBar.visibility = View.VISIBLE
     }
 
     override fun stateData() {
+        errorLayout.visibility = View.GONE
         groupUserData.visibility = View.VISIBLE
         progressBar.visibility = View.GONE
+    }
+
+    override fun stateError() {
+        groupUserData.visibility = View.GONE
+        progressBar.visibility = View.GONE
+        errorLayout.visibility = View.VISIBLE
     }
 
     override fun showSuccessMessage() {
@@ -165,6 +177,10 @@ class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDat
 
     override fun navigateToInit() {
         NavHostFragment.findNavController(this).navigate(UserDataFragmentDirections.actionGoToInitialFragment())
+    }
+
+    private fun setupError() {
+        errorLayout.buttonReload.setOnClickListener { presenter.reloadDataClicked() }
     }
 
     private fun checkPersonalDataFields(): Boolean {
@@ -232,7 +248,8 @@ class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDat
         val pictureDialog = AlertDialog.Builder(context!!)
         pictureDialog.setTitle(getString(R.string.select_action))
 
-        val pictureDialogItems = arrayOf(getString(R.string.select_photo_from_gallery), getString(R.string.capture_photo_from_camera))
+        val pictureDialogItems =
+            arrayOf(getString(R.string.select_photo_from_gallery), getString(R.string.capture_photo_from_camera))
         pictureDialog.setItems(pictureDialogItems) { _, which ->
             when (which) {
                 0 -> {

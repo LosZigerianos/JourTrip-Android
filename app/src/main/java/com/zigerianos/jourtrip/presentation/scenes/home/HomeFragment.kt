@@ -16,6 +16,7 @@ import com.zigerianos.jourtrip.presentation.base.BaseFragment
 import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
 import com.zigerianos.jourtrip.utils.CommentAdapter
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_error_loading.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.toolbar_elevated.view.*
 import org.koin.android.ext.android.inject
@@ -48,6 +49,7 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
         activity?.bottomNavigationView?.visibility = View.VISIBLE
 
         setupRecyclerView()
+        setupError()
     }
 
     override fun stateLoading() {
@@ -109,6 +111,10 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
                 }
             }
         })
+    }
+
+    private fun setupError() {
+        errorLayout.buttonReload.setOnClickListener { presenter.reloadDataClicked() }
     }
 
     override fun getLayoutResource(): Int = R.layout.fragment_home

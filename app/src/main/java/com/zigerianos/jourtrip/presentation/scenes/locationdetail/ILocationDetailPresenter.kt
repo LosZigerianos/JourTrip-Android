@@ -17,6 +17,7 @@ interface ILocationDetailPresenter: IPresenter<ILocationDetailPresenter.ILocatio
     fun addCommentToLocation(comment: String)
 
     fun userClicked(user: User)
+    fun reloadDataClicked()
 
     interface ILocationDetailView: IPresenter.IView {
         fun setupToolbar()

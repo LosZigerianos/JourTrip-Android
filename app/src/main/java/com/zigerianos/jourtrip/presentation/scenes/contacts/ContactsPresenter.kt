@@ -60,6 +60,16 @@ class ContactsPresenter(
         }
     }
 
+    override fun reloadDataClicked() {
+        getMvpView()?.stateLoading()
+
+        if (mFollowing) {
+            requestFollowing()
+        } else if (mFollowers) {
+            requestFollowers()
+        }
+    }
+
     private fun requestFollowers() {
         val params = GetFollowersByUserUseCase.Params(mUserId)
 
@@ -67,7 +77,7 @@ class ContactsPresenter(
             .subscribe({ contacts ->
 
                 if (contacts.isEmpty()) {
-                    //TODO: IMPLEMENTAR LISTA VACIA
+                    //TODO: ¿Show something?
                     getMvpView()?.stateData()
                     return@subscribe
                 }
@@ -91,7 +101,7 @@ class ContactsPresenter(
             .subscribe({ contacts ->
 
                 if (contacts.isEmpty()) {
-                    //TODO: IMPLEMENTAR LISTA VACIA
+                    //TODO: ¿Show something?
                     getMvpView()?.stateData()
                     return@subscribe
                 }

@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.fragment_contacts.*
 import kotlinx.android.synthetic.main.fragment_contacts.errorLayout
 import kotlinx.android.synthetic.main.fragment_contacts.progressBar
 import kotlinx.android.synthetic.main.fragment_contacts.toolbar
+import kotlinx.android.synthetic.main.fragment_error_loading.view.*
 import kotlinx.android.synthetic.main.toolbar_elevated.view.*
 import org.koin.android.ext.android.inject
 
@@ -70,6 +71,7 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
         activity?.bottomNavigationView?.visibility = View.VISIBLE
 
         setupRecyclerView()
+        setupError()
     }
 
     override fun stateLoading() {
@@ -118,6 +120,10 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
                 presenter.userClicked(item)
             }
         })
+    }
+
+    private fun setupError() {
+        errorLayout.buttonReload.setOnClickListener { presenter.reloadDataClicked() }
     }
 
     override fun getLayoutResource(): Int = R.layout.fragment_contacts

@@ -29,6 +29,12 @@ class LocationDetailPresenter(
         requestLocationData()
     }
 
+    override fun reloadDataClicked() {
+        getMvpView()?.stateLoading()
+
+        requestLocationData()
+    }
+
     override fun getPhoto(): String = mLocation.photos?.first() ?: ""
 
     override fun getName(): String = mLocation.name ?: ""
