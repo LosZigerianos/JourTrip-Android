@@ -14,6 +14,7 @@ import com.zigerianos.jourtrip.data.entities.User
 import com.zigerianos.jourtrip.presentation.base.BaseFragment
 import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
 import com.zigerianos.jourtrip.utils.ContactAdapter
+import com.zigerianos.jourtrip.utils.EndlessScrollListener
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_contacts.*
 import kotlinx.android.synthetic.main.fragment_contacts.errorLayout
@@ -38,6 +39,8 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
 
     private val mainPresenter by inject<IContactsPresenter>()
     private val contactAdapter by inject<ContactAdapter>()
+
+    private var mEndlessScrollListener = EndlessScrollListener { presenter.loadMoreData() }
 
     //private var mEndlessScrollListener = EndlessScrollListener {toast("Hola hola")}
 
@@ -92,8 +95,16 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
         errorLayout.visibility = View.VISIBLE
     }
 
-    override fun loadUsers(users: List<User>) {
-        contactAdapter.setItems(users)
+    override fun loadUsers(users: List<User>, forMorePages: Boolean) {
+        if (users.isEmpty()) {
+            contactAdapter.setLoaderVisible(false)
+            mEndlessScrollListener.shouldListenForMorePages(false)
+            return
+        }
+
+        contactAdapter.setLoaderVisible(forMorePages)
+        mEndlessScrollListener.shouldListenForMorePages(forMorePages)
+        contactAdapter.addItems(users)
     }
 
     override fun navigateToUserProfile(main: Boolean, user: User) {

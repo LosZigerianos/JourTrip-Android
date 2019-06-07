@@ -18,8 +18,7 @@ class HomePresenter(
 ) : BasePresenter<IHomePresenter.IHomeView>(), IHomePresenter {
 
     private var mCommentList: MutableList<Comment> = mutableListOf()
-    private var totalCount: Int = 0
-
+    private var mTotalCount: Int = 0
     private val PAGINATION_REQUEST: Int = 5
 
     override fun update() {
@@ -49,11 +48,7 @@ class HomePresenter(
     private fun requestTimeLine() {
         authManager.getUserId()?.let { userId ->
             val disposable = getTimeLineUseCase.observable(
-                GetTimeLineUseCase.Params(
-                    userId,
-                    skip = mCommentList.count(),
-                    limit = PAGINATION_REQUEST
-                )
+                GetTimeLineUseCase.Params(userId, skip = mCommentList.count(), limit = PAGINATION_REQUEST)
             )
                 .subscribe({ response ->
 
@@ -64,10 +59,10 @@ class HomePresenter(
                         return@subscribe
                     }
 
-                    totalCount = response.count
+                    mTotalCount = response.count
 
                     mCommentList.addAll(response.data.toMutableList())
-                    getMvpView()?.loadComments(response.data, forMorePages = mCommentList.count() < totalCount)
+                    getMvpView()?.loadComments(response.data, forMorePages = mCommentList.count() < mTotalCount)
                     getMvpView()?.stateData()
 
                 }, {

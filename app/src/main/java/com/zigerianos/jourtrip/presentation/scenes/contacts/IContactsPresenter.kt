@@ -10,6 +10,7 @@ interface IContactsPresenter : IPresenter<IContactsPresenter.IContacts> {
     fun setFollowers(value: Boolean)
 
     fun userClicked(user: User)
+    fun loadMoreData()
     fun reloadDataClicked()
 
     interface IContacts: IPresenter.IView {
@@ -19,7 +20,7 @@ interface IContactsPresenter : IPresenter<IContactsPresenter.IContacts> {
         fun stateData()
         fun stateError()
 
-        fun loadUsers(users: List<User>)
+        fun loadUsers(users: List<User>, forMorePages: Boolean = false)
 
         fun navigateToUserProfile(main: Boolean, user: User)
     }

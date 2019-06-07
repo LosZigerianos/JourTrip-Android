@@ -13,6 +13,10 @@ class ContactsPresenter(
     private val getFollowersByUserUseCase: GetFollowersByUserUseCase
 ) : BasePresenter<IContactsPresenter.IContacts>(), IContactsPresenter {
 
+    private var mUserList: MutableList<User> = mutableListOf()
+    private var mTotalCount: Int = 0
+    private val PAGINATION_REQUEST: Int = 12
+
     private var mUserId: String = ""
     private var mFollowing = false
     private var mFollowers = false
@@ -60,6 +64,14 @@ class ContactsPresenter(
         }
     }
 
+    override fun loadMoreData() {
+        if (mFollowing) {
+            requestFollowing()
+        } else if (mFollowers) {
+            requestFollowers()
+        }
+    }
+
     override fun reloadDataClicked() {
         getMvpView()?.stateLoading()
 
@@ -71,20 +83,22 @@ class ContactsPresenter(
     }
 
     private fun requestFollowers() {
-        val params = GetFollowersByUserUseCase.Params(mUserId)
+        val params = GetFollowersByUserUseCase.Params(mUserId, skip = mUserList.count(), limit = PAGINATION_REQUEST)
 
         val disposable = getFollowersByUserUseCase.observable(params)
-            .subscribe({ contacts ->
+            .subscribe({ response ->
 
-                if (contacts.isEmpty()) {
-                    //TODO: ¿Show something?
+                if (response.data.isEmpty()) {
+                    getMvpView()?.loadUsers(emptyList())
                     getMvpView()?.stateData()
                     return@subscribe
                 }
 
-                getMvpView()?.loadUsers(contacts)
-                getMvpView()?.stateData()
+                mTotalCount = response.count
 
+                mUserList.addAll(response.data.toMutableList())
+                getMvpView()?.loadUsers(response.data, forMorePages = mUserList.count() < mTotalCount)
+                getMvpView()?.stateData()
             }, {
                 Timber.e(it)
                 getMvpView()?.stateError()
@@ -95,20 +109,22 @@ class ContactsPresenter(
     }
 
     private fun requestFollowing() {
-        val params = GetFollowingByUserUseCase.Params(mUserId)
+        val params = GetFollowingByUserUseCase.Params(mUserId, skip = mUserList.count(), limit = PAGINATION_REQUEST)
 
         val disposable = getFollowingByUserUseCase.observable(params)
-            .subscribe({ contacts ->
+            .subscribe({ response ->
 
-                if (contacts.isEmpty()) {
-                    //TODO: ¿Show something?
+                if (response.data.isEmpty()) {
+                    getMvpView()?.loadUsers(emptyList())
                     getMvpView()?.stateData()
                     return@subscribe
                 }
 
-                getMvpView()?.loadUsers(contacts)
-                getMvpView()?.stateData()
+                mTotalCount = response.count
 
+                mUserList.addAll(response.data.toMutableList())
+                getMvpView()?.loadUsers(response.data, forMorePages = mUserList.count() < mTotalCount)
+                getMvpView()?.stateData()
             }, {
                 Timber.e(it)
                 getMvpView()?.stateError()
