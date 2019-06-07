@@ -7,16 +7,17 @@ import com.zigerianos.jourtrip.presentation.base.IPresenter
 interface IHomePresenter : IPresenter<IHomePresenter.IHomeView> {
 
     fun locationClicked(location: Location)
+    fun loadMoreData()
     fun reloadDataClicked()
 
-    interface IHomeView: IPresenter.IView {
+    interface IHomeView : IPresenter.IView {
         fun setupToolbar()
         fun setupViews()
         fun stateLoading()
         fun stateData()
         fun stateError()
 
-        fun loadComments(comments: List<Comment>)
+        fun loadComments(comments: List<Comment>, forMorePages: Boolean = false)
 
         fun navigateToLocationDetail(location: Location)
         fun navigateToInit()
