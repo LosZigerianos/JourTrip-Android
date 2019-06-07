@@ -25,7 +25,6 @@ import org.jetbrains.anko.support.v4.toast
 import org.koin.android.ext.android.inject
 import com.zigerianos.jourtrip.data.entities.Location
 import com.zigerianos.jourtrip.utils.CheckPermission
-import com.zigerianos.jourtrip.utils.EndlessScrollListener
 import com.zigerianos.jourtrip.utils.NearbyAdapter
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import net.yslibrary.android.keyboardvisibilityevent.Unregistrar
@@ -38,9 +37,6 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
     private val nearbyAdapter by inject<NearbyAdapter>()
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var mLocationManager: LocationManager
-
-    private var mEndlessScrollListener = EndlessScrollListener { presenter.loadMoreData() }
 
     private lateinit var mUnregistrar: Unregistrar
     private val imm by lazy {
@@ -116,6 +112,7 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
             textInputLayoutSearching.clearFocus()
 
             if (editTextSearch.text.toString().isNotEmpty()) {
+                nearbyAdapter.setLoaderVisible(true)
                 presenter.searchLocationByNameClicked(editTextSearch.text.toString())
             }
 
@@ -140,6 +137,10 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
             activity?.bottomNavigationView?.visibility = View.VISIBLE
             editTextSearch.clearFocus()
         }
+
+        scrollViewSearching.setOnBottomReachedListener {
+            presenter.loadMoreData()
+        }
     }
 
     override fun stateLoading() {
@@ -163,12 +164,11 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
     override fun loadLocations(locations: List<Location>, forMorePages: Boolean) {
         if (locations.isEmpty()) {
             nearbyAdapter.setLoaderVisible(false)
-            mEndlessScrollListener.shouldListenForMorePages(false)
             return
         }
 
         nearbyAdapter.setLoaderVisible(forMorePages)
-        mEndlessScrollListener.shouldListenForMorePages(forMorePages)
+        if (!forMorePages) scrollViewSearching.onBottomReachedListener = null
         nearbyAdapter.addItems(locations)
     }
 
@@ -191,10 +191,6 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
         })
         recyclerViewSearching.layoutManager = gridLayoutManager
         recyclerViewSearching.adapter = nearbyAdapter
-
-        //mEndlessScrollListener.shouldListenForMorePages(true)
-        recyclerViewSearching.addOnScrollListener(mEndlessScrollListener)
-        //nearbyAdapter.setLoaderVisible(false)
 
         nearbyAdapter.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<Location> {
             override fun onItemClick(item: Location, position: Int, view: View) {
@@ -225,49 +221,6 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
             }
         }
     }
-
-    /*@SuppressLint("MissingPermission")
-    private fun getLocation() {
-        mLocationManager = context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val hasGps = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-        val hasNetwork = mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-
-        if (hasGps || hasNetwork) {
-            if (hasGps) {
-                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000.toLong(), 0.toFloat(), object :
-                    LocationListener {
-                    override fun onLocationChanged(location: android.location.Location?) {
-                        Log.d("PATATA", "LOCATION: ${location.toString()}")
-                    }
-
-                    override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {}
-
-                    override fun onProviderEnabled(p0: String?) {}
-
-                    override fun onProviderDisabled(p0: String?) {}
-                })
-
-                return
-            }
-
-            if (hasNetwork) {
-                mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000.toLong(), 0.toFloat(), object :
-                    LocationListener {
-                    override fun onLocationChanged(location: android.location.Location?) {
-                        Log.d("PATATA", "LOCATION: ${location.toString()}")
-                    }
-
-                    override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {}
-
-                    override fun onProviderEnabled(p0: String?) {}
-
-                    override fun onProviderDisabled(p0: String?) {}
-                })
-
-                return
-            }
-        }
-    }*/
 
     override fun getLayoutResource(): Int = R.layout.fragment_search
 }
