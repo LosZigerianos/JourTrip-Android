@@ -119,6 +119,7 @@ class ProfilePresenter(
 
     override fun reloadDataClicked() {
         getMvpView()?.stateLoading()
+        mCommentList.clear()
 
         requestProfile(mUserId)
     }
