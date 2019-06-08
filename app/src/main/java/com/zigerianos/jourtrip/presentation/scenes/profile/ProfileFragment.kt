@@ -269,7 +269,10 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
     }
 
     private fun setupError() {
-        errorLayout.buttonReload.setOnClickListener { presenter.reloadDataClicked() }
+        errorLayout.buttonReload.setOnClickListener {
+            commentAdapter.removeAllItems()
+            presenter.reloadDataClicked()
+        }
     }
 
     override fun getLayoutResource(): Int = R.layout.fragment_profile
