@@ -88,8 +88,8 @@ interface ApiService {
     @GET("users/profile/{userId}")
     fun getUserProfileUseCase(
         @Path("userId") userId: String,
-        @Query("skip") skip: String?,
-        @Query("limit") limit: String?
+        @Query("skipComments") skip: String?,
+        @Query("limitComments") limit: String?
     ): Observable<Data<UserProfile>>
 
     @GET("users/userId/{userId}/followers")

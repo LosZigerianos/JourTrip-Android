@@ -17,6 +17,10 @@ class ProfilePresenter(
     private val deleteFollowingUseCase: DeleteFollowingUseCase
 ) : BasePresenter<IProfilePresenter.IProfileView>(), IProfilePresenter {
 
+    private var mCommentList: MutableList<Comment> = mutableListOf()
+    private var mTotalCount: Int = 0
+    private val PAGINATION_REQUEST: Int = 2
+
     private var mUserId: String = ""
     private var mIsPersonal: Boolean = false
     private var mFollowingUser: Boolean = false
@@ -119,13 +123,52 @@ class ProfilePresenter(
         requestProfile(mUserId)
     }
 
+    override fun loadMoreData() {
+        requestMoreComments()
+    }
+
     private fun requestProfile(userId: String) {
-        val params = GetUserProfileUseCase.Params(userId = userId)
+        val params = GetUserProfileUseCase.Params(userId = userId, skip = mCommentList.count(), limit = PAGINATION_REQUEST)
 
         val disposable = getUserProfileUseCase.observable(params)
             .subscribe({ profile ->
+
+                profile.comments?.let { comments ->
+                    if (comments.isEmpty()) {
+                        getMvpView()?.loadComments(emptyList())
+                    } else {
+                        profile.commentsCount?.let { totalCount ->
+                            mTotalCount = totalCount
+
+                            mCommentList.addAll(comments.toMutableList())
+                            getMvpView()?.loadComments(comments, forMorePages = mCommentList.count() < mTotalCount)
+                        }
+                    }
+                }
+
                 getMvpView()?.loadUser(profile)
                 getMvpView()?.stateData()
+            }, {
+                Timber.e(it)
+                getMvpView()?.stateError()
+            })
+
+        addDisposable(disposable)
+    }
+
+    private fun requestMoreComments() {
+        val params = GetCommentsByUserUseCase.Params(userId = mUserId, skip = mCommentList.count(), limit = PAGINATION_REQUEST)
+
+        val disposable = getCommentsByUserUseCase.observable(params)
+            .subscribe({ comments ->
+
+                if (comments.isEmpty()) {
+                    getMvpView()?.loadComments(emptyList())
+                    return@subscribe
+                }
+
+                mCommentList.addAll(comments.toMutableList())
+                getMvpView()?.loadComments(comments, forMorePages = mCommentList.count() < mTotalCount)
             }, {
                 Timber.e(it)
                 getMvpView()?.stateError()

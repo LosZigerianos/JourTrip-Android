@@ -163,6 +163,7 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
     override fun loadLocations(locations: List<Location>, forMorePages: Boolean) {
         if (locations.isEmpty()) {
             nearbyAdapter.setLoaderVisible(false)
+            scrollViewSearching.onBottomReachedListener = null
             return
         }
 
@@ -205,7 +206,7 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
                 if (CheckPermission.checkPermission(act, Manifest.permission.ACCESS_FINE_LOCATION)) {
                     fusedLocationClient.lastLocation?.addOnSuccessListener(act) { location ->
                         location?.let {
-                            toast("Latitude: ${location.latitude} / Longitude: ${location.longitude}")
+                            //toast("Latitude: ${location.latitude} / Longitude: ${location.longitude}")
                             presenter.localizedUser(location.latitude.toString(), location.longitude.toString())
                         }
                     }

@@ -48,9 +48,6 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
     private val picasso by inject<Picasso>()
     private val commentAdapter by inject<CommentAdapter>(name = ModulesNames.ADAPTER_PROFILE)
 
-    private var LastLoadPage: Int = 1
-    private var totalPages: Int? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         presenter = mainPresenter
         super.onCreate(savedInstanceState)
@@ -113,6 +110,10 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
                     presenter.followUserClicked()
                 }
             }
+        }
+
+        scrollViewProfile.setOnBottomReachedListener {
+            presenter.loadMoreData()
         }
 
         setupRecyclerView()
@@ -179,16 +180,18 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
                 }
             }
         }
+    }
 
-        scrollViewProfile.setOnBottomReachedListener {
-            toast("setOnBottomReachedListener")
-            // TODO: CARGAR MAS COMENTARIOS
-            //loadMore()
+    override fun loadComments(comments: List<Comment>, forMorePages: Boolean) {
+        if (comments.isEmpty()) {
+            commentAdapter.setLoaderVisible(false)
+            scrollViewProfile.onBottomReachedListener = null
+            return
         }
 
-        profile.comments?.let { comments ->
-            commentAdapter.setItems(comments)
-        }
+        commentAdapter.setLoaderVisible(forMorePages)
+        if (!forMorePages) scrollViewProfile.onBottomReachedListener = null
+        commentAdapter.addItems(comments)
     }
 
     override fun showErrorMessage() {
@@ -229,6 +232,8 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
         recyclerViewComments.layoutManager = LinearLayoutManager(activity)
         recyclerViewComments.adapter = commentAdapter
 
+        commentAdapter.setLoaderVisible(true)
+
         commentAdapter.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<Comment> {
             override fun onItemClick(item: Comment, position: Int, view: View) {
                 if (presenter.isPersonal()) {
@@ -266,15 +271,6 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
     private fun setupError() {
         errorLayout.buttonReload.setOnClickListener { presenter.reloadDataClicked() }
     }
-
-    /*private fun loadMore() {
-        val locations = listOf(
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", "")
-        )
-
-        deadlineAdapter!!.addItems(locations)
-    }*/
 
     override fun getLayoutResource(): Int = R.layout.fragment_profile
 }

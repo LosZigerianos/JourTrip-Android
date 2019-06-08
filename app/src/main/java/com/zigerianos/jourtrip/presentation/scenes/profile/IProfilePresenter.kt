@@ -19,6 +19,8 @@ interface IProfilePresenter : IPresenter<IProfilePresenter.IProfileView> {
     fun removeClicked(comment: Comment)
     fun reloadDataClicked()
 
+    fun loadMoreData()
+
     interface IProfileView : IPresenter.IView {
         fun setupToolbar()
         fun setupViews()
@@ -27,6 +29,7 @@ interface IProfilePresenter : IPresenter<IProfilePresenter.IProfileView> {
         fun stateError()
 
         fun loadUser(profile: UserProfile)
+        fun loadComments(comments: List<Comment>, forMorePages: Boolean = false)
 
         fun showErrorMessage()
 
