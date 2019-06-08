@@ -109,10 +109,11 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
 
     override fun navigateToUserProfile(main: Boolean, user: User) {
         user.id?.let { userId ->
-            val action = if (main)
+            val action = if (main) {
                 ContactsFragmentDirections.actionGoToNavigationMainProfile(userId = userId)
-            else
+            } else {
                 ContactsFragmentDirections.actionGoToNavigationProfile(userId = userId)
+            }
 
             NavHostFragment.findNavController(this).navigate(action)
         }

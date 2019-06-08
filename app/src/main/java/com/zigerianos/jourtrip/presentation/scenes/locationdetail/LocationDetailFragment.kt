@@ -128,9 +128,14 @@ class LocationDetailFragment :
         toast(R.string.error_request_message)
     }
 
-    override fun navigateToUserProfile(user: User) {
+    override fun navigateToUserProfile(main: Boolean, user: User) {
         user.id?.let { userId ->
-            val action = LocationDetailFragmentDirections.actionGoToNavigationProfile(userId = userId)
+            val action = if (main) {
+                LocationDetailFragmentDirections.actionGoToNavigationMainProfile(userId = userId)
+            } else {
+                LocationDetailFragmentDirections.actionGoToNavigationProfile(userId = userId)
+            }
+
             NavHostFragment.findNavController(this).navigate(action)
         }
     }

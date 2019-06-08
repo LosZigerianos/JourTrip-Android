@@ -1,5 +1,6 @@
 package com.zigerianos.jourtrip.presentation.scenes.locationdetail
 
+import com.zigerianos.jourtrip.auth.AuthManager
 import com.zigerianos.jourtrip.data.entities.Comment
 import com.zigerianos.jourtrip.data.entities.CommentRequest
 import com.zigerianos.jourtrip.data.entities.Location
@@ -10,6 +11,7 @@ import com.zigerianos.jourtrip.presentation.base.BasePresenter
 import timber.log.Timber
 
 class LocationDetailPresenter(
+    private val authManager: AuthManager,
     private val getCommentsByLocationUseCase: GetCommentsByLocationUseCase,
     private val postAddCommentToLocationUseCase: PostAddCommentToLocationUseCase
 ) : BasePresenter<ILocationDetailPresenter.ILocationDetailView>(), ILocationDetailPresenter {
@@ -49,7 +51,12 @@ class LocationDetailPresenter(
     override fun getCity(): String = mLocation.city ?: ""
 
     override fun userClicked(user: User) {
-        getMvpView()?.navigateToUserProfile(user)
+        authManager.getUserId()?.let { userId ->
+            if (userId == user.id)
+                getMvpView()?.navigateToUserProfile(true, user)
+            else
+                getMvpView()?.navigateToUserProfile(false, user)
+        }
     }
 
     override fun loadMoreData() {

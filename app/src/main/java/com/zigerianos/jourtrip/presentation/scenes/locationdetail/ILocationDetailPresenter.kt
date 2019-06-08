@@ -32,6 +32,6 @@ interface ILocationDetailPresenter : IPresenter<ILocationDetailPresenter.ILocati
 
         fun showErrorMessage()
 
-        fun navigateToUserProfile(user: User)
+        fun navigateToUserProfile(main: Boolean, user: User)
     }
 }
