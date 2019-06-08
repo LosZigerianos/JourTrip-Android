@@ -22,7 +22,7 @@ class SignupPresenter(
     override fun signupClicked(fullname: String, username: String, email: String, password: String) {
         getMvpView()?.stateLoading()
 
-        val params = PostSignupUseCase.Params(UserRequest(username = if (username.isNotEmpty()) username else null, email = email, password = password))
+        val params = PostSignupUseCase.Params(UserRequest(fullname = fullname, username = if (username.isNotEmpty()) username else null, email = email, password = password))
 
         val disposable = postSignupUseCase.observable(params)
             .subscribe({ response ->

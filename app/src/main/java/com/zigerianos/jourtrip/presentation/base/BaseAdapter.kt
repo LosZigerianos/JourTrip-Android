@@ -5,7 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import java.util.ArrayList
 
-open abstract class BaseAdapter<T, U : BaseAdapter.BaseViewHolder>(val context: Context) : RecyclerView.Adapter<U>() {
+abstract class BaseAdapter<T, U : BaseAdapter.BaseViewHolder>(val context: Context) : RecyclerView.Adapter<U>() {
 
     private var items: MutableList<T> = ArrayList()
 

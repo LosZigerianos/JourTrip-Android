@@ -45,9 +45,7 @@ class LoginPresenter(
                 authManager.addUser(user)
                 authManager.addToken(token)
 
-                Timber.d("Patata => User: " + authManager.getUser())
                 getMvpView()?.navigateToHome()
-
             }, {
                 Timber.e(it)
 

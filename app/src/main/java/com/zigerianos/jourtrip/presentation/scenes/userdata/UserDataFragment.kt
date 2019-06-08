@@ -142,8 +142,8 @@ class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDat
 
         picasso
             .load(user.photo)
-            .placeholder(R.drawable.ic_profile_placeholder)
-            .error(R.drawable.ic_profile_placeholder)
+            .placeholder(R.drawable.ic_user_profile)
+            .error(R.drawable.ic_user_profile)
             .memoryPolicy(MemoryPolicy.NO_CACHE)
             .networkPolicy(NetworkPolicy.NO_CACHE)
             .into(imageViewUser)

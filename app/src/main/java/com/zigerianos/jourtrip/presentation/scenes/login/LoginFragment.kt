@@ -1,6 +1,7 @@
 package com.zigerianos.jourtrip.presentation.scenes.login
 
 import android.os.Bundle
+import android.text.Editable
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -59,6 +60,10 @@ class LoginFragment : BaseFragment<ILoginPresenter.ILoginView, ILoginPresenter>(
                 presenter.recoveryPasswordClicked(editTextSendEmail.text.toString().toLowerCase())
             }
         }
+
+        // TODO: REMOVE
+        editTextEmail.text = Editable.Factory.getInstance().newEditable("invitado@example.com")
+        editTextPassword.text = Editable.Factory.getInstance().newEditable("123123")
     }
 
     override fun stateLoading() {
