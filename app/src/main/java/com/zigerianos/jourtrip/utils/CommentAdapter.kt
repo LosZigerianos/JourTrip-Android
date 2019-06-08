@@ -116,7 +116,11 @@ class CommentAdapter(
 
                 if (isShownUser) {
                     comment.user?.let { user ->
-                        picasso.load(comment.user.photo).into(imageViewUser)
+                        picasso
+                            .load(comment.user.photo)
+                            .placeholder(R.drawable.ic_user_profile)
+                            .error(R.drawable.ic_user_profile)
+                            .into(imageViewUser)
 
                         textViewUserName.text = "@${user.username}"
 
