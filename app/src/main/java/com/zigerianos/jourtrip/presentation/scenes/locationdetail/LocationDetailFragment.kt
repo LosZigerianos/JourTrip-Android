@@ -120,6 +120,10 @@ class LocationDetailFragment :
         userCommentAdapter.addItems(comments)
     }
 
+    override fun loadComment(comment: Comment) {
+        userCommentAdapter.addItemZero(comment)
+    }
+
     override fun showErrorMessage() {
         toast(R.string.error_request_message)
     }

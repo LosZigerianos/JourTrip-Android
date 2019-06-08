@@ -5,8 +5,8 @@ import com.google.gson.annotations.SerializedName
 class CommentResponse(
     @SerializedName("_id")
     val id: String?,
-    //val user: String?, // TODO: REPASAR
-    //val location: String?,
+    val user: User?,
+    val location: Location?,
     val description: String?,
     @SerializedName("creationDate")
     val creationDate: String?

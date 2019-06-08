@@ -16,7 +16,7 @@ class LocationDetailPresenter(
 
     private var mCommentList: MutableList<Comment> = mutableListOf()
     private var mTotalCount: Int = 0
-    private val PAGINATION_REQUEST: Int = 5
+    private val PAGINATION_REQUEST: Int = 10
 
     private lateinit var mLocation: Location
 
@@ -85,15 +85,18 @@ class LocationDetailPresenter(
     }
 
     override fun addCommentToLocation(comment: String) {
-        getMvpView()?.stateLoading()
+        //getMvpView()?.stateLoading()
 
         mLocation.id?.let { locationId ->
             val commentRequest = CommentRequest(locationId, comment)
             val params = PostAddCommentToLocationUseCase.Params(commentRequest)
 
             val disposable = postAddCommentToLocationUseCase.observable(params)
-                .subscribe({
-                    requestLocationData()
+                .subscribe({ response ->
+                    val newComment = Comment(response.data.id, response.data.user, response.data.location, response.data.description, response.data.creationDate)
+                    mCommentList.add(0 , newComment)
+                    getMvpView()?.loadComment(newComment)
+                    //getMvpView()?.stateData()
                 }, {
                     Timber.e(it)
                     getMvpView()?.stateData()

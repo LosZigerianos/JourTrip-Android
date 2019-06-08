@@ -28,6 +28,7 @@ interface ILocationDetailPresenter : IPresenter<ILocationDetailPresenter.ILocati
         fun stateError()
 
         fun loadComments(comments: List<Comment>, forMorePages: Boolean = false)
+        fun loadComment(comment: Comment)
 
         fun showErrorMessage()
 

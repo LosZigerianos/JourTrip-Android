@@ -19,6 +19,12 @@ abstract class BaseAdapter<T, U : BaseAdapter.BaseViewHolder>(val context: Conte
         notifyItemInserted(itemCount - 1)
     }
 
+    fun addItemZero(item: T) {
+        items.add(0, item)
+
+        notifyItemInserted(0)
+    }
+
     fun addItems(items: List<T>) {
         if (items.size > 0) {
             this.items.addAll(items)

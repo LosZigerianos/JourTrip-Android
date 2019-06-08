@@ -28,7 +28,7 @@ class ProfilePresenter(
         getMvpView()?.stateLoading()
         getMvpView()?.setupViews()
 
-        requesteProfile(mUserId)
+        requestProfile(mUserId)
     }
 
     override fun setUserId(value: String?) {
@@ -94,6 +94,8 @@ class ProfilePresenter(
 
             val disposable = deleteCommentUseCase.observable(params)
                 .subscribe({ response ->
+                    // TODO: Check response: user is User and location is Location and the are not String.
+
                     if (!response.success) {
                         getMvpView()?.stateData()
                         getMvpView()?.showErrorMessage()
@@ -114,10 +116,10 @@ class ProfilePresenter(
     override fun reloadDataClicked() {
         getMvpView()?.stateLoading()
 
-        requesteProfile(mUserId)
+        requestProfile(mUserId)
     }
 
-    private fun requesteProfile(userId: String) {
+    private fun requestProfile(userId: String) {
         val params = GetUserProfileUseCase.Params(userId = userId)
 
         val disposable = getUserProfileUseCase.observable(params)
