@@ -203,6 +203,9 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
     }
 
     override fun removeComment(comment: Comment) {
+        val newPostQuantity = textViewPostsQuantity.text.toString()
+        textViewPostsQuantity.text = (newPostQuantity.toInt() - 1).toString()
+
         val index = commentAdapter.getItems().indexOfFirst { it.id == comment.id }
         commentAdapter.removeItem(index)
     }
