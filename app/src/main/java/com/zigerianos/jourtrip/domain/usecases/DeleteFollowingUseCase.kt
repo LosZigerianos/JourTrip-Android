@@ -14,12 +14,12 @@ class DeleteFollowingUseCase(
 ) : UseCaseWithParams<DeleteFollowingUseCase.Params, DataWithMeta<User, User>>(transformer) {
 
     override fun createObservable(params: Params): Observable<DataWithMeta<User, User>> {
-        return api.deleteFollowingUseCase(params.userId, params.userRequest)
+        return api.deleteFollowingUseCase(params.userId, params.userUnfollow)
             .map { DataWithMeta(data = it.data, metadata = it.metadata, success = it.success) }
     }
 
     data class Params(
         val userId: String,
-        val userRequest: FollowingRequest
+        val userUnfollow: FollowingRequest
     )
 }

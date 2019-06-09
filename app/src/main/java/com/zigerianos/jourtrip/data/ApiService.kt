@@ -4,6 +4,9 @@ import com.zigerianos.jourtrip.data.entities.*
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import retrofit2.http.*
+import retrofit2.http.HTTP
+
+
 
 interface ApiService {
 
@@ -112,14 +115,19 @@ interface ApiService {
         @Body request: FollowingRequest
     ): Observable<DataWithMeta<User, User>>
 
-    @DELETE("users/userId/{userId}/following/add")
+    /*@DELETE("users/userId/{userId}/following/delete")
+    fun deleteFollowingUseCase(
+        @Path("userId") userId: String,
+        @Body request: FollowingRequest
+    ): Observable<DataWithMeta<User, User>> */
+
+    @HTTP(method = "DELETE", path = "users/userId/{userId}/following/delete", hasBody = true)
     fun deleteFollowingUseCase(
         @Path("userId") userId: String,
         @Body request: FollowingRequest
     ): Observable<DataWithMeta<User, User>>
 
     // Comments
-    //@GET("comments/timeline")
     @GET("comments/userId/{userId}/timeline")
     fun getTimeLineUseCase(
         @Path("userId") userId: String,

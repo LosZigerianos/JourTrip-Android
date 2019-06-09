@@ -8,6 +8,6 @@ class CommentResponse(
     val user: User?,
     val location: Location?,
     val description: String?,
-    @SerializedName("creationDate")
+    @SerializedName("creation_date")
     val creationDate: String?
 )

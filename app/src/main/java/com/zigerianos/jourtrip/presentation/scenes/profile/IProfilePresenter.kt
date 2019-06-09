@@ -32,9 +32,7 @@ interface IProfilePresenter : IPresenter<IProfilePresenter.IProfileView> {
         fun loadComments(comments: List<Comment>, forMorePages: Boolean = false)
 
         fun showErrorMessage()
-
-        fun followUserChanged()
-
+        fun followUserChanged(followersQuantity: String)
         fun removeComment(comment: Comment)
 
         fun navigateToUserData()

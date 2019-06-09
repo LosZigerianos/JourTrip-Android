@@ -23,7 +23,8 @@ class ProfilePresenter(
 
     private var mUserId: String = ""
     private var mIsPersonal: Boolean = false
-    private var mFollowingUser: Boolean = false
+    private var mIsFollowingUser: Boolean = false
+    private var mFollowers: Int = -1
 
     override fun update() {
         super.update()
@@ -57,7 +58,7 @@ class ProfilePresenter(
 
     override fun isPersonal(): Boolean = mIsPersonal
 
-    override fun isFollowingUser(): Boolean = mFollowingUser
+    override fun isFollowingUser(): Boolean = mIsFollowingUser
 
     override fun settingsClicked() {
         getMvpView()?.navigateToUserData()
@@ -68,7 +69,7 @@ class ProfilePresenter(
         if (!mIsPersonal) {
             getMvpView()?.stateLoading()
 
-            if (mFollowingUser) {
+            if (mIsFollowingUser) {
                 // unfollow
                 requestUnfollowUser()
             } else {
@@ -147,6 +148,14 @@ class ProfilePresenter(
                     }
                 }
 
+                profile.followers?.let { followers ->
+                    mFollowers = followers
+                }
+
+                profile.isFollowingUser?.let { isFollowingUser ->
+                    mIsFollowingUser = isFollowingUser
+                }
+
                 getMvpView()?.loadUser(profile)
                 getMvpView()?.stateData()
             }, {
@@ -190,7 +199,9 @@ class ProfilePresenter(
                         return@subscribe
                     }
 
-                    mFollowingUser = !mFollowingUser
+                    mIsFollowingUser = !mIsFollowingUser
+                    mFollowers += 1
+                    getMvpView()?.followUserChanged(mFollowers.toString())
                     getMvpView()?.stateData()
                 }, {
                     Timber.e(it)
@@ -213,7 +224,9 @@ class ProfilePresenter(
                         return@subscribe
                     }
 
-                    mFollowingUser = !mFollowingUser
+                    mIsFollowingUser = !mIsFollowingUser
+                    mFollowers -= 1
+                    getMvpView()?.followUserChanged(mFollowers.toString())
                     getMvpView()?.stateData()
                 }, {
                     Timber.e(it)

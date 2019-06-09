@@ -29,7 +29,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_error_loading.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.toolbar_elevated.view.*
-import org.jetbrains.anko.support.v4.toast
 import org.koin.android.ext.android.inject
 
 
@@ -152,8 +151,7 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
             textViewUsername.visibility = View.GONE
         }
 
-        buttonFollow.text =
-            if (presenter.isFollowingUser()) getString(R.string.unfollow) else getString(R.string.follow)
+        buttonFollow.text = if (presenter.isFollowingUser()) getString(R.string.unfollow) else getString(R.string.follow)
 
         textViewFollowingQuantity.text = profile.following?.toString()
         textViewFollowersQuantity.text = profile.followers?.toString()
@@ -200,9 +198,11 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
         }
     }
 
-    override fun followUserChanged() {
+    override fun followUserChanged(followersQuantity: String) {
         buttonFollow.text =
             if (presenter.isFollowingUser()) getString(R.string.unfollow) else getString(R.string.follow)
+
+        textViewFollowersQuantity.text = followersQuantity
     }
 
     override fun removeComment(comment: Comment) {
