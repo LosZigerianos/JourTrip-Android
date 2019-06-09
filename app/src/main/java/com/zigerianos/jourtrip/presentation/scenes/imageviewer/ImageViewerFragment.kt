@@ -50,6 +50,7 @@ class ImageViewerFragment : BaseFragment<IImageViewerPresenter.IImageViewerView,
     override fun loadImages(images: List<String>) {
         picasso
             .load(images.first())
+            .placeholder(android.R.color.black)
             .into(imageViewDetail)
     }
 
