@@ -35,7 +35,6 @@ class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDat
     IUserDataPresenter.IUserDataView {
 
     private val mainPresenter by inject<IUserDataPresenter>()
-
     private val picasso by inject<Picasso>()
 
     override fun onCreate(savedInstanceState: Bundle?) {

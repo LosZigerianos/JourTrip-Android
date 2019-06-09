@@ -65,6 +65,8 @@ class LocationDetailFragment :
             .load(presenter.getPhoto())
             .into(imageViewLocation)
 
+        imageViewLocation.setOnClickListener { presenter.imageClicked() }
+
         textViewName.text = presenter.getName()
         textViewAddress.text = presenter.getAddress()
 
@@ -138,6 +140,11 @@ class LocationDetailFragment :
 
             NavHostFragment.findNavController(this).navigate(action)
         }
+    }
+
+    override fun navigateToImageViewer(images: List<String>) {
+        val action = LocationDetailFragmentDirections.actionGoToImageViewerFragment(images.toTypedArray())
+        NavHostFragment.findNavController(this).navigate(action)
     }
 
     private fun setupRecyclerView() {

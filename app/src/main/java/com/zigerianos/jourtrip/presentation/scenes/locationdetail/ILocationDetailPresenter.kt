@@ -17,8 +17,10 @@ interface ILocationDetailPresenter : IPresenter<ILocationDetailPresenter.ILocati
     fun addCommentToLocation(comment: String)
 
     fun userClicked(user: User)
-    fun loadMoreData()
     fun reloadDataClicked()
+    fun imageClicked()
+
+    fun loadMoreData()
 
     interface ILocationDetailView : IPresenter.IView {
         fun setupToolbar()
@@ -33,5 +35,6 @@ interface ILocationDetailPresenter : IPresenter<ILocationDetailPresenter.ILocati
         fun showErrorMessage()
 
         fun navigateToUserProfile(main: Boolean, user: User)
+        fun navigateToImageViewer(images: List<String>)
     }
 }

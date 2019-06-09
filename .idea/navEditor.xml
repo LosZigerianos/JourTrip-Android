@@ -34,6 +34,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="imageViewerFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="291" />
+                            <option name="y" value="-273" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="initialFragment">
                     <value>
                       <LayoutPositions>
@@ -76,6 +88,16 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="actionGoToImageViewerFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="actionGoToNavigationMainProfile">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="actionGoToNavigationProfile">
                               <value>
                                 <LayoutPositions />

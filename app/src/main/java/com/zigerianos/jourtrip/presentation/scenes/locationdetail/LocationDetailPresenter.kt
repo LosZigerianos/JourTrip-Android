@@ -1,5 +1,6 @@
 package com.zigerianos.jourtrip.presentation.scenes.locationdetail
 
+import androidx.navigation.fragment.NavHostFragment
 import com.zigerianos.jourtrip.auth.AuthManager
 import com.zigerianos.jourtrip.data.entities.Comment
 import com.zigerianos.jourtrip.data.entities.CommentRequest
@@ -56,6 +57,12 @@ class LocationDetailPresenter(
                 getMvpView()?.navigateToUserProfile(true, user)
             else
                 getMvpView()?.navigateToUserProfile(false, user)
+        }
+    }
+
+    override fun imageClicked() {
+        mLocation.photos?.let { photos ->
+            getMvpView()?.navigateToImageViewer(photos)
         }
     }
 
