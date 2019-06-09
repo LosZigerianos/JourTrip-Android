@@ -52,4 +52,5 @@
     <string name="watch">Ver</string>
     <string name="remove">Eliminar</string>
     <string name="no_results_for_searching">No se han encontrado resultado para esta búsqueda</string>
+    <string name="needs_connection_to_internet">Necesita conexión a Intenet</string>
 </resources>

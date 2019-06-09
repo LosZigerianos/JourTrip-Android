@@ -55,5 +55,6 @@
     <string name="watch">Watch</string>
     <string name="remove">Remove</string>
     <string name="no_results_for_searching">No results were found for this search</string>
+    <string name="needs_connection_to_internet">Needs connection to Internet</string>
 
 </resources>
