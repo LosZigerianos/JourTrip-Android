@@ -91,6 +91,7 @@ class SearchPresenter(
             .subscribe({ response ->
                 if (response.data.isEmpty()) {
                     getMvpView()?.loadLocations(emptyList())
+                    getMvpView()?.showMessageEmpty()
                     getMvpView()?.stateData()
                     return@subscribe
                 }

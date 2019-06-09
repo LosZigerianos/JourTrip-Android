@@ -10,10 +10,12 @@ data class Location(
     val id: String?,
     val name: String?,
     val address: String?,
+    @SerializedName("postal_code")
     val postalCode: String?,
     val city: String?,
     val state: String?,
     val country: String?,
+    @SerializedName("formatted_address")
     val formattedAddress: String?,
     val photos: List<String>? = null,
     val tags: List<String>? = null,

@@ -13,6 +13,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.material.snackbar.Snackbar
 import com.zigerianos.jourtrip.R
 
 import com.zigerianos.jourtrip.presentation.base.BaseFragment
@@ -170,6 +171,10 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
         nearbyAdapter.setLoaderVisible(forMorePages)
         if (!forMorePages) scrollViewSearching.onBottomReachedListener = null
         nearbyAdapter.addItems(locations)
+    }
+
+    override fun showMessageEmpty() {
+        toast(getString(R.string.no_results_for_searching))
     }
 
     override fun navigateToLocationDetail(location: Location) {

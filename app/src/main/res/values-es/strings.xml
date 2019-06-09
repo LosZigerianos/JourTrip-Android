@@ -51,4 +51,5 @@
     <string name="follow">Seguir</string>
     <string name="watch">Ver</string>
     <string name="remove">Eliminar</string>
+    <string name="no_results_for_searching">No se han encontrado resultado para esta búsqueda</string>
 </resources>

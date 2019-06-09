@@ -20,6 +20,8 @@ interface ISearchPresenter : IPresenter<ISearchPresenter.ISearchView> {
 
         fun loadLocations(locations: List<Location>, forMorePages: Boolean = false)
 
+        fun showMessageEmpty()
+
         fun navigateToLocationDetail(location: Location)
     }
 }
