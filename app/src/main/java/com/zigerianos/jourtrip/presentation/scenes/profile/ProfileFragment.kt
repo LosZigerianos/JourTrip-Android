@@ -1,10 +1,7 @@
 package com.zigerianos.jourtrip.presentation.scenes.profile
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -114,6 +111,14 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
             presenter.loadMoreData()
         }
 
+        // prevent scrolling when button is clicked
+        scrollViewProfile.setOnTouchListener { v, event ->
+            when (event?.action) {
+                MotionEvent.ACTION_DOWN -> false
+                else -> v?.onTouchEvent(event) ?: true
+            }
+        }
+
         setupRecyclerView()
         setupError()
     }
@@ -198,8 +203,7 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
     }
 
     override fun followUserChanged(followersQuantity: String) {
-        buttonFollow.text =
-            if (presenter.isFollowingUser()) getString(R.string.unfollow) else getString(R.string.follow)
+        buttonFollow.text = if (presenter.isFollowingUser()) getString(R.string.unfollow) else getString(R.string.follow)
 
         textViewFollowersQuantity.text = followersQuantity
     }
@@ -210,6 +214,10 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
 
         val index = commentAdapter.getItems().indexOfFirst { it.id == comment.id }
         commentAdapter.removeItem(index)
+    }
+
+    override fun clearItems() {
+        commentAdapter.removeAllItems()
     }
 
     override fun navigateToUserData() {

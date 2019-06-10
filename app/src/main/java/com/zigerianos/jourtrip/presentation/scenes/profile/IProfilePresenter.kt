@@ -34,6 +34,7 @@ interface IProfilePresenter : IPresenter<IProfilePresenter.IProfileView> {
         fun showErrorMessage()
         fun followUserChanged(followersQuantity: String)
         fun removeComment(comment: Comment)
+        fun clearItems()
 
         fun navigateToUserData()
         fun navigateToContacts(userId: String, myFollowings: Boolean = false, myFollowers: Boolean = false)

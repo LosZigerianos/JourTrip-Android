@@ -65,9 +65,8 @@ class ProfilePresenter(
     }
 
     override fun followUserClicked() {
-        // TODO: IMPLEMENTAR SEGUIR USUARIO
         if (!mIsPersonal) {
-            getMvpView()?.stateLoading()
+            //getMvpView()?.stateLoading()
 
             if (mIsFollowingUser) {
                 // unfollow
@@ -99,7 +98,6 @@ class ProfilePresenter(
 
             val disposable = deleteCommentUseCase.observable(params)
                 .subscribe({ response ->
-                    // TODO: Check response: user is User and location is Location and the are not String.
 
                     if (!response.success) {
                         getMvpView()?.stateData()
@@ -120,14 +118,14 @@ class ProfilePresenter(
 
     override fun reloadDataClicked() {
         getMvpView()?.stateLoading()
+
+        getMvpView()?.clearItems()
         mCommentList.clear()
 
         requestProfile(mUserId)
     }
 
-    override fun loadMoreData() {
-        requestMoreComments()
-    }
+    override fun loadMoreData() = requestMoreComments()
 
     private fun requestProfile(userId: String) {
         val params = GetUserProfileUseCase.Params(userId = userId, skip = mCommentList.count(), limit = PAGINATION_REQUEST)
