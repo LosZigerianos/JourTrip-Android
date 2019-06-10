@@ -54,18 +54,14 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
-        if (presenter.isPersonal()) {
-            inflater.inflate(R.menu.menu_profile, menu)
-        }
+        if (presenter.isPersonal()) inflater.inflate(R.menu.menu_profile, menu)
 
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.action_settings -> {
-                presenter.settingsClicked()
-            }
+            R.id.action_settings -> presenter.settingsClicked()
         }
 
         return super.onOptionsItemSelected(item)

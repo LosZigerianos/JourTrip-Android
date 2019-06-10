@@ -115,12 +115,6 @@ interface ApiService {
         @Body request: FollowingRequest
     ): Observable<DataWithMeta<User, User>>
 
-    /*@DELETE("users/userId/{userId}/following/delete")
-    fun deleteFollowingUseCase(
-        @Path("userId") userId: String,
-        @Body request: FollowingRequest
-    ): Observable<DataWithMeta<User, User>> */
-
     @HTTP(method = "DELETE", path = "users/userId/{userId}/following/delete", hasBody = true)
     fun deleteFollowingUseCase(
         @Path("userId") userId: String,
@@ -153,12 +147,12 @@ interface ApiService {
     @POST("comments/add")
     fun postAddCommentToLocationUseCase(
         @Body request: CommentRequest
-    ): Observable<Data<CommentResponse>>
+    ): Observable<Data<Comment>>
 
     @DELETE("comments/{commentId}/delete")
     fun deleteCommentUseCase(
         @Path("commentId") commentId: String
-    ): Observable<Data<CommentResponse>>
+    ): Observable<Data<Comment>>
 
 
 }
