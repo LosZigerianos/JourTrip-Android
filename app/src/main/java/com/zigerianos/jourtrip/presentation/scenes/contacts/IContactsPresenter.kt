@@ -20,6 +20,8 @@ interface IContactsPresenter : IPresenter<IContactsPresenter.IContacts> {
         fun stateData()
         fun stateError()
 
+        fun clearItems()
+
         fun loadUsers(users: List<User>, forMorePages: Boolean = false)
 
         fun navigateToUserProfile(main: Boolean, user: User)

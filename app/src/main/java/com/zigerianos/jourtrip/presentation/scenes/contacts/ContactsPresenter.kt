@@ -24,15 +24,15 @@ class ContactsPresenter(
     override fun update() {
         super.update()
 
+        getMvpView()?.clearItems()
+        mUserList.clear()
+
         getMvpView()?.setupToolbar()
         getMvpView()?.stateLoading()
         getMvpView()?.setupViews()
 
-        if (mFollowing) {
-            requestFollowing()
-        } else if (mFollowers) {
-            requestFollowers()
-        }
+        if (mFollowing) requestFollowing()
+        else if (mFollowers) requestFollowers()
     }
 
     override fun setUserId(value: String?) {

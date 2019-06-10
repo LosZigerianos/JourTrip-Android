@@ -42,8 +42,6 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
 
     private var mEndlessScrollListener = EndlessScrollListener { presenter.loadMoreData() }
 
-    //private var mEndlessScrollListener = EndlessScrollListener {toast("Hola hola")}
-
     override fun onCreate(savedInstanceState: Bundle?) {
         presenter = mainPresenter
         super.onCreate(savedInstanceState)
@@ -95,6 +93,8 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
         errorLayout.visibility = View.VISIBLE
     }
 
+    override fun clearItems() = contactAdapter.removeAllItems()
+
     override fun loadUsers(users: List<User>, forMorePages: Boolean) {
         if (users.isEmpty()) {
             contactAdapter.setLoaderVisible(false)
@@ -134,9 +134,7 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
         })
     }
 
-    private fun setupError() {
-        errorLayout.buttonReload.setOnClickListener { presenter.reloadDataClicked() }
-    }
+    private fun setupError() = errorLayout.buttonReload.setOnClickListener { presenter.reloadDataClicked() }
 
     override fun getLayoutResource(): Int = R.layout.fragment_contacts
 }
