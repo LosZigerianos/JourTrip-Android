@@ -172,10 +172,10 @@
         <action
             android:id="@+id/actionGoToImageViewerFragment"
             app:destination="@id/imageViewerFragment"
-            app:enterAnim="@anim/slide_up_enter"
+            app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/slide_down_pop_exit"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@+id/locationDetailFragment" />
     </fragment>
 
@@ -257,7 +257,7 @@
         android:id="@+id/imageViewerFragment"
         android:name="com.zigerianos.jourtrip.presentation.scenes.imageviewer.ImageViewerFragment"
         android:label="fragment_image_viewer"
-        tools:layout="@layout/fragment_image_viewer" >
+        tools:layout="@layout/fragment_image_viewer">
         <argument
             android:name="images"
             app:argType="string[]" />

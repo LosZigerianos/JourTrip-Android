@@ -40,7 +40,6 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
     }
 
     override fun setupViews() {
-        toolbar.toolbarTitle.text = getString(R.string.home)
         toolbar.toolbarImage.visibility = View.VISIBLE
         toolbar.toolbarImage.setOnClickListener {
             recyclerViewTimeline.smoothScrollToPosition(0)

@@ -84,7 +84,6 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
     }
 
     override fun setupViews() {
-        toolbar.toolbarTitle.text = getString(R.string.profile)
         toolbar.toolbarImage.visibility = View.VISIBLE
         toolbar.toolbarImage.setOnClickListener {
             scrollViewProfile.fullScroll(ScrollView.FOCUS_UP)
