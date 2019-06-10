@@ -119,8 +119,9 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
 
         mUnregistrar = KeyboardVisibilityEvent.registerEventListener(activity!!) { isOpen ->
             //activity?.bottomNavigationView?.visibility = if (isOpen) View.GONE else View.VISIBLE
-            if (!isOpen) {
+            if (!isOpen && isVisible) {
                 activity?.bottomNavigationView?.visibility = View.VISIBLE
+                // TODO: CONTROLAR QUE PETA AL BUSCAR!!
                 editTextSearch.clearFocus()
             }
         }
