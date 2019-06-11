@@ -34,6 +34,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:701236401251:android:231275a5c38cf8e6",
+        "android_client_info": {
+          "package_name": "com.zigerianos.jourtrip.develop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "701236401251-2o697k5rp629ssccm1u6vri4sckbh40l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDc9ILpfrPG1j1Pbcq7AIfi-qtTPpjqw20"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "701236401251-2o697k5rp629ssccm1u6vri4sckbh40l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
