@@ -1,12 +1,12 @@
 package com.zigerianos.jourtrip.presentation.scenes.contacts
 
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.os.bundleOf
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zigerianos.jourtrip.R
@@ -42,6 +42,10 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
 
     private var mEndlessScrollListener = EndlessScrollListener { presenter.loadMoreData() }
 
+    private val imm by lazy {
+        activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         presenter = mainPresenter
         super.onCreate(savedInstanceState)
@@ -49,6 +53,13 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
         presenter.setUserId(argUserId)
         presenter.setFollowing(argFollowing)
         presenter.setFollowers(argFollowers)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
+        activity?.bottomNavigationView?.visibility = View.VISIBLE
     }
 
     override fun setupToolbar() {
@@ -73,22 +84,29 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
 
         setupRecyclerView()
         setupError()
+
+        editTextSearch.setOnFocusChangeListener { view, boolean ->
+            activity?.bottomNavigationView?.visibility = if (boolean) View.GONE else View.VISIBLE
+        }
     }
 
     override fun stateLoading() {
         errorLayout.visibility = View.GONE
+        group_searching.visibility = if (!argFollowers && !argFollowing) View.VISIBLE else View.GONE
         recyclerViewContacts.visibility = View.GONE
         progressBar.visibility = View.VISIBLE
     }
 
     override fun stateData() {
         errorLayout.visibility = View.GONE
+        group_searching.visibility = if (!argFollowers && !argFollowing) View.VISIBLE else View.GONE
         recyclerViewContacts.visibility = View.VISIBLE
         progressBar.visibility = View.GONE
     }
 
     override fun stateError() {
         recyclerViewContacts.visibility = View.GONE
+        group_searching.visibility = View.GONE
         progressBar.visibility = View.GONE
         errorLayout.visibility = View.VISIBLE
     }
@@ -125,7 +143,7 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
 
         mEndlessScrollListener.shouldListenForMorePages(true)
         recyclerViewContacts.addOnScrollListener(mEndlessScrollListener)
-        contactAdapter.setLoaderVisible(true)
+        contactAdapter.setLoaderVisible(false)
 
         contactAdapter.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<User> {
             override fun onItemClick(item: User, position: Int, view: View) {

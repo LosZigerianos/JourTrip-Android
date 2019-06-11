@@ -121,6 +121,11 @@ interface ApiService {
         @Body request: FollowingRequest
     ): Observable<DataWithMeta<User, User>>
 
+    @GET("users/search")
+    fun getContactsByNameUseCase(
+        @Query("query") name: String
+    ): Observable<Data<List<User>>>
+
     // Comments
     @GET("comments/userId/{userId}/timeline")
     fun getTimeLineUseCase(

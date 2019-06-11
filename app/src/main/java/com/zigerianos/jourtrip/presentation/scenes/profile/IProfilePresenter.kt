@@ -12,6 +12,7 @@ interface IProfilePresenter : IPresenter<IProfilePresenter.IProfileView> {
     fun isFollowingUser(): Boolean
 
     fun settingsClicked()
+    fun addContactsClicked()
     fun followUserClicked()
     fun followingClicked()
     fun followersClicked()

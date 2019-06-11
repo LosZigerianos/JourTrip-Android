@@ -29,8 +29,6 @@
         <item name="boxStrokeColor">@color/colorPrimary</item>
         <item name="boxBackgroundColor">@color/colorBackgroundTextInput</item>
     </style>
-
-    <!-- TextInputLayout -->
     <style name="Widget.App.TextInputLayout.FilledBox" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
         <item name="boxStrokeColor">@color/colorPrimary</item>
         <item name="boxBackgroundColor">@color/colorBackgroundTextInput</item>

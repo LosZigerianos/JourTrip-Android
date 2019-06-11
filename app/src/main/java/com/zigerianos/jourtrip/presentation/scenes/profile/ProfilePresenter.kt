@@ -64,6 +64,10 @@ class ProfilePresenter(
         getMvpView()?.navigateToUserData()
     }
 
+    override fun addContactsClicked() {
+        getMvpView()?.navigateToContacts("")
+    }
+
     override fun followUserClicked() {
         if (!mIsPersonal) {
             //getMvpView()?.stateLoading()

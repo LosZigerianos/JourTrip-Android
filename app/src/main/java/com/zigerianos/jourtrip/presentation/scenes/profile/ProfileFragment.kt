@@ -62,6 +62,7 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.action_settings -> presenter.settingsClicked()
+            R.id.action_more_contacts -> presenter.addContactsClicked()
         }
 
         return super.onOptionsItemSelected(item)

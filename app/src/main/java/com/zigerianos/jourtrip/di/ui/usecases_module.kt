@@ -159,4 +159,11 @@ val useCasesModule = module {
             get()
         )
     }
+
+    factory {
+        GetContactsByNameUseCase(
+            AsyncObservableTransformer(),
+            get()
+        )
+    }
 }
