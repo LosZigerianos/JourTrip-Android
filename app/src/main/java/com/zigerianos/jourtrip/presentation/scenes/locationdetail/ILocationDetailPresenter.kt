@@ -11,7 +11,7 @@ interface ILocationDetailPresenter : IPresenter<ILocationDetailPresenter.ILocati
 
     fun getPhoto(): String
     fun getName(): String
-    fun getAddress(): String
+    fun getCaption(): String
     fun getCity(): String
 
     fun addCommentToLocation(comment: String)

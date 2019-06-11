@@ -89,7 +89,7 @@ class CommentAdapter(
 
                 comment.location?.let { location ->
                     textViewTitle.text = location.name
-                    textViewCaption.text = location.formattedAddress
+                    textViewCaption.text = location.city
 
                     textViewTitle.visibility = View.VISIBLE
                     textViewCaption.visibility = View.VISIBLE

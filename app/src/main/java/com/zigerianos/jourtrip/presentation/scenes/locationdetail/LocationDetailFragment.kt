@@ -68,7 +68,7 @@ class LocationDetailFragment :
         imageViewLocation.setOnClickListener { presenter.imageClicked() }
 
         textViewName.text = presenter.getName()
-        textViewAddress.text = presenter.getAddress()
+        textViewCaption.text = presenter.getCaption()
 
         buttonAddComment.setOnClickListener {
             MaterialDialog(context!!, BottomSheet(LayoutMode.WRAP_CONTENT)).show {

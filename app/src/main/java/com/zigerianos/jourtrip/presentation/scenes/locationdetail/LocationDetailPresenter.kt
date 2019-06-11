@@ -47,7 +47,21 @@ class LocationDetailPresenter(
 
     override fun getName(): String = mLocation.name ?: ""
 
-    override fun getAddress(): String = mLocation.formattedAddress ?: ""
+    override fun getCaption(): String {
+        var caption = ""
+
+        mLocation.city?.let { city ->
+            caption = city
+        }
+
+        mLocation.tags?.let { tagList ->
+            tagList.forEach {  tag ->
+                caption += if (caption.isEmpty()) tag else " · $tag"
+            }
+        }
+
+        return caption
+    }
 
     override fun getCity(): String = mLocation.city ?: ""
 

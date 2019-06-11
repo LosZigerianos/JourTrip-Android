@@ -76,14 +76,14 @@
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/textViewAddress"
+                app:layout_constraintBottom_toTopOf="@+id/textViewCaption"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="TextView" />
 
             <TextView
-                android:id="@+id/textViewAddress"
+                android:id="@+id/textViewCaption"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
