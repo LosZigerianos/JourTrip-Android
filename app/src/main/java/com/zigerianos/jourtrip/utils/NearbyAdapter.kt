@@ -83,7 +83,16 @@ class NearbyAdapter(
 
                 location.let { location ->
                     textViewTitle.text = location.name
-                    textViewCaption.text = location.formattedAddress
+
+                    var caption = ""
+                    location.city?.let { caption = it }
+                    location.tags?.let { tagList ->
+                        tagList.forEach {  tag ->
+                            caption += if (caption.isEmpty()) tag else " · $tag"
+                        }
+                    }
+
+                    textViewCaption.text = caption
 
                     textViewTitle.visibility = View.VISIBLE
                     textViewCaption.visibility = View.VISIBLE
