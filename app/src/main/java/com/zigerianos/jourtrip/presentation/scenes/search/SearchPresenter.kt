@@ -44,7 +44,11 @@ class SearchPresenter(
             mSearchClicked = true
             mLastLocation = name
 
-            requestLocationByName()
+            if (mLastLatitude.isEmpty() || mLastLongitude.isEmpty()) {
+                requestLocationByName()
+            } else {
+                requestLocationByCoordinates()
+            }
         }
     }
 
@@ -53,7 +57,7 @@ class SearchPresenter(
     }
 
     override fun loadMoreData() {
-        if (mSearchClicked) {
+        if (mSearchClicked && (mLastLatitude.isEmpty() || mLastLongitude.isEmpty())) {
             requestLocationByName()
         } else {
             requestLocationByCoordinates()
@@ -61,7 +65,7 @@ class SearchPresenter(
     }
 
     private fun requestLocationByCoordinates() {
-        val params = GetLocationsNearUseCase.Params(mLastLatitude, mLastLongitude, skip = mLocationList.count(), limit = PAGINATION_REQUEST)
+        val params = GetLocationsNearUseCase.Params(mLastLatitude, mLastLongitude, skip = mLocationList.count(), limit = PAGINATION_REQUEST, search = mLastLocation)
 
         val disposable = getLocationsNearUseCase.observable(params)
             .subscribe({ response ->

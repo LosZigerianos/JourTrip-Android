@@ -65,7 +65,7 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'com.google.android.gms:play-services:12.0.1'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
 
     implementation 'joda-time:joda-time:2.10.1'
     implementation 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
@@ -96,7 +96,7 @@ dependencies {
 
     //implementation 'org.greenrobot:eventbus:3.1.1'
 
-    //implementation 'com.google.firebase:firebase-core:16.0.9'
+    implementation 'com.google.firebase:firebase-core:16.0.9'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
