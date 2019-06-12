@@ -57,5 +57,6 @@
     <string name="no_results_for_searching">No results were found for this search</string>
     <string name="needs_connection_to_internet">Needs connection to Internet</string>
     <string name="more_contacts">More contacts</string>
+    <string name="search_contact">Search contact</string>
 
 </resources>
