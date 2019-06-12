@@ -10,6 +10,7 @@ interface IContactsPresenter : IPresenter<IContactsPresenter.IContacts> {
     fun setFollowers(value: Boolean)
 
     fun userClicked(user: User)
+    fun searchContactByName(name: String)
     fun loadMoreData()
     fun reloadDataClicked()
 

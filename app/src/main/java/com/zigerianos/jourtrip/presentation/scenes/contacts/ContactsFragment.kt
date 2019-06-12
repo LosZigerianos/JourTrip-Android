@@ -3,6 +3,8 @@ package com.zigerianos.jourtrip.presentation.scenes.contacts
 
 import android.app.Activity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
@@ -22,7 +24,9 @@ import kotlinx.android.synthetic.main.fragment_contacts.progressBar
 import kotlinx.android.synthetic.main.fragment_contacts.toolbar
 import kotlinx.android.synthetic.main.fragment_error_loading.view.*
 import kotlinx.android.synthetic.main.toolbar_elevated.view.*
+import org.jetbrains.anko.support.v4.toast
 import org.koin.android.ext.android.inject
+import java.util.*
 
 class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPresenter>(),
     IContactsPresenter.IContacts {
@@ -88,25 +92,27 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
         editTextSearch.setOnFocusChangeListener { view, boolean ->
             activity?.bottomNavigationView?.visibility = if (boolean) View.GONE else View.VISIBLE
         }
+
+        setupSearch(!argFollowers && !argFollowing)
     }
 
     override fun stateLoading() {
         errorLayout.visibility = View.GONE
-        group_searching.visibility = if (!argFollowers && !argFollowing) View.VISIBLE else View.GONE
+        cardSearching.visibility = if (!argFollowers && !argFollowing) View.VISIBLE else View.GONE
         recyclerViewContacts.visibility = View.GONE
         progressBar.visibility = View.VISIBLE
     }
 
     override fun stateData() {
         errorLayout.visibility = View.GONE
-        group_searching.visibility = if (!argFollowers && !argFollowing) View.VISIBLE else View.GONE
+        cardSearching.visibility = if (!argFollowers && !argFollowing) View.VISIBLE else View.GONE
         recyclerViewContacts.visibility = View.VISIBLE
         progressBar.visibility = View.GONE
     }
 
     override fun stateError() {
         recyclerViewContacts.visibility = View.GONE
-        group_searching.visibility = View.GONE
+        cardSearching.visibility = View.GONE
         progressBar.visibility = View.GONE
         errorLayout.visibility = View.VISIBLE
     }
@@ -150,6 +156,36 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
                 presenter.userClicked(item)
             }
         })
+    }
+
+    private fun setupSearch(shouldShow: Boolean) {
+        if (shouldShow) {
+            editTextSearch.addTextChangedListener( object : TextWatcher {
+                var timer = Timer()
+
+                override fun afterTextChanged(p0: Editable?) {
+                    timer.cancel()
+                    timer = Timer()
+                    timer.schedule(object : TimerTask() {
+                        override fun run() {
+                            activity?.runOnUiThread {
+                                if (editTextSearch.text!!.trim().isNotEmpty() && (editTextSearch.text!!.length > 2)) {
+                                    contactAdapter.setLoaderVisible(true)
+                                    presenter.searchContactByName(editTextSearch.text.toString())
+                                }
+                            }
+                        }
+                    }, 1000)
+                }
+
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int)  = Unit
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    timer.cancel()
+                }
+
+            })
+        }
     }
 
     private fun setupError() = errorLayout.buttonReload.setOnClickListener { presenter.reloadDataClicked() }

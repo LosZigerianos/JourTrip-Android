@@ -35,7 +35,7 @@ class ContactsPresenter(
 
         if (mFollowing) requestFollowing()
         else if (mFollowers) requestFollowers()
-        else requestContactsByName("cristian")//getMvpView()?.stateData()
+        else getMvpView()?.stateData()
     }
 
     override fun setUserId(value: String?) {
@@ -65,6 +65,13 @@ class ContactsPresenter(
             else
                 getMvpView()?.navigateToUserProfile(false, user)
         }
+    }
+
+    override fun searchContactByName(name: String) {
+        getMvpView()?.clearItems()
+        mUserList.clear()
+
+        requestContactsByName(name)
     }
 
     override fun loadMoreData() {
