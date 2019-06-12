@@ -16,8 +16,8 @@ class GetCommentsByLocationUseCase(
         return api
             .getCommentsByLocationUseCase(
                 params.locationId,
-                params.skip.toString(),
-                params.limit.toString()
+                params.skip,
+                params.limit
             ).map { it }
     }
 

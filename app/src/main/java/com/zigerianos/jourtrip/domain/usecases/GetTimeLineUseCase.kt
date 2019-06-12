@@ -13,7 +13,7 @@ class GetTimeLineUseCase(
 ) : UseCaseWithParams<GetTimeLineUseCase.Params, Data<List<Comment>>>(transformer) {
 
     override fun createObservable(params: Params): Observable<Data<List<Comment>>> {
-        return api.getTimeLineUseCase(params.userId, params.skip.toString(), params.limit.toString()).map { it }
+        return api.getTimeLineUseCase(params.userId, params.skip, params.limit).map { it }
     }
 
     data class Params(

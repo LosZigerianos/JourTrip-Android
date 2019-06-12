@@ -16,8 +16,8 @@ class GetFollowingByUserUseCase(
         return api
             .getFollowingByUserUseCase(
                 params.userId,
-                params.skip.toString(),
-                params.limit.toString()
+                params.skip,
+                params.limit
             ).map { it }
     }
 

@@ -15,8 +15,8 @@ class GetUserProfileUseCase(
         return api
             .getUserProfileUseCase(
                 params.userId,
-                params.skip.toString(),
-                params.limit.toString()
+                params.skip,
+                params.limit
             ).map { it.data }
     }
 

@@ -14,10 +14,12 @@ class GetContactsByNameUseCase(
 
     override fun createObservable(params: Params): Observable<Data<List<User>>> {
         return api
-            .getContactsByNameUseCase(params.name).map { it }
+            .getContactsByNameUseCase(params.name, params.skip,  params.limit).map { it }
     }
 
     data class Params(
-        val name: String
+        val name: String,
+        val skip: Int? = null,
+        val limit: Int? = null
     )
 }

@@ -1,8 +1,6 @@
 package com.zigerianos.jourtrip.domain.usecases
 
-import android.provider.ContactsContract
 import com.zigerianos.jourtrip.data.ApiService
-import com.zigerianos.jourtrip.data.entities.Data
 import com.zigerianos.jourtrip.data.entities.TokenResponse
 import com.zigerianos.jourtrip.domain.base.usecases.UseCaseWithParams
 import io.reactivex.Observable

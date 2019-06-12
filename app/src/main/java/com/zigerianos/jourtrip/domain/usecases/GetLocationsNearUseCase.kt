@@ -17,8 +17,8 @@ class GetLocationsNearUseCase(
             .getLocationsNear(
                 params.latitude,
                 params.longitude,
-                params.skip.toString(),
-                params.limit.toString(),
+                params.skip,
+                params.limit,
                 params.search
             ).map { it }
     }
