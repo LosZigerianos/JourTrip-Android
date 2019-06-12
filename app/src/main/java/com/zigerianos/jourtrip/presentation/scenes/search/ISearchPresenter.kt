@@ -6,7 +6,7 @@ import com.zigerianos.jourtrip.presentation.base.IPresenter
 interface ISearchPresenter : IPresenter<ISearchPresenter.ISearchView> {
 
     fun localizedUser(latitude: String, longitude: String)
-    fun searchLocationByNameClicked(name: String)
+    fun searchLocationByName(name: String)
 
     fun locationClicked(location: Location)
     fun loadMoreData()

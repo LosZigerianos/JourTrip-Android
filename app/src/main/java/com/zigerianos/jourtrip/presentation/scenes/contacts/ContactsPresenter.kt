@@ -26,8 +26,10 @@ class ContactsPresenter(
     override fun update() {
         super.update()
 
-        getMvpView()?.clearItems()
-        mUserList.clear()
+        if (mFollowing || mFollowers) {
+            getMvpView()?.clearItems()
+            mUserList.clear()
+        }
 
         getMvpView()?.setupToolbar()
         getMvpView()?.stateLoading()

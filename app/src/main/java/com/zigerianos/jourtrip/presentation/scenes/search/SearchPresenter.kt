@@ -36,7 +36,7 @@ class SearchPresenter(
         requestLocationByCoordinates()
     }
 
-    override fun searchLocationByNameClicked(name: String) {
+    override fun searchLocationByName(name: String) {
         //getMvpView()?.stateLoading()
 
         if (name.isNotEmpty()) {

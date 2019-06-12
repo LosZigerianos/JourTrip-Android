@@ -24,7 +24,6 @@ import kotlinx.android.synthetic.main.fragment_contacts.progressBar
 import kotlinx.android.synthetic.main.fragment_contacts.toolbar
 import kotlinx.android.synthetic.main.fragment_error_loading.view.*
 import kotlinx.android.synthetic.main.toolbar_elevated.view.*
-import org.jetbrains.anko.support.v4.toast
 import org.koin.android.ext.android.inject
 import java.util.*
 
@@ -59,6 +58,12 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
         presenter.setFollowers(argFollowers)
     }
 
+    override fun onResume() {
+        activity?.bottomNavigationView?.visibility = View.VISIBLE
+
+        super.onResume()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
 
@@ -83,8 +88,6 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
         /*toolbar.toolbarImage.setOnClickListener {
             recyclerViewContacts.smoothScrollToPosition(0)
         }*/
-
-        activity?.bottomNavigationView?.visibility = View.VISIBLE
 
         setupRecyclerView()
         setupError()

@@ -4,6 +4,8 @@ import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ScrollView
@@ -13,7 +15,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.material.snackbar.Snackbar
 import com.zigerianos.jourtrip.R
 
 import com.zigerianos.jourtrip.presentation.base.BaseFragment
@@ -28,6 +29,7 @@ import com.zigerianos.jourtrip.utils.CheckPermission
 import com.zigerianos.jourtrip.utils.NearbyAdapter
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import net.yslibrary.android.keyboardvisibilityevent.Unregistrar
+import java.util.*
 
 
 class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresenter>(),
@@ -107,15 +109,8 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
             }
         }
 
-        buttonSearching.setOnClickListener {
-            textInputLayoutSearching.clearFocus()
-
-            if (editTextSearch.text.toString().isNotEmpty()) {
-                nearbyAdapter.removeAllItems()
-                nearbyAdapter.setLoaderVisible(true)
-                presenter.searchLocationByNameClicked(editTextSearch.text.toString())
-            }
-        }
+        setupSearch()
+        //textInputLayoutSearching.clearFocus()
 
         mUnregistrar = KeyboardVisibilityEvent.registerEventListener(activity!!) { isOpen ->
             //activity?.bottomNavigationView?.visibility = if (isOpen) View.GONE else View.VISIBLE
@@ -201,6 +196,35 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
             override fun onItemClick(item: Location, position: Int, view: View) {
                 activity?.bottomNavigationView?.visibility = View.VISIBLE
                 presenter.locationClicked(item)
+            }
+        })
+    }
+
+    private fun setupSearch() {
+        editTextSearch.addTextChangedListener( object : TextWatcher {
+            var timer = Timer()
+
+            override fun afterTextChanged(p0: Editable?) {
+                timer.cancel()
+                timer = Timer()
+                timer.schedule(object : TimerTask() {
+                    override fun run() {
+                        activity?.runOnUiThread {
+                            if (editTextSearch.text!!.trim().isNotEmpty() && (editTextSearch.text!!.length > 2)) {
+                                nearbyAdapter.removeAllItems()
+                                nearbyAdapter.setLoaderVisible(true)
+
+                                presenter.searchLocationByName(editTextSearch.text.toString())
+                            }
+                        }
+                    }
+                }, 1000)
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int)  = Unit
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                timer.cancel()
             }
         })
     }
