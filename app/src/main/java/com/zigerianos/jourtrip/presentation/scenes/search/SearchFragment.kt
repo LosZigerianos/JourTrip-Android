@@ -132,10 +132,6 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
             activity?.bottomNavigationView?.visibility = View.VISIBLE
             editTextSearch.clearFocus()
         }
-
-        scrollViewSearching.setOnBottomReachedListener {
-            presenter.loadMoreData()
-        }
     }
 
     override fun stateLoading() {
@@ -166,6 +162,8 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
         nearbyAdapter.setLoaderVisible(forMorePages)
         if (!forMorePages) scrollViewSearching.onBottomReachedListener = null
         nearbyAdapter.addItems(locations)
+
+        scrollViewSearching.setOnBottomReachedListener { presenter.loadMoreData() }
     }
 
     override fun showMessageEmpty() {
