@@ -79,6 +79,8 @@ class NearbyAdapter(
             with(itemView) {
                 picasso
                     .load(location.photos?.first())
+                    .fit()
+                    .centerCrop()
                     .into(itemView.imageViewLocation)
 
                 location.let { location ->

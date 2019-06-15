@@ -174,7 +174,6 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
     }
 
     private fun setupRecyclerView() {
-        //recyclerViewSearching.layoutManager = GridLayoutManager(activity, 2)
         val gridLayoutManager = GridLayoutManager(activity, 2)
         gridLayoutManager.spanSizeLookup = (object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
