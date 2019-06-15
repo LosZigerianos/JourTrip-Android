@@ -66,7 +66,7 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@+id/navigationHome" />
-        <action
+        <!--<action
             android:id="@+id/actionGoToInitialFragment"
             app:destination="@id/initialFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
@@ -74,7 +74,7 @@
             app:popEnterAnim="@anim/slide_down_pop_exit"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@+id/navigationHome"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true" /> -->
     </fragment>
 
     <fragment
@@ -133,7 +133,7 @@
         android:name="com.zigerianos.jourtrip.presentation.scenes.userdata.UserDataFragment"
         android:label="fragment_user_data"
         tools:layout="@layout/fragment_user_data">
-        <action
+        <!--<action
             android:id="@+id/actionGoToInitialFragment"
             app:destination="@id/initialFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
@@ -141,7 +141,7 @@
             app:popEnterAnim="@anim/slide_down_pop_exit"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@+id/navigationHome"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true" /> -->
     </fragment>
 
     <fragment
@@ -262,5 +262,13 @@
             android:name="images"
             app:argType="string[]" />
     </fragment>
+
+    <action
+        android:id="@+id/actionGoToInitialFragment"
+        app:destination="@id/initialFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popUpTo="@+id/initialFragment"
+        app:popUpToInclusive="true" />
 
 </navigation>

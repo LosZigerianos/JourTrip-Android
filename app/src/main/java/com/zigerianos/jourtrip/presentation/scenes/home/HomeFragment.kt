@@ -87,7 +87,7 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
     }
 
     override fun navigateToInit() {
-        NavHostFragment.findNavController(this).navigate(HomeFragmentDirections.actionGoToInitialFragment())
+        NavHostFragment.findNavController(this).navigate(R.id.actionGoToInitialFragment)
     }
 
     private fun setupRecyclerView() {

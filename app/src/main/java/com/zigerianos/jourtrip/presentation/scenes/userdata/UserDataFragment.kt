@@ -11,7 +11,6 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.navigation.fragment.NavHostFragment
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
@@ -175,7 +174,10 @@ class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDat
     }
 
     override fun navigateToInit() {
-        NavHostFragment.findNavController(this).navigate(UserDataFragmentDirections.actionGoToInitialFragment())
+        activity?.finish()
+        //NavHostFragment.findNavController(this).navigate(R.id.actionGoToInitialFragment)
+        //NavHostFragment.findNavController(this).popBackStack(R.id.initialFragment, false)
+        //NavHostFragment.findNavController(this).popBackStack(R.id.initialFragment, false)
     }
 
     private fun setupError() {
