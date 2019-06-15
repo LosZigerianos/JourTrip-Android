@@ -6,6 +6,7 @@
     <string name="create_account">Crear cuenta</string>
     <string name="log_in">Iniciar sesión</string>
     <string name="required_field">Campo obligatorio</string>
+    <string name="password_must_be_different">La contraseña debe ser diferente</string>
     <string name="required_email">Email requerido</string>
     <string name="back">Volver</string>
     <string name="recover">Recuperar</string>

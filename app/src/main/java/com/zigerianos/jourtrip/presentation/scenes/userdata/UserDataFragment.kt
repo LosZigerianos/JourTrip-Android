@@ -235,6 +235,10 @@ class UserDataFragment : BaseFragment<IUserDataPresenter.IUserDataView, IUserDat
             textInputLayoutNewPassword.isErrorEnabled = true
             textInputLayoutNewPassword.error = getString(R.string.required_field)
             areFilledFields = false
+        } else if (editTextOldPassword.text.toString() == editTextNewPassword.text.toString()) {
+            textInputLayoutNewPassword.isErrorEnabled = true
+            textInputLayoutNewPassword.error = getString(R.string.password_must_be_different)
+            areFilledFields = false
         } else {
             textInputLayoutNewPassword.isErrorEnabled = false
             textInputLayoutNewPassword.error = ""

@@ -77,7 +77,6 @@ class UserDataPresenter(
 
         val disposable = getUserMeUseCase.observable(params)
             .subscribe({ user ->
-                Timber.d("Patata => User: $user ")
                 getMvpView()?.loadUser(user)
                 getMvpView()?.stateData()
                 authManager.updateUser(user)
