@@ -23,8 +23,6 @@ interface ILoginPresenter: IPresenter<ILoginPresenter.ILoginView> {
 
         fun navigateToHome()
 
-        //fun showInvalidCredentialsErrorMessage()
-        //fun showSentEmailToRecoveryPasswordMessage()
         fun showSuccessMessage(message: String)
         fun showErrorMessage(message: String)
         fun showCredentialsErrorMessage()

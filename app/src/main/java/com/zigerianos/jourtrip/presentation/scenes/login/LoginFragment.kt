@@ -123,7 +123,6 @@ class LoginFragment : BaseFragment<ILoginPresenter.ILoginView, ILoginPresenter>(
             title(R.string.identify_fingerprint_title)
             message(R.string.identify_fingerprint_message)
             positiveButton(R.string.accept) {
-                presenter.hasBiometricPermission(true)
                 authenticateToUser()
             }
             negativeButton(R.string.cancel) {
@@ -175,6 +174,7 @@ class LoginFragment : BaseFragment<ILoginPresenter.ILoginView, ILoginPresenter>(
                 }
 
                 override fun onAuthenticationSuccessful() {
+                    presenter.hasBiometricPermission(true)
                     navigateToHome()
                 }
 
