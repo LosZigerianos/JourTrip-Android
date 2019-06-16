@@ -13,7 +13,7 @@ class SearchPresenter(
 
     private var mLocationList: MutableList<Location> = mutableListOf()
     private var mTotalCount: Int = 0
-    private val PAGINATION_REQUEST: Int = 16
+    private val PAGINATION_REQUEST: Int = 20
 
     private var mLastLatitude = ""
     private var mLastLongitude = ""

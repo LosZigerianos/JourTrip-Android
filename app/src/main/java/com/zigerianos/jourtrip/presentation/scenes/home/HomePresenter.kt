@@ -19,7 +19,7 @@ class HomePresenter(
 
     private var mCommentList: MutableList<Comment> = mutableListOf()
     private var mTotalCount: Int = 0
-    private val PAGINATION_REQUEST: Int = 5
+    private val PAGINATION_REQUEST: Int = 10
 
     override fun update() {
         super.update()

@@ -19,7 +19,7 @@ class ProfilePresenter(
 
     private var mCommentList: MutableList<Comment> = mutableListOf()
     private var mTotalCount: Int = 0
-    private val PAGINATION_REQUEST: Int = 2
+    private val PAGINATION_REQUEST: Int = 10
 
     private var mUserId: String = ""
     private var mIsPersonal: Boolean = false

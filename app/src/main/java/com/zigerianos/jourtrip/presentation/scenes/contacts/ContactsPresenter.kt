@@ -17,7 +17,7 @@ class ContactsPresenter(
 
     private var mUserList: MutableList<User> = mutableListOf()
     private var mTotalCount: Int = 0
-    private val PAGINATION_REQUEST: Int = 12
+    private val PAGINATION_REQUEST: Int = 20
 
     private var mUserId: String = ""
     private var mFollowing = false
