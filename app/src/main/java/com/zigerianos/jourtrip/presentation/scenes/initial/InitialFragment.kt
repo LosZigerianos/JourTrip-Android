@@ -33,60 +33,7 @@ class InitialFragment : BaseFragment<IInitialPresenter.IInitialView, IInitialPre
         progressBar.visibility = View.GONE
 
         buttonSignup.setOnClickListener { presenter.signupClicked() }
-        buttonExistingAccount.setOnClickListener {
-
-            BiometricManager.BiometricBuilder(context!!)
-                .setTitle("Add a title")
-                .setSubtitle("Add a subtitle")
-                .setDescription("Add a description")
-                .setNegativeButtonText("Add a cancel button")
-                .build()
-                .authenticate(object : BiometricCallback {
-                    override fun onSdkVersionNotSupported() {
-                        println("Patata -> onSdkVersionNotSupported")
-                    }
-
-                    override fun onBiometricAuthenticationNotSupported() {
-                        println("Patata -> onBiometricAuthenticationNotSupported")
-                    }
-
-                    override fun onBiometricAuthenticationNotAvailable() {
-                        println("Patata -> onBiometricAuthenticationNotAvailable")
-                    }
-
-                    override fun onBiometricAuthenticationPermissionNotGranted() {
-                        println("Patata -> onBiometricAuthenticationPermissionNotGranted")
-                    }
-
-                    override fun onBiometricAuthenticationInternalError(error: String) {
-                        println("Patata -> onBiometricAuthenticationInternalError")
-                    }
-
-                    override fun onAuthenticationFailed() {
-                        println("Patata -> onAuthenticationFailed")
-                    }
-
-                    override fun onAuthenticationCancelled() {
-                        println("Patata -> onAuthenticationCancelled")
-                    }
-
-                    override fun onAuthenticationSuccessful() {
-                        println("Patata -> onAuthenticationSuccessful")
-                    }
-
-                    override fun onAuthenticationHelp(helpCode: Int, helpString: CharSequence) {
-                        println("Patata -> onAuthenticationHelp")
-                    }
-
-                    override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                        println("Patata -> onAuthenticationError")
-                    }
-
-                })
-
-
-            //presenter.existingAccountClicked()
-        }
+        buttonExistingAccount.setOnClickListener { presenter.existingAccountClicked() }
     }
 
     override fun navigateToSignup() {
@@ -101,6 +48,64 @@ class InitialFragment : BaseFragment<IInitialPresenter.IInitialView, IInitialPre
 
     override fun navigateToHome() {
         NavHostFragment.findNavController(this).navigate(InitialFragmentDirections.actionGoToHomeFragment())
+    }
+
+    override fun authenticateToUser() {
+        BiometricManager.BiometricBuilder(context!!)
+            .setTitle("Biometric identification")
+            .setSubtitle("")
+            .setDescription("")
+            .setNegativeButtonText(getString(R.string.cancel))
+            .build()
+            .authenticate(object : BiometricCallback {
+                override fun onSdkVersionNotSupported() {
+                    println("Info -> onSdkVersionNotSupported")
+                    setupViews()
+                }
+
+                override fun onBiometricAuthenticationNotSupported() {
+                    println("Info -> onBiometricAuthenticationNotSupported")
+                    setupViews()
+                }
+
+                override fun onBiometricAuthenticationNotAvailable() {
+                    println("Info -> onBiometricAuthenticationNotAvailable")
+                    setupViews()
+                }
+
+                override fun onBiometricAuthenticationPermissionNotGranted() {
+                    println("Info -> onBiometricAuthenticationPermissionNotGranted")
+                    setupViews()
+                }
+
+                override fun onBiometricAuthenticationInternalError(error: String) {
+                    println("Info -> onBiometricAuthenticationInternalError")
+                    setupViews()
+                }
+
+                override fun onAuthenticationFailed() {
+                    println("Info -> onAuthenticationFailed")
+                    setupViews()
+                }
+
+                override fun onAuthenticationCancelled() {
+                    setupViews()
+                }
+
+                override fun onAuthenticationSuccessful() {
+                    navigateToHome()
+                }
+
+                override fun onAuthenticationHelp(helpCode: Int, helpString: CharSequence) {
+                    println("Info -> onAuthenticationHelp")
+                    setupViews()
+                }
+
+                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                    println("Info -> onAuthenticationError")
+                    setupViews()
+                }
+            })
     }
 
     override fun getLayoutResource(): Int = R.layout.fragment_initial

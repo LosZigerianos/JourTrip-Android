@@ -11,13 +11,7 @@ data class AuthManager(
 
     override fun getCurrentAccessToken(): String = mUser?.accessToken ?: ""
 
-    override fun isUserSignedIn() : Boolean {
-        mUser?.accessToken?.let { accessToken ->
-            return accessToken.isNotEmpty()
-        }
-
-        return false
-    }
+    override fun isUserSignedIn() : Boolean =  mUser?.accessToken?.isNotEmpty() ?: false
 
     fun getUserId() : String? = mUser?.id
 
@@ -37,8 +31,6 @@ data class AuthManager(
                 email = user.email,
                 creationDate = user.creationDate,
                 updatedAt = user.updatedAt,
-                /*following = user.following,
-                followers = user.followers,*/
                 photo = user.photo
             )
         }
@@ -52,6 +44,12 @@ data class AuthManager(
     fun deleteUser() {
         mUser = null
         prefsManager.remove(PrefsManager.Keys.User)
+    }
+
+    fun hasBiometricPermission() : Boolean = prefsManager.getBoolean(PrefsManager.Keys.HasBiometricPermission, false)
+
+    fun addBiometricPermission(value: Boolean) {
+        prefsManager.setBoolean(PrefsManager.Keys.HasBiometricPermission, value)
     }
 
     private fun saveUser() {

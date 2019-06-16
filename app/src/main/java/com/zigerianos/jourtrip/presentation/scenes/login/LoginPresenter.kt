@@ -1,5 +1,7 @@
 package com.zigerianos.jourtrip.presentation.scenes.login
 
+import android.content.Context
+import com.cespes.biometricauth.BiometricUtils
 import com.google.gson.Gson
 import com.zigerianos.jourtrip.auth.AuthManager
 import com.zigerianos.jourtrip.data.entities.ErrorResponse
@@ -26,7 +28,7 @@ class LoginPresenter(
         getMvpView()?.stateDataLogin()
     }
 
-    override fun loginClicked(email: String, password: String) {
+    override fun loginClicked(email: String, password: String, context: Context) {
         getMvpView()?.stateLoading()
 
         val params = PostLoginUseCase.Params(UserRequest(email = email, password = password))
@@ -42,9 +44,18 @@ class LoginPresenter(
                     return@subscribe
                 }
 
+                if (authManager.getUser() == null
+                    && ((BiometricUtils.isBiometricPromptEnabled() && BiometricUtils.isHardwareSupported(context))
+                            || (BiometricUtils.isSdkVersionSupported() && BiometricUtils.isFingerprintAvailable(context)))
+                ) {
+                    authManager.addUser(user)
+                    authManager.addToken(token)
+                    getMvpView()?.showAuthMessage()
+                    return@subscribe
+                }
+
                 authManager.addUser(user)
                 authManager.addToken(token)
-
                 getMvpView()?.navigateToHome()
             }, {
                 Timber.e(it)
@@ -97,5 +108,9 @@ class LoginPresenter(
             })
 
         addDisposable(disposable)
+    }
+
+    override fun hasBiometricPermission(value: Boolean) {
+        authManager.addBiometricPermission(value)
     }
 }

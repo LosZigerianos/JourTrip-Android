@@ -53,6 +53,11 @@ object BiometricUtils {
      * installs the app on their device.
      *
      * */
-    fun isPermissionGranted(context: Context): Boolean =
-        ActivityCompat.checkSelfPermission(context, Manifest.permission.USE_FINGERPRINT) == PackageManager.PERMISSION_GRANTED
+    fun isPermissionGranted(context: Context): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return ActivityCompat.checkSelfPermission(context, Manifest.permission.USE_FINGERPRINT) == PackageManager.PERMISSION_GRANTED
+        }
+
+        return false
+    }
 }

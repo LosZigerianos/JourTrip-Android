@@ -59,4 +59,7 @@
     <string name="needs_connection_to_internet">Needs connection to Internet</string>
     <string name="more_contacts">More contacts</string>
     <string name="search_contact">Search contact</string>
+    <string name="accept">Accept</string>
+    <string name="identify_fingerprint_title">Identify with your fingerprint</string>
+    <string name="identify_fingerprint_message">Do you wish access to Jourtrip using your fingerprint?</string>
 </resources>
