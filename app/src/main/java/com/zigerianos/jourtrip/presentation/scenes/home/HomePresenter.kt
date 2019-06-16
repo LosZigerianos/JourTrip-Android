@@ -17,7 +17,9 @@ class HomePresenter(
     private val gson: Gson
 ) : BasePresenter<IHomePresenter.IHomeView>(), IHomePresenter {
 
-    private var mCommentList: List<Comment> = emptyList()
+    private var mCommentList: MutableList<Comment> = mutableListOf()
+    private var mTotalCount: Int = 0
+    private val PAGINATION_REQUEST: Int = 10
 
     override fun update() {
         super.update()
@@ -33,21 +35,33 @@ class HomePresenter(
         getMvpView()?.navigateToLocationDetail(location)
     }
 
+    override fun loadMoreData() {
+        requestTimeLine()
+    }
+
+    override fun reloadDataClicked() {
+        getMvpView()?.stateLoading()
+
+        requestTimeLine()
+    }
+
     private fun requestTimeLine() {
         authManager.getUserId()?.let { userId ->
-            val disposable = getTimeLineUseCase.observable(GetTimeLineUseCase.Params(userId))
-                .subscribe({ commentsList ->
+            val disposable = getTimeLineUseCase.observable(
+                GetTimeLineUseCase.Params(userId, skip = mCommentList.count(), limit = PAGINATION_REQUEST))
+                .subscribe({ response ->
 
-                    if (commentsList.isEmpty()) {
-                        //TODO: IMPLEMENTAR LISTA VACIA
+                    if (response.data.isEmpty()) {
+                        getMvpView()?.loadComments(emptyList())
                         getMvpView()?.stateData()
                         return@subscribe
                     }
 
-                    mCommentList = commentsList
-                    getMvpView()?.loadComments(mCommentList)
-                    getMvpView()?.stateData()
+                    mTotalCount = response.count
 
+                    mCommentList.addAll(response.data.toMutableList())
+                    getMvpView()?.loadComments(response.data, forMorePages = mCommentList.count() < mTotalCount)
+                    getMvpView()?.stateData()
                 }, {
                     Timber.e(it)
 

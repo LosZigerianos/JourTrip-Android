@@ -15,8 +15,8 @@ class GetLocationsByCityUseCase(
         return api
             .getLocationsByCity(
                 params.city,
-                params.skip.toString(),
-                params.limit.toString()
+                params.skip,
+                params.limit
             ).map { it.data }
     }
 

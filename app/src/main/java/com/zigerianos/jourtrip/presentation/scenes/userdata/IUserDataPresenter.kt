@@ -7,17 +7,18 @@ import com.zigerianos.jourtrip.presentation.base.IPresenter
 
 interface IUserDataPresenter: IPresenter<IUserDataPresenter.IUserDataView> {
 
+    fun uploadImage(context: Context, bitmap: Bitmap)
     fun updateDataClicked(fullname: String, username: String, email: String)
     fun updatePasswordClicked(oldPassword: String, newPassword: String)
     fun logoutClicked()
-
-    fun uploadImage(context: Context, bitmap: Bitmap)
+    fun reloadDataClicked()
 
     interface IUserDataView: IPresenter.IView {
         fun setupToolbar()
         fun setupViews()
         fun stateLoading()
         fun stateData()
+        fun stateError()
 
         fun loadUser(user: User)
 

@@ -13,6 +13,7 @@ val fragmentContactsModule = module {
         ContactsPresenter(
             get(),
             get(),
+            get(),
             get()
         )
     }

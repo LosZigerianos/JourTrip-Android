@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ScrollView;
+import androidx.core.widget.NestedScrollView;
 
 
 /**
@@ -29,7 +30,7 @@ import android.widget.ScrollView;
  *      android:layout_height="match_parent" />
  *
  */
-public class InteractiveScrollView extends ScrollView {
+public class InteractiveScrollView extends NestedScrollView {
     private OnBottomReachedListener onBottomReachedListener;
     private OnTopReachedListener onTopReachedListener;
     private OnScrolledDownListener onScrolledDownListener;

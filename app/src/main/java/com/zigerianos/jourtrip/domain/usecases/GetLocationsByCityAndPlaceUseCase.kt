@@ -16,8 +16,8 @@ class GetLocationsByCityAndPlaceUseCase(
             .getLocationsByCityAndPlace(
                 params.city,
                 params.place,
-                params.skip.toString(),
-                params.limit.toString()
+                params.skip,
+                params.limit
             ).map { it.data }
     }
 

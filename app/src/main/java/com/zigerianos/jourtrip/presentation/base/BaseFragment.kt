@@ -6,8 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
+import com.zigerianos.jourtrip.R
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import java.io.IOException
 
 abstract class BaseFragment<V : IPresenter.IView, P : IPresenter<V>> : Fragment(), IPresenter.IView {
 
@@ -22,6 +25,7 @@ abstract class BaseFragment<V : IPresenter.IView, P : IPresenter<V>> : Fragment(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         presenter.initialize()
     }
 
@@ -36,6 +40,13 @@ abstract class BaseFragment<V : IPresenter.IView, P : IPresenter<V>> : Fragment(
 
     override fun onResume() {
         super.onResume()
+
+        if (!isOnline()) {
+            view?.let { viewFrag ->
+                Snackbar.make(viewFrag, getString(R.string.needs_connection_to_internet), Snackbar.LENGTH_LONG).show()
+            }
+        }
+
         presenter.update()
     }
 
@@ -57,5 +68,20 @@ abstract class BaseFragment<V : IPresenter.IView, P : IPresenter<V>> : Fragment(
 
     protected fun addDisposable(disposable: Disposable) {
         mCompositeDisposable.add(disposable)
+    }
+
+    protected fun isOnline(): Boolean {
+        val runtime = Runtime.getRuntime()
+        try {
+            val ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8")
+            val exitValue = ipProcess.waitFor()
+            return exitValue == 0
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+
+        return false
     }
 }

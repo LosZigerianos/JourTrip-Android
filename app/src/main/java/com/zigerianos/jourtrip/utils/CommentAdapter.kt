@@ -11,6 +11,10 @@ import com.zigerianos.jourtrip.data.entities.Comment
 import com.zigerianos.jourtrip.presentation.base.BaseAdapter
 import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
 import kotlinx.android.synthetic.main.row_comment.view.*
+import org.joda.time.DateTimeZone
+import org.joda.time.format.DateTimeFormat
+import org.ocpsoft.prettytime.PrettyTime
+
 
 class CommentAdapter(
     context: Context,
@@ -64,7 +68,7 @@ class CommentAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: BaseAdapter.BaseViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         if (getItemViewType(position) == TYPE_ITEM) {
             (holder as CommentViewHolder).bind(getItem(position))
         }
@@ -85,7 +89,7 @@ class CommentAdapter(
 
                 comment.location?.let { location ->
                     textViewTitle.text = location.name
-                    textViewCaption.text = location.formattedAddress
+                    textViewCaption.text = location.city
 
                     textViewTitle.visibility = View.VISIBLE
                     textViewCaption.visibility = View.VISIBLE
@@ -113,7 +117,11 @@ class CommentAdapter(
 
                 if (isShownUser) {
                     comment.user?.let { user ->
-                        picasso.load(comment.user.photo).into(imageViewUser)
+                        picasso
+                            .load(comment.user.photo)
+                            .placeholder(R.drawable.ic_user_profile)
+                            .error(R.drawable.ic_user_profile)
+                            .into(imageViewUser)
 
                         textViewUserName.text = "@${user.username}"
 
@@ -132,6 +140,11 @@ class CommentAdapter(
                 }
 
                 textViewComment.text = comment.description
+
+                val dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                // TODO: Repasar hora del comentario, pasarlo a local
+                val creationDate = dateTimeFormatter.parseDateTime(comment.creationDate)
+                textViewDate.text = PrettyTime().format(creationDate.toDate())
             }
         }
     }

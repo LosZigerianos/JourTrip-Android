@@ -26,7 +26,8 @@ abstract class BaseApp : MultiDexApplication() {
         fragmentProfileModule,
         fragmentUserDataModule,
         fragmentLocationDetailModule,
-        fragmentContactsModule
+        fragmentContactsModule,
+        fragmentImageViewerModule
     )
 
     override fun onCreate() {

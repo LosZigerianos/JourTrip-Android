@@ -10,12 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.zigerianos.jourtrip.R
 import com.zigerianos.jourtrip.data.entities.Comment
 import com.zigerianos.jourtrip.data.entities.Location
-import com.zigerianos.jourtrip.data.entities.User
 import com.zigerianos.jourtrip.di.ModulesNames
 import com.zigerianos.jourtrip.presentation.base.BaseFragment
 import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
 import com.zigerianos.jourtrip.utils.CommentAdapter
+import com.zigerianos.jourtrip.utils.EndlessScrollListener
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_error_loading.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.toolbar_elevated.view.*
 import org.koin.android.ext.android.inject
@@ -26,7 +27,7 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
     private val mainPresenter by inject<IHomePresenter>()
     private val timelineAdapter by inject<CommentAdapter>(name = ModulesNames.ADAPTER_TIMELINE)
 
-    //private var mEndlessScrollListener = EndlessScrollListener {toast("Hola hola")}
+    private var mEndlessScrollListener = EndlessScrollListener { presenter.loadMoreData() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         presenter = mainPresenter
@@ -39,7 +40,6 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
     }
 
     override fun setupViews() {
-        toolbar.toolbarTitle.text = getString(R.string.home)
         toolbar.toolbarImage.visibility = View.VISIBLE
         toolbar.toolbarImage.setOnClickListener {
             recyclerViewTimeline.smoothScrollToPosition(0)
@@ -48,6 +48,7 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
         activity?.bottomNavigationView?.visibility = View.VISIBLE
 
         setupRecyclerView()
+        setupError()
     }
 
     override fun stateLoading() {
@@ -68,21 +69,16 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
         errorLayout.visibility = View.VISIBLE
     }
 
-    override fun loadComments(comments: List<Comment>) {
-        val location =
-            Location("", "", "", "", "", "", "", "")
+    override fun loadComments(comments: List<Comment>, forMorePages: Boolean) {
+        if (comments.isEmpty()) {
+            timelineAdapter.setLoaderVisible(false)
+            mEndlessScrollListener.shouldListenForMorePages(false)
+            return
+        }
 
-        val user = User("", "", "", "", "", "", "", "", "")
-
-        val dummy = listOf<Comment>(
-            Comment("", user, location, "", ""),
-            Comment("", user, location, "", ""),
-            Comment("", user, location, "", ""),
-            Comment("", user, location, "", ""),
-            Comment("", user, location, "", "")
-        )
-
-        timelineAdapter.setItems(comments)
+        timelineAdapter.setLoaderVisible(forMorePages)
+        mEndlessScrollListener.shouldListenForMorePages(forMorePages)
+        timelineAdapter.addItems(comments)
     }
 
     override fun navigateToLocationDetail(location: Location) {
@@ -91,16 +87,16 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
     }
 
     override fun navigateToInit() {
-        NavHostFragment.findNavController(this).navigate(HomeFragmentDirections.actionGoToInitialFragment())
+        NavHostFragment.findNavController(this).navigate(R.id.actionGoToInitialFragment)
     }
 
     private fun setupRecyclerView() {
         recyclerViewTimeline.layoutManager = LinearLayoutManager(activity)
         recyclerViewTimeline.adapter = timelineAdapter
 
-        //mEndlessScrollListener.shouldListenForMorePages(true)
-        //recyclerViewTimeline.addOnScrollListener(mEndlessScrollListener)
-        //timelineAdapter.setLoaderVisible(true)
+        mEndlessScrollListener.shouldListenForMorePages(true)
+        recyclerViewTimeline.addOnScrollListener(mEndlessScrollListener)
+        timelineAdapter.setLoaderVisible(true)
 
         timelineAdapter.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<Comment> {
             override fun onItemClick(item: Comment, position: Int, view: View) {
@@ -109,6 +105,10 @@ class HomeFragment : BaseFragment<IHomePresenter.IHomeView, IHomePresenter>(), I
                 }
             }
         })
+    }
+
+    private fun setupError() {
+        errorLayout.buttonReload.setOnClickListener { presenter.reloadDataClicked() }
     }
 
     override fun getLayoutResource(): Int = R.layout.fragment_home

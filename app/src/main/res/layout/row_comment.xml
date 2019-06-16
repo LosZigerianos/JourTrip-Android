@@ -39,6 +39,7 @@
             android:id="@+id/textViewTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:maxLines="2"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:textColor="@android:color/white"
             android:textStyle="bold"
@@ -54,6 +55,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
+            android:maxLines="1"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewLocation"
@@ -100,6 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/cardViewUserImage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cardViewUserImage"
@@ -121,13 +124,26 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
             android:justificationMode="inter_word"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/barrierUser"
             tools:text="Lorem ipsum dolor sit amet consectetur adipiscing elit elementum enim, porta per nostra vivamus aenean faucibus hac fringilla, taciti interdum aliquam ligula ridiculus placerat dictum pharetra. Sem class parturient iaculis ridiculus imperdiet sodales tellus leo viverra, facilisi placerat purus mattis vitae pulvinar egestas metus. " />
+
+        <TextView
+            android:id="@+id/textViewDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:textAlignment="textEnd"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewComment"
+            tools:text="XX/XX/XXXX" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

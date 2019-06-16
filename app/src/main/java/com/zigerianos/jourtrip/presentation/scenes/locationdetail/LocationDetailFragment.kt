@@ -20,10 +20,11 @@ import com.zigerianos.jourtrip.data.entities.Location
 import com.zigerianos.jourtrip.data.entities.User
 import com.zigerianos.jourtrip.presentation.base.BaseFragment
 import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
+import com.zigerianos.jourtrip.utils.EndlessScrollListener
 import com.zigerianos.jourtrip.utils.UserAdapter
 import kotlinx.android.synthetic.main.fragment_location_detail.*
 import kotlinx.android.synthetic.main.toolbar_elevated.view.*
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_error_loading.view.*
 import org.jetbrains.anko.support.v4.toast
 import org.koin.android.ext.android.inject
 
@@ -36,6 +37,8 @@ class LocationDetailFragment :
     private val mainPresenter by inject<ILocationDetailPresenter>()
     private val picasso by inject<Picasso>()
     private val userCommentAdapter by inject<UserAdapter>()
+
+    private var mEndlessScrollListener = EndlessScrollListener { presenter.loadMoreData() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         presenter = mainPresenter
@@ -62,8 +65,10 @@ class LocationDetailFragment :
             .load(presenter.getPhoto())
             .into(imageViewLocation)
 
+        imageViewLocation.setOnClickListener { presenter.imageClicked() }
+
         textViewName.text = presenter.getName()
-        textViewAddress.text = presenter.getAddress()
+        textViewCaption.text = presenter.getCaption()
 
         buttonAddComment.setOnClickListener {
             MaterialDialog(context!!, BottomSheet(LayoutMode.WRAP_CONTENT)).show {
@@ -84,6 +89,7 @@ class LocationDetailFragment :
         //activity?.bottomNavigationView?.visibility = View.GONE
 
         setupRecyclerView()
+        setupError()
     }
 
     override fun stateLoading() {
@@ -104,33 +110,50 @@ class LocationDetailFragment :
         errorLayout.visibility = View.VISIBLE
     }
 
-    override fun loadComments(comments: List<Comment>) {
-        userCommentAdapter.setItems(comments)
+    override fun loadComments(comments: List<Comment>, forMorePages: Boolean) {
+        if (comments.isEmpty()) {
+            userCommentAdapter.setLoaderVisible(false)
+            mEndlessScrollListener.shouldListenForMorePages(false)
+            return
+        }
+
+        userCommentAdapter.setLoaderVisible(forMorePages)
+        mEndlessScrollListener.shouldListenForMorePages(forMorePages)
+        userCommentAdapter.addItems(comments)
     }
 
-    override fun loadMoreComments(comments: List<Comment>) {
-        // TODO
-        toast("Cargar más los comentarios")
+    override fun loadComment(comment: Comment) {
+        userCommentAdapter.addItemZero(comment)
     }
 
     override fun showErrorMessage() {
         toast(R.string.error_request_message)
     }
 
-    override fun navigateToUserProfile(user: User) {
+    override fun navigateToUserProfile(main: Boolean, user: User) {
         user.id?.let { userId ->
-            val action = LocationDetailFragmentDirections.actionGoToNavigationProfile(userId = userId)
+            val action = if (main) {
+                LocationDetailFragmentDirections.actionGoToNavigationMainProfile(userId = userId)
+            } else {
+                LocationDetailFragmentDirections.actionGoToNavigationProfile(userId = userId)
+            }
+
             NavHostFragment.findNavController(this).navigate(action)
         }
+    }
+
+    override fun navigateToImageViewer(images: List<String>) {
+        val action = LocationDetailFragmentDirections.actionGoToImageViewerFragment(images.toTypedArray())
+        NavHostFragment.findNavController(this).navigate(action)
     }
 
     private fun setupRecyclerView() {
         recyclerViewComments.layoutManager = LinearLayoutManager(activity)
         recyclerViewComments.adapter = userCommentAdapter
 
-        //mEndlessScrollListener.shouldListenForMorePages(true)
-        //recyclerViewComments.addOnScrollListener(mEndlessScrollListener)
-        //timelineAdapter.setLoaderVisible(true)
+        mEndlessScrollListener.shouldListenForMorePages(true)
+        recyclerViewComments.addOnScrollListener(mEndlessScrollListener)
+        userCommentAdapter.setLoaderVisible(true)
 
         userCommentAdapter.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<Comment> {
             override fun onItemClick(item: Comment, position: Int, view: View) {
@@ -139,6 +162,10 @@ class LocationDetailFragment :
                 }
             }
         })
+    }
+
+    private fun setupError() {
+        errorLayout.buttonReload.setOnClickListener { presenter.reloadDataClicked() }
     }
 
     override fun getLayoutResource(): Int = R.layout.fragment_location_detail

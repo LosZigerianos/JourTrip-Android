@@ -1,15 +1,17 @@
 package com.zigerianos.jourtrip.presentation.scenes.profile
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.afollestad.materialdialogs.LayoutMode
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.bottomsheets.BottomSheet
+import com.afollestad.materialdialogs.list.listItems
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 
 import com.zigerianos.jourtrip.R
@@ -21,9 +23,9 @@ import com.zigerianos.jourtrip.presentation.base.BaseFragment
 import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
 import com.zigerianos.jourtrip.utils.CommentAdapter
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_error_loading.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.toolbar_elevated.view.*
-import org.jetbrains.anko.support.v4.toast
 import org.koin.android.ext.android.inject
 
 
@@ -42,9 +44,6 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
     private val picasso by inject<Picasso>()
     private val commentAdapter by inject<CommentAdapter>(name = ModulesNames.ADAPTER_PROFILE)
 
-    private var LastLoadPage: Int = 1
-    private var totalPages: Int? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         presenter = mainPresenter
         super.onCreate(savedInstanceState)
@@ -55,18 +54,15 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
-        if (presenter.getIsPersonal()) {
-            inflater.inflate(R.menu.menu_profile, menu)
-        }
+        if (presenter.isPersonal()) inflater.inflate(R.menu.menu_profile, menu)
 
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.action_settings -> {
-                presenter.settingsClicked()
-            }
+            R.id.action_settings -> presenter.settingsClicked()
+            R.id.action_more_contacts -> presenter.addContactsClicked()
         }
 
         return super.onOptionsItemSelected(item)
@@ -76,13 +72,12 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
         (activity as AppCompatActivity?)?.setSupportActionBar(toolbar as Toolbar)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        if (!presenter.getIsPersonal()) {
+        if (!presenter.isPersonal()) {
             (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
     }
 
     override fun setupViews() {
-        toolbar.toolbarTitle.text = getString(R.string.profile)
         toolbar.toolbarImage.visibility = View.VISIBLE
         toolbar.toolbarImage.setOnClickListener {
             scrollViewProfile.fullScroll(ScrollView.FOCUS_UP)
@@ -90,15 +85,39 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
 
         activity?.bottomNavigationView?.visibility = View.VISIBLE
 
+        if (presenter.isPersonal()) {
+            buttonFollow.visibility = View.GONE
+        } else {
+            buttonFollow.setOnClickListener {
+                if (presenter.isFollowingUser()) {
+                    MaterialDialog(context!!).show {
+                        title(R.string.unfollow_user_title)
+                        message(R.string.unfollow_user_message)
+                        positiveButton(R.string.unfollow) { _ ->
+                            presenter.followUserClicked()
+                        }
+                        negativeButton(R.string.cancel)
+                    }
+                } else {
+                    presenter.followUserClicked()
+                }
+            }
+        }
+
+        scrollViewProfile.setOnBottomReachedListener {
+            presenter.loadMoreData()
+        }
+
+        // prevent scrolling when button is clicked
+        scrollViewProfile.setOnTouchListener { v, event ->
+            when (event?.action) {
+                MotionEvent.ACTION_DOWN -> false
+                else -> v?.onTouchEvent(event) ?: true
+            }
+        }
+
         setupRecyclerView()
-
-        textViewFollowersQuantity.setOnClickListener {
-            presenter.followersClicked()
-        }
-
-        textViewFollowingQuantity.setOnClickListener {
-            presenter.followingClicked()
-        }
+        setupError()
     }
 
     override fun stateLoading() {
@@ -133,27 +152,69 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
             textViewUsername.visibility = View.GONE
         }
 
+        buttonFollow.text = if (presenter.isFollowingUser()) getString(R.string.unfollow) else getString(R.string.follow)
+
         textViewFollowingQuantity.text = profile.following?.toString()
         textViewFollowersQuantity.text = profile.followers?.toString()
-        // todo: que venga como propiedad el paginado un entero
-        textViewPostsQuantity.text = profile.comments?.count().toString()
+        textViewPostsQuantity.text = profile.commentsCount.toString()
 
         picasso
             .load(profile.photo)
-            .placeholder(R.drawable.ic_profile_placeholder)
-            .error(R.drawable.ic_profile_placeholder)
+            .placeholder(R.drawable.ic_user_profile)
+            .error(R.drawable.ic_user_profile)
             .into(imageViewUser)
 
-
-        scrollViewProfile.setOnBottomReachedListener {
-            toast("setOnBottomReachedListener")
-            // TODO: CARGAR MAS COMENTARIOS
-            //loadMore()
+        profile.following?.let { followingQuantity ->
+            if (followingQuantity > 0) {
+                textViewFollowingQuantity.setOnClickListener {
+                    presenter.followingClicked()
+                }
+            }
         }
 
-        profile.comments?.let { comments ->
-            commentAdapter.setItems(comments)
+        profile.followers?.let { followersQuantity ->
+            if (followersQuantity > 0) {
+                textViewFollowersQuantity.setOnClickListener {
+                    presenter.followersClicked()
+                }
+            }
         }
+    }
+
+    override fun loadComments(comments: List<Comment>, forMorePages: Boolean) {
+        if (comments.isEmpty()) {
+            commentAdapter.setLoaderVisible(false)
+            scrollViewProfile.onBottomReachedListener = null
+            return
+        }
+
+        commentAdapter.setLoaderVisible(forMorePages)
+        if (!forMorePages) scrollViewProfile.onBottomReachedListener = null
+        commentAdapter.addItems(comments)
+    }
+
+    override fun showErrorMessage() {
+        view?.let { viewFrag ->
+            Snackbar.make(viewFrag, getString(R.string.error_request), Snackbar.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun followUserChanged(followersQuantity: String) {
+        buttonFollow.text = if (presenter.isFollowingUser()) getString(R.string.unfollow) else getString(R.string.follow)
+
+        textViewFollowersQuantity.text = followersQuantity
+    }
+
+    override fun removeComment(comment: Comment) {
+        val newPostQuantity = textViewPostsQuantity.text.toString()
+        textViewPostsQuantity.text = (newPostQuantity.toInt() - 1).toString()
+
+        val index = commentAdapter.getItems().indexOfFirst { it.id == comment.id }
+        commentAdapter.removeItem(index)
+    }
+
+    override fun clearItems() {
+        commentAdapter.removeAllItems()
     }
 
     override fun navigateToUserData() {
@@ -162,7 +223,7 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
     }
 
     override fun navigateToContacts(userId: String, myFollowings: Boolean, myFollowers: Boolean) {
-         val action = ProfileFragmentDirections.actionGoToContactsFragment(userId, myFollowings, myFollowers)
+        val action = ProfileFragmentDirections.actionGoToContactsFragment(userId, myFollowings, myFollowers)
         NavHostFragment.findNavController(this).navigate(action)
     }
 
@@ -175,24 +236,48 @@ class ProfileFragment : BaseFragment<IProfilePresenter.IProfileView, IProfilePre
         recyclerViewComments.layoutManager = LinearLayoutManager(activity)
         recyclerViewComments.adapter = commentAdapter
 
+        commentAdapter.setLoaderVisible(true)
+
         commentAdapter.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<Comment> {
             override fun onItemClick(item: Comment, position: Int, view: View) {
-                item.location?.let { location ->
-                    presenter.locationClicked(location)
+                if (presenter.isPersonal()) {
+                    MaterialDialog(context!!, BottomSheet(LayoutMode.WRAP_CONTENT)).show {
+                        cornerRadius(16f)
+
+                        listItems(
+                            items = listOf(
+                                getString(R.string.watch),
+                                getString(R.string.remove)
+                            )
+                        ) { _, index, text ->
+                            when (index) {
+                                0 -> {
+                                    item.location?.let { location ->
+                                        presenter.locationClicked(location)
+                                    }
+                                }
+                                1 -> {
+                                    presenter.removeClicked(item)
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    item.location?.let { location ->
+                        presenter.locationClicked(location)
+                    }
                 }
             }
 
         })
     }
 
-    /*private fun loadMore() {
-        val locations = listOf(
-            Location("", "", "", "", "", "", ""),
-            Location("", "", "", "", "", "", "")
-        )
-
-        deadlineAdapter!!.addItems(locations)
-    }*/
+    private fun setupError() {
+        errorLayout.buttonReload.setOnClickListener {
+            commentAdapter.removeAllItems()
+            presenter.reloadDataClicked()
+        }
+    }
 
     override fun getLayoutResource(): Int = R.layout.fragment_profile
 }

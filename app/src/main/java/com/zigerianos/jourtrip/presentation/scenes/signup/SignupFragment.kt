@@ -76,7 +76,7 @@ class SignupFragment : BaseFragment<ISignupPresenter.ISignupView, ISignupPresent
         toast(message)
     }
 
-    private fun checkLoginFields() : Boolean {
+    private fun checkLoginFields(): Boolean {
         var areFilledFields = true
 
         if (editTextFullname.text.toString().isEmpty()) {
@@ -88,20 +88,20 @@ class SignupFragment : BaseFragment<ISignupPresenter.ISignupView, ISignupPresent
             textInputLayoutFullname.error = ""
         }
 
-        /*if (editTextUsername.text.toString().isEmpty()) {
+        if (editTextUsername.text.toString().isEmpty()) {
             textInputLayoutUsername.isErrorEnabled = true
             textInputLayoutUsername.error = getString(R.string.required_field)
             areFilledFields = false
         } else {
             textInputLayoutUsername.isErrorEnabled = false
             textInputLayoutUsername.error = ""
-        }*/
+        }
 
         if (editTextEmail.text.toString().isEmpty()) {
             textInputLayoutEmail.isErrorEnabled = true
             textInputLayoutEmail.error = getString(R.string.required_field)
             areFilledFields = false
-        } else if (!editTextEmail.text.toString().matches(Regex(RegexValidators.EMAIL))) {
+        } else if (!editTextEmail.text.toString().toLowerCase().matches(Regex(RegexValidators.EMAIL))) {
             textInputLayoutEmail.isErrorEnabled = true
             textInputLayoutEmail.error = getString(R.string.required_email)
             areFilledFields = false

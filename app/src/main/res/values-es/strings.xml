@@ -6,6 +6,7 @@
     <string name="create_account">Crear cuenta</string>
     <string name="log_in">Iniciar sesión</string>
     <string name="required_field">Campo obligatorio</string>
+    <string name="password_must_be_different">La contraseña debe ser diferente</string>
     <string name="required_email">Email requerido</string>
     <string name="back">Volver</string>
     <string name="recover">Recuperar</string>
@@ -43,4 +44,16 @@
     <string name="your_comment">Tu comentario</string>
     <string name="incorrect_user_password">Usuario o contraseña incorrectos</string>
     <string name="contacts">Contactos</string>
+    <string name="error_request">Error en la solicitud</string>
+    <string name="follow_user_title">Seguir usuario</string>
+    <string name="unfollow_user_title">Dejar de seguir a usuario</string>
+    <string name="unfollow_user_message">¿Quieres dejar de seguir a este usuario?</string>
+    <string name="unfollow">Dejar de seguir</string>
+    <string name="follow">Seguir</string>
+    <string name="watch">Ver</string>
+    <string name="remove">Eliminar</string>
+    <string name="no_results_for_searching">No se han encontrado resultado para esta búsqueda</string>
+    <string name="needs_connection_to_internet">Necesita conexión a Internet</string>
+    <string name="more_contacts">Más contactos</string>
+    <string name="search_contact">Buscar contacto</string>
 </resources>

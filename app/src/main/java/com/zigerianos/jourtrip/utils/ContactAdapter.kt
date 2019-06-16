@@ -77,7 +77,11 @@ class ContactAdapter(
 
         fun bind(user: User) {
             with(itemView) {
-                picasso.load(user.photo).into(imageViewUser)
+                picasso
+                    .load(user.photo)
+                    .placeholder(R.drawable.ic_user_profile)
+                    .error(R.drawable.ic_user_profile)
+                    .into(imageViewUser)
                 textViewUserName.text = "@${user.username}"
             }
         }

@@ -1,21 +1,16 @@
 package com.zigerianos.jourtrip.presentation.scenes.search
 
 import android.Manifest
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
+import android.app.Activity
 import android.content.pm.PackageManager
-import android.location.LocationListener
-import android.location.LocationManager
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -32,17 +27,23 @@ import org.koin.android.ext.android.inject
 import com.zigerianos.jourtrip.data.entities.Location
 import com.zigerianos.jourtrip.utils.CheckPermission
 import com.zigerianos.jourtrip.utils.NearbyAdapter
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
+import net.yslibrary.android.keyboardvisibilityevent.Unregistrar
+import java.util.*
 
 
 class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresenter>(),
     ISearchPresenter.ISearchView {
 
     private val mainPresenter by inject<ISearchPresenter>()
-
     private val nearbyAdapter by inject<NearbyAdapter>()
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var mLocationManager: LocationManager
+
+    private lateinit var mUnregistrar: Unregistrar
+    private val imm by lazy {
+        activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         presenter = mainPresenter
@@ -51,6 +52,15 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
         activity?.let {
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(it)
         }
+    }
+
+    override fun onDestroyView() {
+        mUnregistrar.unregister()
+
+        super.onDestroyView()
+
+        activity?.bottomNavigationView?.visibility = View.VISIBLE
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     override fun onResume() {
@@ -64,7 +74,6 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
             CheckPermission.TAG_PERMISSION_LOCATION -> {
                 // If request is cancelled, the result arrays are empty.
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    // TODO:
                     requestLocationPermission()
                 } else {
                     // permission denied
@@ -72,7 +81,8 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
                 return
             }
 
-            else -> { }
+            else -> {
+            }
         }
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -84,17 +94,14 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
     }
 
     override fun setupViews() {
-        toolbar.toolbarTitle.text = getString(R.string.search)
         toolbar.toolbarImage.visibility = View.VISIBLE
         toolbar.toolbarImage.setOnClickListener {
             scrollViewSearching.fullScroll(ScrollView.FOCUS_UP)
+            activity?.bottomNavigationView?.visibility = View.VISIBLE
         }
-
-        activity?.bottomNavigationView?.visibility = View.VISIBLE
 
         textInputLayoutSearching.editText?.setOnFocusChangeListener { view, boolean ->
             if (!boolean && isVisible) {
-                val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(container.windowToken, 0)
                 activity?.bottomNavigationView?.visibility = View.VISIBLE
             } else {
@@ -102,29 +109,27 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
             }
         }
 
-        buttonSearching.setOnClickListener {
-            textInputLayoutSearching.clearFocus()
+        setupSearch()
 
-            if (editTextSearch.text.toString().isNotEmpty()) {
-                presenter.searchLocationByNameClicked(editTextSearch.text.toString())
+        mUnregistrar = KeyboardVisibilityEvent.registerEventListener(activity!!) { isOpen ->
+            //activity?.bottomNavigationView?.visibility = if (isOpen) View.GONE else View.VISIBLE
+            if (!isOpen && isVisible) {
+                activity?.bottomNavigationView?.visibility = View.VISIBLE
+                editTextSearch.clearFocus()
             }
-
         }
 
-        /*view?.isFocusableInTouchMode = true
-        view?.requestFocus()
-        view?.setOnKeyListener(object : View.OnKeyListener {
-            override fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    toast("HA PULSADO ATRAS")
-                    return true
-                }
-                return false
-            }
-        })*/
-
-        // TODO: IMPLEMENTAR
         setupRecyclerView()
+
+        scrollViewSearching.setOnScrolledDownListener {
+            activity?.bottomNavigationView?.visibility = View.VISIBLE
+            editTextSearch.clearFocus()
+        }
+
+        scrollViewSearching.setOnScrolledUpListener {
+            activity?.bottomNavigationView?.visibility = View.VISIBLE
+            editTextSearch.clearFocus()
+        }
     }
 
     override fun stateLoading() {
@@ -145,8 +150,22 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
         //errorLayout.visibility = View.VISIBLE
     }
 
-    override fun loadLocations(locations: List<Location>) {
-        nearbyAdapter.setItems(locations)
+    override fun loadLocations(locations: List<Location>, forMorePages: Boolean) {
+        if (locations.isEmpty()) {
+            nearbyAdapter.setLoaderVisible(false)
+            scrollViewSearching.onBottomReachedListener = null
+            return
+        }
+
+        nearbyAdapter.setLoaderVisible(forMorePages)
+        if (!forMorePages) scrollViewSearching.onBottomReachedListener = null
+        nearbyAdapter.addItems(locations)
+
+        scrollViewSearching.setOnBottomReachedListener { presenter.loadMoreData() }
+    }
+
+    override fun showMessageEmpty() {
+        toast(getString(R.string.no_results_for_searching))
     }
 
     override fun navigateToLocationDetail(location: Location) {
@@ -155,12 +174,52 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
     }
 
     private fun setupRecyclerView() {
-        recyclerViewSearching.layoutManager = GridLayoutManager(activity, 2)
+        val gridLayoutManager = GridLayoutManager(activity, 2)
+        gridLayoutManager.spanSizeLookup = (object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return when (nearbyAdapter.getItemViewType(position)) {
+                    nearbyAdapter.TYPE_ITEM -> 1
+                    nearbyAdapter.TYPE_LOADER -> 2
+                    else -> 0
+                }
+            }
+        })
+        recyclerViewSearching.layoutManager = gridLayoutManager
         recyclerViewSearching.adapter = nearbyAdapter
 
         nearbyAdapter.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<Location> {
             override fun onItemClick(item: Location, position: Int, view: View) {
+                activity?.bottomNavigationView?.visibility = View.VISIBLE
                 presenter.locationClicked(item)
+            }
+        })
+    }
+
+    private fun setupSearch() {
+        editTextSearch.addTextChangedListener( object : TextWatcher {
+            var timer = Timer()
+
+            override fun afterTextChanged(p0: Editable?) {
+                timer.cancel()
+                timer = Timer()
+                timer.schedule(object : TimerTask() {
+                    override fun run() {
+                        activity?.runOnUiThread {
+                            if (editTextSearch.text!!.trim().isNotEmpty() && (editTextSearch.text!!.length > 2)) {
+                                nearbyAdapter.removeAllItems()
+                                nearbyAdapter.setLoaderVisible(true)
+
+                                presenter.searchLocationByName(editTextSearch.text.toString())
+                            }
+                        }
+                    }
+                }, 1000)
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int)  = Unit
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                timer.cancel()
             }
         })
     }
@@ -171,7 +230,7 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
                 if (CheckPermission.checkPermission(act, Manifest.permission.ACCESS_FINE_LOCATION)) {
                     fusedLocationClient.lastLocation?.addOnSuccessListener(act) { location ->
                         location?.let {
-                            toast("Latitude: ${location.latitude} / Longitude: ${location.longitude}")
+                            //toast("Latitude: ${location.latitude} / Longitude: ${location.longitude}")
                             presenter.localizedUser(location.latitude.toString(), location.longitude.toString())
                         }
                     }
@@ -186,49 +245,6 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
             }
         }
     }
-
-    /*@SuppressLint("MissingPermission")
-    private fun getLocation() {
-        mLocationManager = context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val hasGps = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-        val hasNetwork = mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-
-        if (hasGps || hasNetwork) {
-            if (hasGps) {
-                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000.toLong(), 0.toFloat(), object :
-                    LocationListener {
-                    override fun onLocationChanged(location: android.location.Location?) {
-                        Log.d("PATATA", "LOCATION: ${location.toString()}")
-                    }
-
-                    override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {}
-
-                    override fun onProviderEnabled(p0: String?) {}
-
-                    override fun onProviderDisabled(p0: String?) {}
-                })
-
-                return
-            }
-
-            if (hasNetwork) {
-                mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000.toLong(), 0.toFloat(), object :
-                    LocationListener {
-                    override fun onLocationChanged(location: android.location.Location?) {
-                        Log.d("PATATA", "LOCATION: ${location.toString()}")
-                    }
-
-                    override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {}
-
-                    override fun onProviderEnabled(p0: String?) {}
-
-                    override fun onProviderDisabled(p0: String?) {}
-                })
-
-                return
-            }
-        }
-    }*/
 
     override fun getLayoutResource(): Int = R.layout.fragment_search
 }

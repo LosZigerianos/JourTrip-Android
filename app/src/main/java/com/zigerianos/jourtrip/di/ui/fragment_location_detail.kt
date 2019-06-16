@@ -12,6 +12,7 @@ val fragmentLocationDetailModule = module {
     factory<ILocationDetailPresenter> {
         LocationDetailPresenter(
             get(),
+            get(),
             get()
         )
     }

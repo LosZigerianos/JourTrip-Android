@@ -15,6 +15,9 @@ val fragmentProfileModule = module {
         ProfilePresenter(
             get(),
             get(),
+            get(),
+            get(),
+            get(),
             get()
         )
     }

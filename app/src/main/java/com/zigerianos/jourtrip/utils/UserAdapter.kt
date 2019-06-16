@@ -10,6 +10,8 @@ import com.zigerianos.jourtrip.data.entities.Comment
 import com.zigerianos.jourtrip.presentation.base.BaseAdapter
 import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
 import kotlinx.android.synthetic.main.row_user.view.*
+import org.joda.time.format.DateTimeFormat
+import org.ocpsoft.prettytime.PrettyTime
 
 class UserAdapter(
     context: Context,
@@ -84,7 +86,11 @@ class UserAdapter(
         fun bind(comment: Comment) {
             with(itemView) {
                 comment.user?.let { user ->
-                    picasso.load(comment.user.photo).into(imageViewUser)
+                    picasso
+                        .load(comment.user.photo)
+                        .placeholder(R.drawable.ic_user_profile)
+                        .error(R.drawable.ic_user_profile)
+                        .into(imageViewUser)
 
                     textViewUserName.text = "@${user.username}"
 
@@ -98,6 +104,10 @@ class UserAdapter(
                 }
 
                 textViewComment.text = comment.description
+
+                val dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                val creationDate = dateTimeFormatter.parseDateTime(comment.creationDate)
+                textViewDate.text = PrettyTime().format(creationDate.toDate())
             }
         }
     }

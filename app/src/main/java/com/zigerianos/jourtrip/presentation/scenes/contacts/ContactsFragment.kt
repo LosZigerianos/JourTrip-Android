@@ -1,12 +1,14 @@
 package com.zigerianos.jourtrip.presentation.scenes.contacts
 
 
+import android.app.Activity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.os.bundleOf
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zigerianos.jourtrip.R
@@ -14,13 +16,16 @@ import com.zigerianos.jourtrip.data.entities.User
 import com.zigerianos.jourtrip.presentation.base.BaseFragment
 import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
 import com.zigerianos.jourtrip.utils.ContactAdapter
+import com.zigerianos.jourtrip.utils.EndlessScrollListener
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_contacts.*
 import kotlinx.android.synthetic.main.fragment_contacts.errorLayout
 import kotlinx.android.synthetic.main.fragment_contacts.progressBar
 import kotlinx.android.synthetic.main.fragment_contacts.toolbar
+import kotlinx.android.synthetic.main.fragment_error_loading.view.*
 import kotlinx.android.synthetic.main.toolbar_elevated.view.*
 import org.koin.android.ext.android.inject
+import java.util.*
 
 class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPresenter>(),
     IContactsPresenter.IContacts {
@@ -38,7 +43,11 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
     private val mainPresenter by inject<IContactsPresenter>()
     private val contactAdapter by inject<ContactAdapter>()
 
-    //private var mEndlessScrollListener = EndlessScrollListener {toast("Hola hola")}
+    private var mEndlessScrollListener = EndlessScrollListener { presenter.loadMoreData() }
+
+    private val imm by lazy {
+        activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         presenter = mainPresenter
@@ -47,6 +56,19 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
         presenter.setUserId(argUserId)
         presenter.setFollowing(argFollowing)
         presenter.setFollowers(argFollowers)
+    }
+
+    override fun onResume() {
+        activity?.bottomNavigationView?.visibility = View.VISIBLE
+
+        super.onResume()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
+        activity?.bottomNavigationView?.visibility = View.VISIBLE
     }
 
     override fun setupToolbar() {
@@ -67,39 +89,58 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
             recyclerViewContacts.smoothScrollToPosition(0)
         }*/
 
-        activity?.bottomNavigationView?.visibility = View.VISIBLE
-
         setupRecyclerView()
+        setupError()
+
+        editTextSearch.setOnFocusChangeListener { view, boolean ->
+            activity?.bottomNavigationView?.visibility = if (boolean) View.GONE else View.VISIBLE
+        }
+
+        setupSearch(!argFollowers && !argFollowing)
     }
 
     override fun stateLoading() {
         errorLayout.visibility = View.GONE
+        cardSearching.visibility = if (!argFollowers && !argFollowing) View.VISIBLE else View.GONE
         recyclerViewContacts.visibility = View.GONE
         progressBar.visibility = View.VISIBLE
     }
 
     override fun stateData() {
         errorLayout.visibility = View.GONE
+        cardSearching.visibility = if (!argFollowers && !argFollowing) View.VISIBLE else View.GONE
         recyclerViewContacts.visibility = View.VISIBLE
         progressBar.visibility = View.GONE
     }
 
     override fun stateError() {
         recyclerViewContacts.visibility = View.GONE
+        cardSearching.visibility = View.GONE
         progressBar.visibility = View.GONE
         errorLayout.visibility = View.VISIBLE
     }
 
-    override fun loadUsers(users: List<User>) {
-        contactAdapter.setItems(users)
+    override fun clearItems() = contactAdapter.removeAllItems()
+
+    override fun loadUsers(users: List<User>, forMorePages: Boolean) {
+        if (users.isEmpty()) {
+            contactAdapter.setLoaderVisible(false)
+            mEndlessScrollListener.shouldListenForMorePages(false)
+            return
+        }
+
+        contactAdapter.setLoaderVisible(forMorePages)
+        mEndlessScrollListener.shouldListenForMorePages(forMorePages)
+        contactAdapter.addItems(users)
     }
 
     override fun navigateToUserProfile(main: Boolean, user: User) {
         user.id?.let { userId ->
-            val action = if (main)
+            val action = if (main) {
                 ContactsFragmentDirections.actionGoToNavigationMainProfile(userId = userId)
-            else
+            } else {
                 ContactsFragmentDirections.actionGoToNavigationProfile(userId = userId)
+            }
 
             NavHostFragment.findNavController(this).navigate(action)
         }
@@ -109,9 +150,9 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
         recyclerViewContacts.layoutManager = LinearLayoutManager(activity)
         recyclerViewContacts.adapter = contactAdapter
 
-        //mEndlessScrollListener.shouldListenForMorePages(true)
-        //recyclerViewContacts.addOnScrollListener(mEndlessScrollListener)
-        //contactAdapter.setLoaderVisible(true)
+        mEndlessScrollListener.shouldListenForMorePages(true)
+        recyclerViewContacts.addOnScrollListener(mEndlessScrollListener)
+        contactAdapter.setLoaderVisible(false)
 
         contactAdapter.setOnItemClickListener(object : ItemClickAdapter.OnItemClickListener<User> {
             override fun onItemClick(item: User, position: Int, view: View) {
@@ -119,6 +160,38 @@ class ContactsFragment : BaseFragment<IContactsPresenter.IContacts, IContactsPre
             }
         })
     }
+
+    private fun setupSearch(shouldShow: Boolean) {
+        if (shouldShow) {
+            editTextSearch.addTextChangedListener( object : TextWatcher {
+                var timer = Timer()
+
+                override fun afterTextChanged(p0: Editable?) {
+                    timer.cancel()
+                    timer = Timer()
+                    timer.schedule(object : TimerTask() {
+                        override fun run() {
+                            activity?.runOnUiThread {
+                                if (editTextSearch.text!!.trim().isNotEmpty() && (editTextSearch.text!!.length > 2)) {
+                                    contactAdapter.setLoaderVisible(true)
+                                    presenter.searchContactByName(editTextSearch.text.toString())
+                                }
+                            }
+                        }
+                    }, 1000)
+                }
+
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int)  = Unit
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    timer.cancel()
+                }
+
+            })
+        }
+    }
+
+    private fun setupError() = errorLayout.buttonReload.setOnClickListener { presenter.reloadDataClicked() }
 
     override fun getLayoutResource(): Int = R.layout.fragment_contacts
 }

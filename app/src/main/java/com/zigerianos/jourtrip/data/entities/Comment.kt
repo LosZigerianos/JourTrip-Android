@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName
 data class Comment(
     @SerializedName("_id")
     val id: String?,
-    val user: User?, // TODO: REPASAR
+    val user: User?,
     val location: Location?,
     val description: String?,
-    @SerializedName("creationDate")
+    @SerializedName("creation_date")
     val creationDate: String?
 )

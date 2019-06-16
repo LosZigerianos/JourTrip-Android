@@ -126,6 +126,13 @@ val useCasesModule = module {
     }
 
     factory {
+        DeleteCommentUseCase(
+            AsyncObservableTransformer(),
+            get()
+        )
+    }
+
+    factory {
         GetFollowersByUserUseCase(
             AsyncObservableTransformer(),
             get()
@@ -134,6 +141,27 @@ val useCasesModule = module {
 
     factory {
         GetFollowingByUserUseCase(
+            AsyncObservableTransformer(),
+            get()
+        )
+    }
+
+    factory {
+        PostAddFollowingUseCase(
+            AsyncObservableTransformer(),
+            get()
+        )
+    }
+
+    factory {
+        DeleteFollowingUseCase(
+            AsyncObservableTransformer(),
+            get()
+        )
+    }
+
+    factory {
+        GetContactsByNameUseCase(
             AsyncObservableTransformer(),
             get()
         )

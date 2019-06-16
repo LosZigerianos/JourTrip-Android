@@ -66,7 +66,7 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@+id/navigationHome" />
-        <action
+        <!--<action
             android:id="@+id/actionGoToInitialFragment"
             app:destination="@id/initialFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
@@ -74,7 +74,7 @@
             app:popEnterAnim="@anim/slide_down_pop_exit"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@+id/navigationHome"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true" /> -->
     </fragment>
 
     <fragment
@@ -133,7 +133,7 @@
         android:name="com.zigerianos.jourtrip.presentation.scenes.userdata.UserDataFragment"
         android:label="fragment_user_data"
         tools:layout="@layout/fragment_user_data">
-        <action
+        <!--<action
             android:id="@+id/actionGoToInitialFragment"
             app:destination="@id/initialFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
@@ -141,7 +141,7 @@
             app:popEnterAnim="@anim/slide_down_pop_exit"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@+id/navigationHome"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true" /> -->
     </fragment>
 
     <fragment
@@ -155,6 +155,23 @@
         <action
             android:id="@+id/actionGoToNavigationProfile"
             app:destination="@id/profileUserFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/locationDetailFragment" />
+        <action
+            android:id="@+id/actionGoToNavigationMainProfile"
+            app:destination="@id/navigationProfile"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/navigationHome" />
+        <action
+            android:id="@+id/actionGoToImageViewerFragment"
+            app:destination="@id/imageViewerFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
@@ -225,7 +242,7 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/navigationProfile" />
+            app:popUpTo="@+id/profileUserFragment" />
         <action
             android:id="@+id/actionGoToContactsFragment"
             app:destination="@id/contactsFragment"
@@ -233,7 +250,25 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/navigationProfile" />
+            app:popUpTo="@+id/profileUserFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/imageViewerFragment"
+        android:name="com.zigerianos.jourtrip.presentation.scenes.imageviewer.ImageViewerFragment"
+        android:label="fragment_image_viewer"
+        tools:layout="@layout/fragment_image_viewer">
+        <argument
+            android:name="images"
+            app:argType="string[]" />
+    </fragment>
+
+    <action
+        android:id="@+id/actionGoToInitialFragment"
+        app:destination="@id/initialFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popUpTo="@+id/initialFragment"
+        app:popUpToInclusive="true" />
 
 </navigation>

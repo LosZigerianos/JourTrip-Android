@@ -33,20 +33,13 @@ class UserDataPresenter(
         getMvpView()?.setupToolbar()
         getMvpView()?.setupViews()
 
-        val params = GetUserMeUseCase.Params(userId)
+        requestUserData()
+    }
 
-        val disposable = getUserMeUseCase.observable(params)
-            .subscribe({ user ->
-                Timber.d("Patata => User: $user ")
-                getMvpView()?.loadUser(user)
-                getMvpView()?.stateData()
-                authManager.updateUser(user)
-            }, {
-                Timber.e(it)
-                getMvpView()?.stateData()
-            })
+    override fun reloadDataClicked() {
+        getMvpView()?.stateLoading()
 
-        addDisposable(disposable)
+        requestUserData()
     }
 
     override fun updateDataClicked(fullname: String, username: String, email: String) {
@@ -77,6 +70,22 @@ class UserDataPresenter(
         ConvertFileFromBitmap(context, bitmap) { file ->
             requestUpdatePhoto(file)
         }.execute()
+    }
+
+    private fun requestUserData() {
+        val params = GetUserMeUseCase.Params(userId)
+
+        val disposable = getUserMeUseCase.observable(params)
+            .subscribe({ user ->
+                getMvpView()?.loadUser(user)
+                getMvpView()?.stateData()
+                authManager.updateUser(user)
+            }, {
+                Timber.e(it)
+                getMvpView()?.stateData()
+            })
+
+        addDisposable(disposable)
     }
 
     private fun requestUpdateUserData(userRequest: UserRequest) {

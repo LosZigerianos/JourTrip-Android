@@ -19,12 +19,29 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="actionGoToNavigationMainProfile">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="actionGoToNavigationProfile">
                               <value>
                                 <LayoutPositions />
                               </value>
                             </entry>
                           </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="imageViewerFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="291" />
+                            <option name="y" value="-273" />
+                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -71,6 +88,16 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="actionGoToImageViewerFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="actionGoToNavigationMainProfile">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="actionGoToNavigationProfile">
                               <value>
                                 <LayoutPositions />
