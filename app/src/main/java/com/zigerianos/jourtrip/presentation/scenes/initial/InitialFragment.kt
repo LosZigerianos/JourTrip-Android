@@ -3,6 +3,8 @@ package com.zigerianos.jourtrip.presentation.scenes.initial
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.NavHostFragment
+import com.cespes.biometricauth.BiometricCallback
+import com.cespes.biometricauth.BiometricManager
 import com.zigerianos.jourtrip.R
 import com.zigerianos.jourtrip.presentation.base.BaseFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -46,6 +48,64 @@ class InitialFragment : BaseFragment<IInitialPresenter.IInitialView, IInitialPre
 
     override fun navigateToHome() {
         NavHostFragment.findNavController(this).navigate(InitialFragmentDirections.actionGoToHomeFragment())
+    }
+
+    override fun authenticateToUser() {
+        BiometricManager.BiometricBuilder(context!!)
+            .setTitle("Biometric identification")
+            .setSubtitle("")
+            .setDescription("")
+            .setNegativeButtonText(getString(R.string.cancel))
+            .build()
+            .authenticate(object : BiometricCallback {
+                override fun onSdkVersionNotSupported() {
+                    println("Info -> onSdkVersionNotSupported")
+                    setupViews()
+                }
+
+                override fun onBiometricAuthenticationNotSupported() {
+                    println("Info -> onBiometricAuthenticationNotSupported")
+                    setupViews()
+                }
+
+                override fun onBiometricAuthenticationNotAvailable() {
+                    println("Info -> onBiometricAuthenticationNotAvailable")
+                    setupViews()
+                }
+
+                override fun onBiometricAuthenticationPermissionNotGranted() {
+                    println("Info -> onBiometricAuthenticationPermissionNotGranted")
+                    setupViews()
+                }
+
+                override fun onBiometricAuthenticationInternalError(error: String) {
+                    println("Info -> onBiometricAuthenticationInternalError")
+                    setupViews()
+                }
+
+                override fun onAuthenticationFailed() {
+                    println("Info -> onAuthenticationFailed")
+                    setupViews()
+                }
+
+                override fun onAuthenticationCancelled() {
+                    setupViews()
+                }
+
+                override fun onAuthenticationSuccessful() {
+                    navigateToHome()
+                }
+
+                override fun onAuthenticationHelp(helpCode: Int, helpString: CharSequence) {
+                    println("Info -> onAuthenticationHelp")
+                    setupViews()
+                }
+
+                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                    println("Info -> onAuthenticationError")
+                    setupViews()
+                }
+            })
     }
 
     override fun getLayoutResource(): Int = R.layout.fragment_initial

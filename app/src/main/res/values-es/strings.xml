@@ -56,4 +56,8 @@
     <string name="needs_connection_to_internet">Necesita conexión a Internet</string>
     <string name="more_contacts">Más contactos</string>
     <string name="search_contact">Buscar contacto</string>
+    <string name="accept">Aceptar</string>
+    <string name="identify_fingerprint_title">Identificate con tu huella dactilar</string>
+    <string name="identify_fingerprint_message">Deseas acceder a Jourtrip con tu huella dactilar?</string>
+
 </resources>

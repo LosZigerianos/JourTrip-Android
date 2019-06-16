@@ -14,7 +14,8 @@ class PrefsManager(context: Context) : ContextWrapper(context) {
     enum class Keys(val value: String) {
         AccessToken("AccessToken"),
         ApplicationLanguage("ApplicationLanguage"),
-        User("User")
+        User("User"),
+        HasBiometricPermission("HasBiometricPermission")
     }
 
     fun setString(key: Keys, value: String) {

@@ -11,6 +11,8 @@ interface IInitialPresenter: IPresenter<IInitialPresenter.IInitialView> {
         fun stateLoading()
         fun setupViews()
 
+        fun authenticateToUser()
+
         fun navigateToSignup()
         fun navigateToLogin()
         fun navigateToHome()

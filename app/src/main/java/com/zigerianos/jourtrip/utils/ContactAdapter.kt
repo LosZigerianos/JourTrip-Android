@@ -82,7 +82,7 @@ class ContactAdapter(
                     .placeholder(R.drawable.ic_user_profile)
                     .error(R.drawable.ic_user_profile)
                     .into(imageViewUser)
-                textViewUserName.text = "@${user.username}"
+                textViewName.text = user.fullname
             }
         }
     }

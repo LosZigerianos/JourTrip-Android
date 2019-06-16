@@ -6,6 +6,10 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.NavHostFragment
+import com.afollestad.materialdialogs.MaterialDialog
+import com.cespes.biometricauth.BiometricCallback
+import com.cespes.biometricauth.BiometricManager
+import com.cespes.biometricauth.BiometricUtils
 
 import com.zigerianos.jourtrip.R
 import com.zigerianos.jourtrip.data.constants.RegexValidators
@@ -42,7 +46,8 @@ class LoginFragment : BaseFragment<ILoginPresenter.ILoginView, ILoginPresenter>(
             if (checkLoginFields()) {
                 presenter.loginClicked(
                     editTextEmail.text.toString().toLowerCase(),
-                    editTextPassword.text.toString()
+                    editTextPassword.text.toString(),
+                    context!!
                 )
             }
         }
@@ -61,9 +66,8 @@ class LoginFragment : BaseFragment<ILoginPresenter.ILoginView, ILoginPresenter>(
             }
         }
 
-        // TODO: REMOVE
-        editTextEmail.text = Editable.Factory.getInstance().newEditable("invitado@example.com")
-        editTextPassword.text = Editable.Factory.getInstance().newEditable("123123")
+        //editTextEmail.text = Editable.Factory.getInstance().newEditable("invitado@example.com")
+        //editTextPassword.text = Editable.Factory.getInstance().newEditable("123123")
     }
 
     override fun stateLoading() {
@@ -111,6 +115,78 @@ class LoginFragment : BaseFragment<ILoginPresenter.ILoginView, ILoginPresenter>(
     override fun showCredentialsErrorMessage() {
         stateDataLogin()
         toast(getString(R.string.incorrect_user_password))
+    }
+
+    override fun showAuthMessage() {
+        MaterialDialog(context!!).show {
+            title(R.string.identify_fingerprint_title)
+            message(R.string.identify_fingerprint_message)
+            positiveButton(R.string.accept) {
+                authenticateToUser()
+            }
+            negativeButton(R.string.cancel) {
+                presenter.hasBiometricPermission(false)
+            }
+        }
+    }
+
+    override fun authenticateToUser() {
+        BiometricManager.BiometricBuilder(context!!)
+            .setTitle("Biometric identification")
+            .setSubtitle("")
+            .setDescription("")
+            .setNegativeButtonText(getString(R.string.cancel))
+            .build()
+            .authenticate(object : BiometricCallback {
+                override fun onSdkVersionNotSupported() {
+                    println("Info -> onSdkVersionNotSupported")
+                    stateDataLogin()
+                }
+
+                override fun onBiometricAuthenticationNotSupported() {
+                    println("Info -> onBiometricAuthenticationNotSupported")
+                    stateDataLogin()
+                }
+
+                override fun onBiometricAuthenticationNotAvailable() {
+                    println("Info -> onBiometricAuthenticationNotAvailable")
+                    stateDataLogin()
+                }
+
+                override fun onBiometricAuthenticationPermissionNotGranted() {
+                    println("Info -> onBiometricAuthenticationPermissionNotGranted")
+                    stateDataLogin()
+                }
+
+                override fun onBiometricAuthenticationInternalError(error: String) {
+                    println("Info -> onBiometricAuthenticationInternalError")
+                    stateDataLogin()
+                }
+
+                override fun onAuthenticationFailed() {
+                    println("Info -> onAuthenticationFailed")
+                    stateDataLogin()
+                }
+
+                override fun onAuthenticationCancelled() {
+                    stateDataLogin()
+                }
+
+                override fun onAuthenticationSuccessful() {
+                    presenter.hasBiometricPermission(true)
+                    navigateToHome()
+                }
+
+                override fun onAuthenticationHelp(helpCode: Int, helpString: CharSequence) {
+                    println("Info -> onAuthenticationHelp")
+                    stateDataLogin()
+                }
+
+                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                    println("Info -> onAuthenticationError")
+                    stateDataLogin()
+                }
+            })
     }
 
     private fun checkLoginFields(): Boolean {
