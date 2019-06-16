@@ -15,7 +15,7 @@ class InitialPresenter(
 
         getMvpView()?.stateLoading()
 
-        getMvpView()?.setupViews()
+        //getMvpView()?.setupViews()
 
         val params = GetTokenValidationUseCase.Params(authManager.getUser()?.accessToken)
 
@@ -27,10 +27,12 @@ class InitialPresenter(
                     return@subscribe
                 }
 
-                if (authManager.hasBiometricPermission())
+                /*if (authManager.hasBiometricPermission())
                     getMvpView()?.authenticateToUser()
                 else
-                    getMvpView()?.navigateToHome()
+                    getMvpView()?.navigateToHome()*/
+
+                getMvpView()?.navigateToHome()
 
             }, {
                 Timber.e(it)

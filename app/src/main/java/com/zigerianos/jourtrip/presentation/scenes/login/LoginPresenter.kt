@@ -44,7 +44,7 @@ class LoginPresenter(
                     return@subscribe
                 }
 
-                if (authManager.getUser() == null
+                /*if (authManager.getUser() == null
                     && ((BiometricUtils.isBiometricPromptEnabled() && BiometricUtils.isHardwareSupported(context))
                             || (BiometricUtils.isSdkVersionSupported() && BiometricUtils.isFingerprintAvailable(context)))
                 ) {
@@ -52,7 +52,7 @@ class LoginPresenter(
                     authManager.addToken(token)
                     getMvpView()?.showAuthMessage()
                     return@subscribe
-                }
+                }*/
 
                 authManager.addUser(user)
                 authManager.addToken(token)

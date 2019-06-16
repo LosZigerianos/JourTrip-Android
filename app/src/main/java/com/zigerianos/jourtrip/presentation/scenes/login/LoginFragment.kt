@@ -66,9 +66,8 @@ class LoginFragment : BaseFragment<ILoginPresenter.ILoginView, ILoginPresenter>(
             }
         }
 
-        // TODO: REMOVE
-        editTextEmail.text = Editable.Factory.getInstance().newEditable("invitado@example.com")
-        editTextPassword.text = Editable.Factory.getInstance().newEditable("123123")
+        //editTextEmail.text = Editable.Factory.getInstance().newEditable("invitado@example.com")
+        //editTextPassword.text = Editable.Factory.getInstance().newEditable("123123")
     }
 
     override fun stateLoading() {
