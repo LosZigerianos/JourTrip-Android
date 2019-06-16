@@ -1,11 +1,10 @@
-package com.zigerianos.jourtrip.biometric
+package com.cespes.biometricauth
 
 import android.content.Context
 import android.content.DialogInterface
 import android.view.View
 import androidx.annotation.NonNull
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.zigerianos.jourtrip.R
 import kotlinx.android.synthetic.main.view_bottom_sheet.*
 
 
@@ -29,13 +28,12 @@ class BiometricDialogV23 : BottomSheetDialog, View.OnClickListener {
         setDialogView()
     }
 
-    constructor(@NonNull context: Context, theme: Int) : super(context, theme) {}
+    constructor(@NonNull context: Context, theme: Int) : super(context, theme)
 
     protected constructor(
         @NonNull context: Context, cancelable: Boolean,
         cancelListener: DialogInterface.OnCancelListener
-    ) : super(context, cancelable, cancelListener) {
-    }
+    ) : super(context, cancelable, cancelListener)
 
     private fun setDialogView() {
         val bottomSheetView = layoutInflater.inflate(R.layout.view_bottom_sheet, null)

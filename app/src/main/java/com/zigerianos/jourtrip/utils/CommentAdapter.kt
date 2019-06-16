@@ -11,7 +11,6 @@ import com.zigerianos.jourtrip.data.entities.Comment
 import com.zigerianos.jourtrip.presentation.base.BaseAdapter
 import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
 import kotlinx.android.synthetic.main.row_comment.view.*
-import org.joda.time.DateTimeZone
 import org.joda.time.format.DateTimeFormat
 import org.ocpsoft.prettytime.PrettyTime
 

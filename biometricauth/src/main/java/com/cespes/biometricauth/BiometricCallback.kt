@@ -1,4 +1,4 @@
-package com.zigerianos.jourtrip.biometric
+package com.cespes.biometricauth
 
 interface BiometricCallback {
 

@@ -56,6 +56,4 @@
     <string name="needs_connection_to_internet">Necesita conexión a Internet</string>
     <string name="more_contacts">Más contactos</string>
     <string name="search_contact">Buscar contacto</string>
-
-    <string name="biometric_failed">Huella no reconocida</string>
 </resources>

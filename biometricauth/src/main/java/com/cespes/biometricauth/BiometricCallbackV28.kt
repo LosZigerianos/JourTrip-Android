@@ -1,9 +1,9 @@
-package com.zigerianos.jourtrip.biometric
+package com.cespes.biometricauth
 
 import android.os.Build
 import androidx.annotation.RequiresApi
 import android.hardware.biometrics.BiometricPrompt
-
+import com.cespes.biometricauth.BiometricCallback
 
 
 @RequiresApi(api = Build.VERSION_CODES.P)

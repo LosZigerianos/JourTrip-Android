@@ -59,6 +59,4 @@
     <string name="needs_connection_to_internet">Needs connection to Internet</string>
     <string name="more_contacts">More contacts</string>
     <string name="search_contact">Search contact</string>
-
-    <string name="biometric_failed">Fingerprint not recognized</string>
 </resources>

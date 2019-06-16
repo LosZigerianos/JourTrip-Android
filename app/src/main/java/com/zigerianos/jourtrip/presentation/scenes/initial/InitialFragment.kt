@@ -3,13 +3,13 @@ package com.zigerianos.jourtrip.presentation.scenes.initial
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.NavHostFragment
+import com.cespes.biometricauth.BiometricCallback
+import com.cespes.biometricauth.BiometricManager
 import com.zigerianos.jourtrip.R
 import com.zigerianos.jourtrip.presentation.base.BaseFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_initial.*
 import org.koin.android.ext.android.inject
-import com.zigerianos.jourtrip.biometric.BiometricManager
-import com.zigerianos.jourtrip.biometric.BiometricCallback
 
 
 class InitialFragment : BaseFragment<IInitialPresenter.IInitialView, IInitialPresenter>(), IInitialPresenter.IInitialView {

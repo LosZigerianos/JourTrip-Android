@@ -1,4 +1,4 @@
-package com.zigerianos.jourtrip.biometric
+package com.cespes.biometricauth
 
 import android.annotation.TargetApi
 import android.os.Build
@@ -8,7 +8,6 @@ import android.security.keystore.KeyGenParameterSpec
 import android.content.Context
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import androidx.core.os.CancellationSignal
-import com.zigerianos.jourtrip.R
 import java.io.IOException
 import java.security.*
 import java.security.cert.CertificateException

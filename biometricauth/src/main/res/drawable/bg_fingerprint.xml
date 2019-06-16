@@ -4,6 +4,6 @@
     <solid android:color="@color/bg_fingerprint" />
 
     <size
-        android:width="20dp"
-        android:height="20dp" />
+        android:width="@dimen/biometric_bg_size"
+        android:height="@dimen/biometric_bg_size" />
 </shape>

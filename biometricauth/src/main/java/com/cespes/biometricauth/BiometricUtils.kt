@@ -1,4 +1,4 @@
-package com.zigerianos.jourtrip.biometric
+package com.cespes.biometricauth
 
 import android.Manifest
 import android.content.Context

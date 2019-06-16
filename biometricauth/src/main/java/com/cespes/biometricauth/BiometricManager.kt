@@ -1,9 +1,6 @@
-package com.zigerianos.jourtrip.biometric
+package com.cespes.biometricauth
 
 import android.content.DialogInterface
-import android.R.attr.negativeButtonText
-import android.R.attr.description
-import android.R.attr.subtitle
 import android.hardware.biometrics.BiometricPrompt
 import android.os.Build
 import android.annotation.TargetApi
