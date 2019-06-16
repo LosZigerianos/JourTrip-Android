@@ -122,20 +122,20 @@ class CommentAdapter(
                             .error(R.drawable.ic_user_profile)
                             .into(imageViewUser)
 
-                        textViewUserName.text = "@${user.username}"
+                        textViewName.text = user.fullname
 
                         cardViewUserImage.visibility = View.VISIBLE
                         imageViewUser.visibility = View.VISIBLE
-                        textViewUserName.visibility = View.VISIBLE
+                        textViewName.visibility = View.VISIBLE
                     } ?: run {
                         cardViewUserImage.visibility = View.GONE
                         imageViewUser.visibility = View.GONE
-                        textViewUserName.visibility = View.GONE
+                        textViewName.visibility = View.GONE
                     }
                 } else {
                     cardViewUserImage.visibility = View.GONE
                     imageViewUser.visibility = View.GONE
-                    textViewUserName.visibility = View.GONE
+                    textViewName.visibility = View.GONE
                 }
 
                 textViewComment.text = comment.description
