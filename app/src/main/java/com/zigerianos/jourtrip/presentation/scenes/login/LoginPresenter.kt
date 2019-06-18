@@ -1,7 +1,6 @@
 package com.zigerianos.jourtrip.presentation.scenes.login
 
 import android.content.Context
-import com.cespes.biometricauth.BiometricUtils
 import com.google.gson.Gson
 import com.zigerianos.jourtrip.auth.AuthManager
 import com.zigerianos.jourtrip.data.entities.ErrorResponse
@@ -44,16 +43,6 @@ class LoginPresenter(
                     return@subscribe
                 }
 
-                /*if (authManager.getUser() == null
-                    && ((BiometricUtils.isBiometricPromptEnabled() && BiometricUtils.isHardwareSupported(context))
-                            || (BiometricUtils.isSdkVersionSupported() && BiometricUtils.isFingerprintAvailable(context)))
-                ) {
-                    authManager.addUser(user)
-                    authManager.addToken(token)
-                    getMvpView()?.showAuthMessage()
-                    return@subscribe
-                }*/
-
                 authManager.addUser(user)
                 authManager.addToken(token)
                 getMvpView()?.navigateToHome()
@@ -66,12 +55,10 @@ class LoginPresenter(
 
                     when (ServiceError.getServiceError(serviceError.error)) {
                         ServiceError.UNAUTHORIZED, ServiceError.CREDENTIALS_INVALID -> {
-                            Timber.e("ServiceError: TOKEN_EXPIRED or UNAUTHORIZED")
                             getMvpView()?.showCredentialsErrorMessage()
                             return@subscribe
                         }
                         ServiceError.TOKEN_EXPIRED, ServiceError.NOT_FOUND, ServiceError.UNKNOWN -> {
-                            Timber.e("ServiceError: NOT_FOUND or UNKNOWN")
                             getMvpView()?.stateError()
                             return@subscribe
                         }
@@ -93,11 +80,6 @@ class LoginPresenter(
 
         val disposable = postRecoverPasswordByEmailUseCase.observable(params)
             .subscribe({ message ->
-
-                /*if (message.isEmpty()) {
-                    getMvpView()?.showInvalidCredentialsErrorMessage()
-                    return@subscribe
-                }*/
 
                 getMvpView()?.stateDataRecoverPassword()
                 getMvpView()?.showSuccessMessage(message)

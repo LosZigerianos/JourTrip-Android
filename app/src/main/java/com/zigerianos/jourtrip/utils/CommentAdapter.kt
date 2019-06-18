@@ -141,7 +141,6 @@ class CommentAdapter(
                 textViewComment.text = comment.description
 
                 val dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-                // TODO: Repasar hora del comentario, pasarlo a local
                 val creationDate = dateTimeFormatter.parseDateTime(comment.creationDate)
                 textViewDate.text = PrettyTime().format(creationDate.toDate())
             }

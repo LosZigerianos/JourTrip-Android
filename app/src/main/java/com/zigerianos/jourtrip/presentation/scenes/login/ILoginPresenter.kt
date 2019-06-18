@@ -19,13 +19,10 @@ interface ILoginPresenter: IPresenter<ILoginPresenter.ILoginView> {
         fun stateDataRecoverPassword()
         fun stateError()
 
-        fun authenticateToUser()
-
         fun navigateToHome()
 
         fun showSuccessMessage(message: String)
         fun showErrorMessage(message: String)
         fun showCredentialsErrorMessage()
-        fun showAuthMessage()
     }
 }

@@ -100,7 +100,7 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
             activity?.bottomNavigationView?.visibility = View.VISIBLE
         }
 
-        textInputLayoutSearching.editText?.setOnFocusChangeListener { view, boolean ->
+        textInputLayoutSearching.editText?.setOnFocusChangeListener { _, boolean ->
             if (!boolean && isVisible) {
                 imm.hideSoftInputFromWindow(container.windowToken, 0)
                 activity?.bottomNavigationView?.visibility = View.VISIBLE
@@ -112,7 +112,6 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
         setupSearch()
 
         mUnregistrar = KeyboardVisibilityEvent.registerEventListener(activity!!) { isOpen ->
-            //activity?.bottomNavigationView?.visibility = if (isOpen) View.GONE else View.VISIBLE
             if (!isOpen && isVisible) {
                 activity?.bottomNavigationView?.visibility = View.VISIBLE
                 editTextSearch.clearFocus()
@@ -230,8 +229,9 @@ class SearchFragment : BaseFragment<ISearchPresenter.ISearchView, ISearchPresent
                 if (CheckPermission.checkPermission(act, Manifest.permission.ACCESS_FINE_LOCATION)) {
                     fusedLocationClient.lastLocation?.addOnSuccessListener(act) { location ->
                         location?.let {
-                            //toast("Latitude: ${location.latitude} / Longitude: ${location.longitude}")
                             presenter.localizedUser(location.latitude.toString(), location.longitude.toString())
+                        } ?: run {
+                            presenter.localizedUser("41.64884628412369", "-0.8648115298427115")
                         }
                     }
                 }
