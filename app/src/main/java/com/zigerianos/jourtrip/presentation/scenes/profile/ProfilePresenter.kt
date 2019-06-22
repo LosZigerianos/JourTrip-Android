@@ -29,6 +29,9 @@ class ProfilePresenter(
     override fun update() {
         super.update()
 
+        getMvpView()?.clearItems()
+        mCommentList.clear()
+
         getMvpView()?.setupToolbar()
         getMvpView()?.stateLoading()
         getMvpView()?.setupViews()
