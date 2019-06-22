@@ -10,6 +10,7 @@ import com.zigerianos.jourtrip.data.entities.Comment
 import com.zigerianos.jourtrip.presentation.base.BaseAdapter
 import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
 import kotlinx.android.synthetic.main.row_user.view.*
+import org.joda.time.DateTimeZone
 import org.joda.time.format.DateTimeFormat
 import org.ocpsoft.prettytime.PrettyTime
 
@@ -107,7 +108,7 @@ class UserAdapter(
 
                 val dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                 val creationDate = dateTimeFormatter.parseDateTime(comment.creationDate)
-                textViewDate.text = PrettyTime().format(creationDate.toDate())
+                textViewDate.text = PrettyTime().format(creationDate.withZone(DateTimeZone.UTC).plusHours(2).toDate())
             }
         }
     }
