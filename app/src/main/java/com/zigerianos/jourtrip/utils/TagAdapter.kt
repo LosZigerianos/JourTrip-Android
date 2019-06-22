@@ -8,8 +8,6 @@ import com.zigerianos.jourtrip.R
 import com.zigerianos.jourtrip.presentation.base.BaseAdapter
 import com.zigerianos.jourtrip.presentation.base.ItemClickAdapter
 import kotlinx.android.synthetic.main.row_tag.view.*
-import android.graphics.Color
-import java.util.*
 
 
 class TagAdapter(context: Context) : ItemClickAdapter<String, TagAdapter.TagViewHolder>(context) {
@@ -28,7 +26,7 @@ class TagAdapter(context: Context) : ItemClickAdapter<String, TagAdapter.TagView
     inner class TagViewHolder(view: View) : BaseAdapter.BaseViewHolder(view) {
         fun bind(tag: String) {
             with(itemView) {
-                background.setTint(Utils.getBasicColor())
+                background.setTint(Utils.getBasicColorByString(tag))
                 textViewTag.text = tag
             }
         }
